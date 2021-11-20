@@ -20,7 +20,7 @@ namespace MyCarDealershipProject
         public void ConfigureServices(IServiceCollection services)
         {
             services
-                .AddDbContext<ApplicationDbContext>(options => options
+                .AddDbContext<CarDealershipDbContext>(options => options
                     .UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddDatabaseDeveloperPageExceptionFilter();
@@ -30,7 +30,7 @@ namespace MyCarDealershipProject
                 {
                     options.Password.RequireNonAlphanumeric = false;
                 })
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+                .AddEntityFrameworkStores<CarDealershipDbContext>();
             
             services.AddControllersWithViews();
         }
