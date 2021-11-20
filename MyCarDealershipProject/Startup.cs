@@ -3,6 +3,7 @@ namespace MyCarDealershipProject
     using Data;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Hosting;
@@ -31,12 +32,25 @@ namespace MyCarDealershipProject
                     options.Password.RequireNonAlphanumeric = false;
                 })
                 .AddEntityFrameworkStores<CarDealershipDbContext>();
-            
+
+            services.Configure<CookiePolicyOptions>(
+                options =>
+                {
+                    options.CheckConsentNeeded = context => true;
+                    options.MinimumSameSitePolicy = SameSiteMode.None;
+                });
+
             services.AddControllersWithViews();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            using (var serviceScope = app.ApplicationServices.CreateScope())
+            {
+                var dbContext = serviceScope.ServiceProvider.GetRequiredService<CarDealershipDbContext>();
+                dbContext.Database.Migrate();
+            }
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -50,6 +64,7 @@ namespace MyCarDealershipProject
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseCookiePolicy();
 
             app.UseRouting();
 
@@ -61,6 +76,7 @@ namespace MyCarDealershipProject
                 endpoints.MapDefaultControllerRoute();
                 endpoints.MapRazorPages();
             });
+
         }
     }
 }
