@@ -5,12 +5,12 @@
 
     using static DataConstants;
 
-    public class Category
+    public class TransmissionType
     {
         public int Id { get; init; }
 
         [Required]
-        [MaxLength(CategoryNameMaxLength)]
+        [MaxLength(TransmissionTypeNameMaxLength)]
         public string Name { get; set; }
 
         public ICollection<Car> Cars { get; set; } = new HashSet<Car>();

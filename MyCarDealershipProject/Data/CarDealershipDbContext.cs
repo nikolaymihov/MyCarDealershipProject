@@ -23,6 +23,10 @@
 
         public DbSet<CarExtra> CarExtras { get; set; }
 
+        public DbSet<FuelType> FuelTypes { get; set; }
+
+        public DbSet<TransmissionType> TransmissionTypes { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder
@@ -30,6 +34,20 @@
                 .HasOne(c => c.Category)
                 .WithMany(c => c.Cars)
                 .HasForeignKey(c => c.CategoryId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder
+                .Entity<Car>()
+                .HasOne(c => c.FuelType)
+                .WithMany(ft => ft.Cars)
+                .HasForeignKey(c => c.FuelTypeId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder
+                .Entity<Car>()
+                .HasOne(c => c.TransmissionType)
+                .WithMany(tt => tt.Cars)
+                .HasForeignKey(c => c.TransmissionTypeId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder
