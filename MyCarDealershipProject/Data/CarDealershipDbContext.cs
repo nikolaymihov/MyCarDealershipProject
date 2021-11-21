@@ -15,6 +15,14 @@
 
         public DbSet<Category> Categories { get; set; }
 
+        public DbSet<Extra> Extras { get; set; }
+
+        public DbSet<Post> Posts { get; set; }
+
+        public DbSet<ExtraType> ExtraTypes { get; set; }
+
+        public DbSet<CarExtra> CarExtras { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder
@@ -22,6 +30,45 @@
                 .HasOne(c => c.Category)
                 .WithMany(c => c.Cars)
                 .HasForeignKey(c => c.CategoryId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder
+                .Entity<Post>()
+                .HasOne(p => p.Creator)
+                .WithMany(u => u.Posts)
+                .HasForeignKey(p => p.CreatorId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder
+                .Entity<Post>()
+                .HasOne(p => p.Car)
+                .WithOne(c => c.Post)
+                .HasForeignKey<Post>(p => p.CarId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder
+                .Entity<Extra>()
+                .HasOne(e => e.Type)
+                .WithMany(et => et.Extras)
+                .HasForeignKey(e => e.TypeId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder
+                .Entity<CarExtra>()
+                .HasKey(ce => new { ce.CarId, ce.ExtraId });
+
+            builder
+                .Entity<CarExtra>()
+                .HasOne(ce => ce.Car)
+                .WithMany(c => c.CarExtras)
+                .HasForeignKey(ce => ce.CarId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder
+                .Entity<CarExtra>()
+                .HasOne(ce => ce.Extra)
+                .WithMany(e => e.CarExtras)
+                .HasForeignKey(ce => ce.ExtraId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             base.OnModelCreating(builder);

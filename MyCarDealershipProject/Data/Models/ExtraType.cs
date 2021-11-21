@@ -5,14 +5,14 @@
 
     using static DataConstants;
 
-    public class Category
+    public class ExtraType
     {
         public int Id { get; init; }
 
         [Required]
-        [MaxLength(CategoryMaxLength)]
+        [MaxLength(ExtraTypeNameMaxLength)]
         public string Name { get; set; }
 
-        public ICollection<Car> Cars { get; set; } = new HashSet<Car>();
+        public ICollection<Extra> Extras { get; set; } = new HashSet<Extra>();
     }
 }

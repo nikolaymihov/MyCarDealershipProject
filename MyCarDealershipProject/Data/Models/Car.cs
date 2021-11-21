@@ -1,5 +1,6 @@
 ﻿namespace MyCarDealershipProject.Data.Models
 {
+    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
     using static DataConstants;
@@ -21,8 +22,16 @@
         
         public int CategoryId { get; set; }
 
-        public Category Category { get; init; }
+        public Category Category { get; set; }
+
+        public int PostId { get; set; }
+
+        public Post Post { get; set; }
 
         public int Year { get; set; }
+
+        public decimal Price { get; set; }
+
+        public ICollection<CarExtra> CarExtras { get; set; } = new HashSet<CarExtra>();
     }
 }
