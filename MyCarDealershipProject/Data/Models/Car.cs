@@ -45,5 +45,7 @@
         public Post Post { get; set; }
 
         public ICollection<CarExtra> CarExtras { get; set; } = new HashSet<CarExtra>();
+
+        public ICollection<Image> Images { get; set; } = new HashSet<Image>();
     }
 }

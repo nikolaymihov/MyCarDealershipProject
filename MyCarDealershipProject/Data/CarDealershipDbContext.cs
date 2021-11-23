@@ -27,6 +27,8 @@
 
         public DbSet<TransmissionType> TransmissionTypes { get; set; }
 
+        public DbSet<Image> Images { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder
@@ -49,7 +51,7 @@
                 .WithMany(tt => tt.Cars)
                 .HasForeignKey(c => c.TransmissionTypeId)
                 .OnDelete(DeleteBehavior.Restrict);
-
+            
             builder
                 .Entity<Post>()
                 .HasOne(p => p.Creator)
