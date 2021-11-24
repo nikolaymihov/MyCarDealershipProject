@@ -10,7 +10,9 @@
         {
             this.Id = Guid.NewGuid().ToString();
         }
-        
+            
+        public string FullName { get; set; }
+
         public ICollection<Post> Posts { get; set; } = new HashSet<Post>();
     }
 }

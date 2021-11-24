@@ -4,7 +4,7 @@
     using Microsoft.EntityFrameworkCore;
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
-    public class CarDealershipDbContext : IdentityDbContext
+    public class CarDealershipDbContext : IdentityDbContext<ApplicationUser>
     {
         public CarDealershipDbContext(DbContextOptions<CarDealershipDbContext> options)
             : base(options)
@@ -58,12 +58,19 @@
                 .WithMany(u => u.Posts)
                 .HasForeignKey(p => p.CreatorId)
                 .OnDelete(DeleteBehavior.Restrict);
-
+            
             builder
                 .Entity<Post>()
                 .HasOne(p => p.Car)
                 .WithOne(c => c.Post)
                 .HasForeignKey<Post>(p => p.CarId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder
+                .Entity<ApplicationUser>()
+                .HasMany(u => u.Posts)
+                .WithOne(p => p.Creator)
+                .HasForeignKey(p => p.CreatorId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder
