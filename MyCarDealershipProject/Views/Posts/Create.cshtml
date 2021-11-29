@@ -1,11 +1,11 @@
 ﻿@model MyCarDealershipProject.Models.Posts.CreatePostInputModel
 
 @{
-    this.ViewData["Title"] = "Create new post";
+    this.ViewData["Title"] = "Create post";
 }
 
 <form method="post" class="col-md-6 offset-md-3" enctype="multipart/form-data">
-    <h2 class="m-auto text-center">@this.ViewData["Title"]</h2>
+    <h2 class="heading-margin text-center">@this.ViewData["Title"]</h2>
     <div class="form-group">
         <label asp-for="Car.Make"></label>
         <input asp-for="Car.Make" class="form-control" />
