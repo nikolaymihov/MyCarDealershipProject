@@ -8,7 +8,6 @@
         public const int CarModelMinLength = 2;
         public const int CarDescriptionMinLength = 20;
         public const int CarYearMinValue = 1950;
-        public const int CarYearMaxValue = 2050;
         public const int CarPriceMinValue = 1;
         public const int CarPriceMaxValue = 10000000;
         public const int CarKilometersMinValue = 0;

@@ -1,8 +1,7 @@
 ﻿namespace MyCarDealershipProject.Models.Cars
 {
-    using System.Globalization;
     using System.ComponentModel.DataAnnotations;
-
+    using Infrastructure.ValidationAttributes;
     using static Data.DataConstants;
 
     public class BaseCarInputModel
@@ -31,24 +30,17 @@
         [Display(Name = "Car description:")]
         public string Description { get; set; }
 
-        [Range(
+        [RangeUntilCurrentYear(
             CarYearMinValue, 
-            CarYearMaxValue, 
             ErrorMessage = "The car year must be between {1} and {2}.")]
         [Display(Name = "Car first registration:")]
         public int Year { get; set; }
 
-        [Range(
-            CarPriceMinValue, 
-            CarPriceMaxValue, 
-            ErrorMessage = "The car price must be between {1} and {2}.")]
+        [RangeWithCustomFormatAttribute(CarPriceMinValue, CarPriceMaxValue, "car price")]
         [Display(Name = "Car price:")]
         public decimal Price { get; set; }
 
-        [Range(
-            CarKilometersMinValue, 
-            CarKilometersMaxValue,
-            ErrorMessage = "The car kilometers must be between {1} and {2}.")]
+        [RangeWithCustomFormatAttribute(CarKilometersMinValue, CarKilometersMaxValue, "car kilometers")]
         [Display(Name = "Car kilometers:")]
         public int Kilometers { get; set; }
 
