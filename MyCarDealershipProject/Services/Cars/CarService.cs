@@ -41,5 +41,13 @@
                 .ProjectTo<CarTransmissionTypeServiceModel>(this.mapper)
                 .ToList();
         }
+
+        public IEnumerable<CarExtrasServiceModel> GetAllCarExtras()
+        {
+            return this.data
+                .Extras        
+                .ProjectTo<CarExtrasServiceModel>(this.mapper)
+                .ToList();
+        }
     }
 }

@@ -1,7 +1,9 @@
-﻿@model MyCarDealershipProject.Models.Posts.CreatePostInputModel
+﻿@using System.Collections.Specialized
+@model MyCarDealershipProject.Models.Posts.CreatePostInputModel
 
 @{
     this.ViewData["Title"] = "Create post";
+    var extraTypes = new Dictionary<int,string>(); 
 }
 
 <form method="post" class="col-md-6 offset-md-3" enctype="multipart/form-data">
@@ -58,6 +60,24 @@
             <span asp-validation-for="@Model.Car.TransmissionTypeId" class="small text-danger"></span>
         </div>
     </div>
+    <hr />
+    <h3>Car extras:</h3>
+    <div class="row form-group mb-3">
+        @foreach (var carExtra in Model.Car.CarExtras)
+        {
+            @if (!extraTypes.ContainsKey(carExtra.TypeId))
+            {
+                extraTypes[carExtra.TypeId] = carExtra.TypeName;
+                <h6>@carExtra.TypeName</h6>
+            }
+
+            <div class="form-check form-check-inline">
+                <input id="extra_@carExtra.Id" class="form-check-input" type="checkbox" name="CarExtras" value="@carExtra.Id">
+                <label class="form-check-label" for="extra_@carExtra.Id">@carExtra.Name</label>
+            </div>
+        }
+    </div>
+    <hr />
     <div class="row form-group mb-3">
         <div class="col-md-4 form-group mb-3">
             <label asp-for="Car.Year" class="form-label"></label>

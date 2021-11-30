@@ -13,6 +13,8 @@
             this.CreateMap<FuelType, CarFuelTypeServiceModel>();
             
             this.CreateMap<TransmissionType, CarTransmissionTypeServiceModel>();
+
+            this.CreateMap<Extra, CarExtrasServiceModel>();
         }
     }
 }

@@ -10,5 +10,7 @@
         IEnumerable<CarFuelTypeServiceModel> GetAllFuelTypes();
 
         IEnumerable<CarTransmissionTypeServiceModel> GetAllTransmissionTypes();
+
+        IEnumerable<CarExtrasServiceModel> GetAllCarExtras();
     }
 }

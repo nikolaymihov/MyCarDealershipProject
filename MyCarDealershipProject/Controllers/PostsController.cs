@@ -23,7 +23,8 @@
             {
                 Categories = this.carsService.GetAllCategories(),
                 FuelTypes = this.carsService.GetAllFuelTypes(),
-                TransmissionTypes = this.carsService.GetAllTransmissionTypes()
+                TransmissionTypes = this.carsService.GetAllTransmissionTypes(),
+                CarExtras = this.carsService.GetAllCarExtras()
             };
 
             postViewModel.Car = car;

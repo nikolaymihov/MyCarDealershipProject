@@ -22,6 +22,11 @@
 
         public IEnumerable<CarTransmissionTypeServiceModel> TransmissionTypes { get; set; }
 
+        public int CarExtraId { get; init; }
+        
+        public IEnumerable<CarExtrasServiceModel> CarExtras { get; set; }
+        
+
         [Display(Name = "Car images:")]
         public IEnumerable<IFormFile> Images { get; set; }
     }
