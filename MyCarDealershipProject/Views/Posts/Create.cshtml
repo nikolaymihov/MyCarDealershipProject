@@ -6,46 +6,58 @@
 
 <form method="post" class="col-md-6 offset-md-3" enctype="multipart/form-data">
     <h2 class="heading-margin text-center">@this.ViewData["Title"]</h2>
-    <div class="form-group">
-        <label asp-for="Car.Make"></label>
-        <input asp-for="Car.Make" class="form-control" />
-        <span asp-validation-for="Car.Make" class="text-danger"></span>
+    <div class="row form-group mb-3">
+        <div class="col-6 form-group mb-3">
+            <label asp-for="Car.Make" class="form-label"></label>
+            <input asp-for="Car.Make" class="form-control" />
+            <span asp-validation-for="Car.Make" class="text-danger"></span>
+        </div>
+        <div class="col-6 form-group mb-3">
+            <label asp-for="Car.Model" class="form-label"></label>
+            <input asp-for="Car.Model" class="form-control"></input>
+            <span asp-validation-for="Car.Model" class="text-danger"></span>
+        </div>
     </div>
-    <div class="form-group">
-        <label asp-for="Car.Model"></label>
-        <input asp-for="Car.Model" class="form-control"></input>
-        <span asp-validation-for="Car.Model" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Car.Description"></label>
+    <div class="form-group mb-3">
+        <label asp-for="Car.Description" class="form-label"></label>
         <textarea asp-for="Car.Description" class="form-control" rows="8"></textarea>
         <span asp-validation-for="Car.Description" class="text-danger"></span>
     </div>
-    <div class="row form-group">
-        <div class="col form-group">
-            <label asp-for="Car.Year"></label>
+    <div class="form-group mb-3">
+        <label asp-for="@Model.Car.CategoryId" class="form-label"></label>
+        <select asp-for="@Model.Car.CategoryId" class="form-select-sm">
+            @foreach (var category in Model.Car.Categories)
+            {
+                <option value="@category.Id">@category.Name</option>
+            }
+        </select>
+        <span asp-validation-for="@Model.Car.CategoryId" class="small text-danger"></span>
+    </div>
+    <div class="row form-group mb-3">
+        <div class="col form-group mb-3">
+            <label asp-for="Car.Year" class="form-label"></label>
             <input asp-for="Car.Year" class="form-control"></input>
             <span asp-validation-for="Car.Year" class="text-danger"></span>
         </div>
-        <div class="col form-group">
-            <label asp-for="Car.Kilometers"></label>
+        <div class="col form-group mb-3">
+            <label asp-for="Car.Kilometers" class="form-label"></label>
             <input asp-for="Car.Kilometers" class="form-control"></input>
             <span asp-validation-for="Car.Kilometers" class="text-danger"></span>
         </div>
-        <div class="col form-group">
-            <label asp-for="Car.Horsepower"></label>
+        <div class="col form-group mb-3">
+            <label asp-for="Car.Horsepower" class="form-label"></label>
             <input asp-for="Car.Horsepower" class="form-control"></input>
             <span asp-validation-for="Car.Horsepower" class="text-danger"></span>
         </div>
     </div>
-    <div class="row form-group">
-        <div class="col-4 form-group">
-            <label asp-for="Car.Price"></label>
+    <div class="row form-group mb-3">
+        <div class="col-4 form-group mb-3">
+            <label asp-for="Car.Price" class="form-label"></label>
             <input asp-for="Car.Price" class="form-control"></input>
             <span asp-validation-for="Car.Price" class="text-danger"></span>
         </div>
-        <div class="col-8 form-group">
-            <label asp-for="Car.Images"></label>
+        <div class="col-8 form-group mb-3">
+            <label asp-for="Car.Images" class="form-label"></label>
             <input asp-for="Car.Images" class="form-control" />
             <span asp-validation-for="Car.Images" class="text-danger"></span>
         </div>

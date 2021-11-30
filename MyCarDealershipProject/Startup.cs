@@ -10,6 +10,7 @@ namespace MyCarDealershipProject
     using Microsoft.Extensions.Hosting;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using Services.Cars;
 
     public class Startup
     {
@@ -41,12 +42,16 @@ namespace MyCarDealershipProject
                     options.MinimumSameSitePolicy = SameSiteMode.None;
                 });
 
+            services.AddAutoMapper(typeof(Startup));
+
             services.AddControllersWithViews(
                 options =>
                 {
                     options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
                 }).AddRazorRuntimeCompilation();
-            
+
+            services.AddTransient<ICarService, CarService>();
+
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

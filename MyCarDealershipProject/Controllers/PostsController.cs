@@ -4,15 +4,29 @@
     using Microsoft.AspNetCore.Authorization;
     using Models.Cars;
     using Models.Posts;
+    using Services.Cars;
 
     public class PostsController : Controller
     {
+        private readonly ICarService carsService;
+
+        public PostsController(ICarService carsService)
+        {
+            this.carsService = carsService;
+        }
+
         [Authorize]
         public IActionResult Create()
         {
-            var viewModel = new CreatePostInputModel {Car = new CreateCarInputModel()};
+            var postViewModel = new CreatePostInputModel();
+            var car = new CreateCarInputModel
+            {
+                Categories = this.carsService.GetAllCategories()
+            };
 
-            return this.View(viewModel);
+            postViewModel.Car = car;
+
+            return this.View(postViewModel);
         }
     }
 }
