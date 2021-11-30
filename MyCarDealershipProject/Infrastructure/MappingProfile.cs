@@ -9,6 +9,10 @@
         public MappingProfile()
         {
             this.CreateMap<Category, CarCategoryServiceModel>();
+
+            this.CreateMap<FuelType, CarFuelTypeServiceModel>();
+            
+            this.CreateMap<TransmissionType, CarTransmissionTypeServiceModel>();
         }
     }
 }

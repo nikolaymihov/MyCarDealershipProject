@@ -1,9 +1,6 @@
 ﻿namespace MyCarDealershipProject.Services.Cars.Models
 {
-    public class CarCategoryServiceModel
+    public class CarCategoryServiceModel : BaseCarSpecificationServiceModel
     {
-        public int Id { get; init; }
-
-        public string Name { get; init; }
     }
 }

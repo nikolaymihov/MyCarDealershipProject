@@ -21,7 +21,9 @@
             var postViewModel = new CreatePostInputModel();
             var car = new CreateCarInputModel
             {
-                Categories = this.carsService.GetAllCategories()
+                Categories = this.carsService.GetAllCategories(),
+                FuelTypes = this.carsService.GetAllFuelTypes(),
+                TransmissionTypes = this.carsService.GetAllTransmissionTypes()
             };
 
             postViewModel.Car = car;

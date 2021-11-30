@@ -25,5 +25,21 @@
                 .ProjectTo<CarCategoryServiceModel>(this.mapper)
                 .ToList();
         }
+
+        public IEnumerable<CarFuelTypeServiceModel> GetAllFuelTypes()
+        {
+            return this.data
+                .FuelTypes
+                .ProjectTo<CarFuelTypeServiceModel>(this.mapper)
+                .ToList();
+        }
+
+        public IEnumerable<CarTransmissionTypeServiceModel> GetAllTransmissionTypes()
+        {
+            return this.data
+                .TransmissionTypes
+                .ProjectTo<CarTransmissionTypeServiceModel>(this.mapper)
+                .ToList();
+        }
     }
 }
