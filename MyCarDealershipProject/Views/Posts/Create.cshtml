@@ -3,7 +3,7 @@
 
 @{
     this.ViewData["Title"] = "Create post";
-    var extraTypes = new Dictionary<int,string>(); 
+    var extraTypes = new Dictionary<int, string>();
 }
 
 <form method="post" class="col-md-6 offset-md-3" enctype="multipart/form-data">
@@ -26,7 +26,7 @@
         <span asp-validation-for="Car.Description" class="text-danger"></span>
     </div>
     <div class="row form-group mb-3">
-        <div class="col-md-4 form-group mb-3">
+        <div class="col-md-4 form-group mb-3 mt-3">
             <label asp-for="@Model.Car.CategoryId" class="form-label"></label>
             <select asp-for="@Model.Car.CategoryId" class="form-select">
                 <option disabled selected>Choose category</option>
@@ -37,7 +37,7 @@
             </select>
             <span asp-validation-for="@Model.Car.CategoryId" class="small text-danger"></span>
         </div>
-        <div class="col-md-4 form-group mb-3">
+        <div class="col-md-4 form-group mb-3 mt-3">
             <label asp-for="@Model.Car.FuelTypeId" class="form-label"></label>
             <select asp-for="@Model.Car.FuelTypeId" class="form-select">
                 <option disabled selected>Choose fuel type</option>
@@ -48,7 +48,7 @@
             </select>
             <span asp-validation-for="@Model.Car.FuelTypeId" class="small text-danger"></span>
         </div>
-        <div class="col-md-4 form-group mb-3">
+        <div class="col-md-4 form-group mb-3 mt-3">
             <label asp-for="@Model.Car.TransmissionTypeId" class="form-label"></label>
             <select asp-for="@Model.Car.TransmissionTypeId" class="form-select">
                 <option disabled selected>Choose transmission type</option>
@@ -61,18 +61,18 @@
         </div>
     </div>
     <hr />
-    <h3>Car extras:</h3>
-    <div class="row form-group mb-3">
+    <h4 class="mb-1 text-center">Car extras:</h4>
+    <div class="row">
         <div class="col">
             @foreach (var carExtra in Model.Car.CarExtras)
             {
                 @if (!extraTypes.ContainsKey(carExtra.TypeId))
                 {
                     extraTypes[carExtra.TypeId] = carExtra.TypeName;
-                    <div class="mb-3 mt-3"><h6>@carExtra.TypeName</h6></div>
+                    <div class="mb-2 mt-3"><h6>@carExtra.TypeName</h6></div>
                 }
 
-                <div class="form-check-inline">
+                <div class="form-check-inline align-text-bottom">
                     <input id="extra_@carExtra.Id" class="form-check-input" type="checkbox" name="CarExtras" value="@carExtra.Id">
                     <label class="form-check-label" for="extra_@carExtra.Id">@carExtra.Name</label>
                 </div>
