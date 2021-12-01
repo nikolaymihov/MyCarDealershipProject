@@ -25,8 +25,8 @@
         public int CarExtraId { get; init; }
         
         public IEnumerable<CarExtrasServiceModel> CarExtras { get; set; }
-        
 
+        [Required(ErrorMessage = "At least one car image is required.")]
         [Display(Name = "Car images:")]
         public IEnumerable<IFormFile> Images { get; set; }
     }

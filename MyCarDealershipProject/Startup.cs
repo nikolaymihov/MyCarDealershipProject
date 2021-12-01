@@ -11,6 +11,7 @@ namespace MyCarDealershipProject
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Services.Cars;
+    using Services.Posts;
 
     public class Startup
     {
@@ -50,7 +51,8 @@ namespace MyCarDealershipProject
                     options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
                 }).AddRazorRuntimeCompilation();
 
-            services.AddTransient<ICarService, CarService>();
+            services.AddTransient<ICarsService, CarsService>();
+            services.AddTransient<IPostsService, PostsService>();
 
         }
 

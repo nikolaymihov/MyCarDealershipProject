@@ -3,7 +3,7 @@
     using System.Collections.Generic;
     using Models;
 
-    public interface ICarService
+    public interface ICarsService
     {
         IEnumerable<CarCategoryServiceModel> GetAllCategories();
 

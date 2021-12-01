@@ -2,6 +2,7 @@
 {
     using AutoMapper;
     using Data.Models;
+    using Models.Cars;
     using Services.Cars.Models;
 
     public class MappingProfile : Profile

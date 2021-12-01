@@ -7,12 +7,12 @@
     using Data;
     using Models;
 
-    public class CarService : ICarService
+    public class CarsService : ICarsService
     {
         private readonly CarDealershipDbContext data;
         private readonly IConfigurationProvider mapper;
 
-        public CarService(CarDealershipDbContext data, IMapper mapper)
+        public CarsService(CarDealershipDbContext data, IMapper mapper)
         {
             this.data = data;
             this.mapper = mapper.ConfigurationProvider;

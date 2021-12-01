@@ -8,25 +8,25 @@
 
 <form method="post" class="col-md-6 offset-md-3" enctype="multipart/form-data">
     <h2 class="heading-margin text-center">@this.ViewData["Title"]</h2>
-    <div class="row form-group mb-3">
-        <div class="col-md-6 form-group mb-3">
+    <div class="row mb-3">
+        <div class="col-md-6 mb-3">
             <label asp-for="Car.Make" class="form-label"></label>
             <input asp-for="Car.Make" class="form-control" placeholder="Mercedes, BMW, Honda, etc...">
             <span asp-validation-for="Car.Make" class="text-danger"></span>
         </div>
-        <div class="col-md-6 form-group mb-3">
+        <div class="col-md-6 mb-3">
             <label asp-for="Car.Model" class="form-label"></label>
             <input asp-for="Car.Model" class="form-control" placeholder="S-Class, 640D, Accord, etc...">
             <span asp-validation-for="Car.Model" class="text-danger"></span>
         </div>
     </div>
-    <div class="form-group mb-3">
+    <div class="mb-3">
         <label asp-for="Car.Description" class="form-label"></label>
         <textarea asp-for="Car.Description" class="form-control" rows="6" placeholder="This is the perfect car..."></textarea>
         <span asp-validation-for="Car.Description" class="text-danger"></span>
     </div>
-    <div class="row form-group mb-3">
-        <div class="col-md-4 form-group mb-3 mt-3">
+    <div class="row mb-3">
+        <div class="col-md-4 mb-3 mt-3">
             <label asp-for="@Model.Car.CategoryId" class="form-label"></label>
             <select asp-for="@Model.Car.CategoryId" class="form-select">
                 <option disabled selected>Choose category</option>
@@ -37,7 +37,7 @@
             </select>
             <span asp-validation-for="@Model.Car.CategoryId" class="small text-danger"></span>
         </div>
-        <div class="col-md-4 form-group mb-3 mt-3">
+        <div class="col-md-4 mb-3 mt-3">
             <label asp-for="@Model.Car.FuelTypeId" class="form-label"></label>
             <select asp-for="@Model.Car.FuelTypeId" class="form-select">
                 <option disabled selected>Choose fuel type</option>
@@ -48,7 +48,7 @@
             </select>
             <span asp-validation-for="@Model.Car.FuelTypeId" class="small text-danger"></span>
         </div>
-        <div class="col-md-4 form-group mb-3 mt-3">
+        <div class="col-md-4 mb-3 mt-3">
             <label asp-for="@Model.Car.TransmissionTypeId" class="form-label"></label>
             <select asp-for="@Model.Car.TransmissionTypeId" class="form-select">
                 <option disabled selected>Choose transmission type</option>
@@ -72,38 +72,44 @@
                     <div class="mb-2 mt-3"><h6>@carExtra.TypeName</h6></div>
                 }
 
-                <div class="form-check-inline align-text-bottom">
-                    <input id="extra_@carExtra.Id" class="form-check-input" type="checkbox" name="CarExtras" value="@carExtra.Id">
+                <div class="form-check-inline mb-2">
+                    <input 
+                        id="extra_@carExtra.Id" 
+                        class="form-check-input" 
+                        type="checkbox" 
+                        name="SelectedExtrasIds" 
+                        value="@carExtra.Id"
+                        @(Model.SelectedExtrasIds.Contains(carExtra.Id) ? "checked" : "")>
                     <label class="form-check-label" for="extra_@carExtra.Id">@carExtra.Name</label>
                 </div>
             }
         </div>
     </div>
     <hr />
-    <div class="row form-group mb-3">
-        <div class="col-md-4 form-group mb-3">
+    <div class="row mb-3">
+        <div class="col-md-4 mb-3 mt-3">
             <label asp-for="Car.Year" class="form-label"></label>
             <input asp-for="Car.Year" class="form-control">
             <span asp-validation-for="Car.Year" class="text-danger"></span>
         </div>
-        <div class="col-md-4 form-group mb-3">
+        <div class="col-md-4 mb-3 mt-3">
             <label asp-for="Car.Kilometers" class="form-label"></label>
             <input asp-for="Car.Kilometers" class="form-control">
             <span asp-validation-for="Car.Kilometers" class="text-danger"></span>
         </div>
-        <div class="col-md-4 form-group mb-3">
+        <div class="col-md-4 mb-3 mt-3">
             <label asp-for="Car.Horsepower" class="form-label"></label>
             <input asp-for="Car.Horsepower" class="form-control">
             <span asp-validation-for="Car.Horsepower" class="text-danger"></span>
         </div>
     </div>
-    <div class="row form-group mb-3">
-        <div class="col-md-4 form-group mb-3">
+    <div class="row mb-3">
+        <div class="col-md-4 mb-3">
             <label asp-for="Car.Price" class="form-label"></label>
             <input asp-for="Car.Price" class="form-control">
             <span asp-validation-for="Car.Price" class="text-danger"></span>
         </div>
-        <div class="col-md-8 form-group mb-3">
+        <div class="col-md-8 mb-3">
             <label asp-for="Car.Images" class="form-label"></label>
             <input asp-for="Car.Images" class="form-control" />
             <span asp-validation-for="Car.Images" class="text-danger"></span>
