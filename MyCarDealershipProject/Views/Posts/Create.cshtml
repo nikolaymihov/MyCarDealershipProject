@@ -63,19 +63,21 @@
     <hr />
     <h3>Car extras:</h3>
     <div class="row form-group mb-3">
-        @foreach (var carExtra in Model.Car.CarExtras)
-        {
-            @if (!extraTypes.ContainsKey(carExtra.TypeId))
+        <div class="col">
+            @foreach (var carExtra in Model.Car.CarExtras)
             {
-                extraTypes[carExtra.TypeId] = carExtra.TypeName;
-                <h6>@carExtra.TypeName</h6>
-            }
+                @if (!extraTypes.ContainsKey(carExtra.TypeId))
+                {
+                    extraTypes[carExtra.TypeId] = carExtra.TypeName;
+                    <div class="mb-3 mt-3"><h6>@carExtra.TypeName</h6></div>
+                }
 
-            <div class="form-check form-check-inline">
-                <input id="extra_@carExtra.Id" class="form-check-input" type="checkbox" name="CarExtras" value="@carExtra.Id">
-                <label class="form-check-label" for="extra_@carExtra.Id">@carExtra.Name</label>
-            </div>
-        }
+                <div class="form-check-inline">
+                    <input id="extra_@carExtra.Id" class="form-check-input" type="checkbox" name="CarExtras" value="@carExtra.Id">
+                    <label class="form-check-label" for="extra_@carExtra.Id">@carExtra.Name</label>
+                </div>
+            }
+        </div>
     </div>
     <hr />
     <div class="row form-group mb-3">
