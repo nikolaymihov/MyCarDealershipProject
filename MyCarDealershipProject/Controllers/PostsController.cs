@@ -1,5 +1,6 @@
 ﻿namespace MyCarDealershipProject.Controllers
 {
+    using System.Linq;
     using System.Security.Claims;
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Mvc;
@@ -55,8 +56,12 @@
             }
 
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var inputCar = input.Car;
+            var selectedExtrasIds = input.SelectedExtrasIds.ToList();
+            var imagePath = $"{this.environment.WebRootPath}/images";
+            var car = await this.carsService.GetCarFromInputModel(inputCar, selectedExtrasIds, userId, imagePath);
 
-            await this.postsService.CreateAsync(input, userId, $"{this.environment.WebRootPath}/images");
+            await this.postsService.CreateAsync(car, userId);
 
             return this.RedirectToAction("Index", "Home");
         }
