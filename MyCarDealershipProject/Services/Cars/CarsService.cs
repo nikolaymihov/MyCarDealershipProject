@@ -23,7 +23,7 @@
             this.data = data;
             this.mapper = mapper.ConfigurationProvider;
         }
-
+        
         public async Task<Car> GetCarFromInputModel(CreateCarInputModel inputCar, List<int> selectedExtrasIds, string userId, string imagePath)
         {
             var car = new Car()
@@ -81,7 +81,7 @@
                 await using Stream fileStream = new FileStream(physicalPath, FileMode.Create);
                 await image.CopyToAsync(fileStream);
             }
-
+            
             return car;
         }
 

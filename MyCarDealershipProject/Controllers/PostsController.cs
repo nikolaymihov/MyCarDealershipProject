@@ -1,5 +1,6 @@
 ﻿namespace MyCarDealershipProject.Controllers
 {
+    using System.Diagnostics;
     using System.Linq;
     using System.Security.Claims;
     using System.Threading.Tasks;
@@ -60,7 +61,7 @@
             var selectedExtrasIds = input.SelectedExtrasIds.ToList();
             var imagePath = $"{this.environment.WebRootPath}/images";
             var car = await this.carsService.GetCarFromInputModel(inputCar, selectedExtrasIds, userId, imagePath);
-
+            
             await this.postsService.CreateAsync(car, userId);
 
             return this.RedirectToAction("Index", "Home");

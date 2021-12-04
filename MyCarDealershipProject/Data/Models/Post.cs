@@ -7,15 +7,15 @@
     {
         public int Id { get; init; }
 
-        public int CarId { get; set; }
-
-        public Car Car { get; set; }
+        public DateTime PublishedOn { get; init; }
 
         [Required]
         public string CreatorId { get; set; }
 
         public ApplicationUser Creator { get; set; }
+        
+        public int CarId { get; set; }
 
-        public DateTime PublishedOn { get; init; }
+        public Car Car { get; set; }
     }
 }

@@ -51,7 +51,19 @@
                 .WithMany(tt => tt.Cars)
                 .HasForeignKey(c => c.TransmissionTypeId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            builder
+                .Entity<Car>()
+                .HasOne(c => c.Post)
+                .WithOne(p => p.Car)
+                .HasForeignKey<Post>(p => p.CarId)
+                .OnDelete(DeleteBehavior.Restrict);
             
+            builder
+                .Entity<Car>()
+                .Property(c => c.Price)
+                .HasColumnType("decimal(18,2)");
+
             builder
                 .Entity<Post>()
                 .HasOne(p => p.Creator)
@@ -59,13 +71,6 @@
                 .HasForeignKey(p => p.CreatorId)
                 .OnDelete(DeleteBehavior.Restrict);
             
-            builder
-                .Entity<Post>()
-                .HasOne(p => p.Car)
-                .WithOne(c => c.Post)
-                .HasForeignKey<Post>(p => p.CarId)
-                .OnDelete(DeleteBehavior.Restrict);
-
             builder
                 .Entity<ApplicationUser>()
                 .HasMany(u => u.Posts)

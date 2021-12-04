@@ -39,9 +39,7 @@
         public int TransmissionTypeId { get; set; }
 
         public TransmissionType TransmissionType { get; set; }
-
-        public int PostId { get; set; }
-
+        
         public Post Post { get; set; }
 
         public ICollection<CarExtra> CarExtras { get; set; } = new HashSet<CarExtra>();
