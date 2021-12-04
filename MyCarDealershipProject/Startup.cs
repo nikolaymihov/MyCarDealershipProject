@@ -2,6 +2,7 @@ namespace MyCarDealershipProject
 {
     using Data;
     using Data.Models;
+    using Data.Seeding;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
@@ -62,6 +63,7 @@ namespace MyCarDealershipProject
             {
                 var dbContext = serviceScope.ServiceProvider.GetRequiredService<CarDealershipDbContext>();
                 dbContext.Database.Migrate();
+                new CarDealershipDbContextSeeder().SeedAsync(dbContext).GetAwaiter().GetResult();
             }
 
             if (env.IsDevelopment())
