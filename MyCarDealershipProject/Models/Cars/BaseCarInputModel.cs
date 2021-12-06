@@ -33,7 +33,7 @@
         [RangeUntilCurrentYear(
             CarYearMinValue, 
             ErrorMessage = "The car year must be between {1} and {2}.")]
-        [Display(Name = "Car first registration:")]
+        [Display(Name = "Car year:")]
         public int Year { get; set; }
 
         [RangeWithCustomFormatAttribute(CarPriceMinValue, CarPriceMaxValue, "car price")]

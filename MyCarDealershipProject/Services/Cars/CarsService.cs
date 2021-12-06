@@ -69,6 +69,11 @@
                     throw new Exception($"Invalid image extension {extension}!");
                 }
 
+                if (image.Length > (2 * 1024 * 1024))
+                {
+                    throw new Exception($"Invalid file size. The maximum allowed file size is 2Mb.");
+                }
+
                 var dbImage = new Image
                 {
                     CreatorId = userId,
@@ -113,6 +118,7 @@
         {
             return this.data
                 .Extras        
+                .OrderBy(e => e.TypeId)
                 .ProjectTo<CarExtrasServiceModel>(this.mapper)
                 .ToList();
         }

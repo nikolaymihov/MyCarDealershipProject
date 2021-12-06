@@ -3,16 +3,16 @@ namespace MyCarDealershipProject
     using Data;
     using Data.Models;
     using Data.Seeding;
+    using Services.Cars;
+    using Services.Posts;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
-    using Microsoft.AspNetCore.Http;
-    using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Hosting;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
-    using Services.Cars;
-    using Services.Posts;
 
     public class Startup
     {
