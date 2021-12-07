@@ -113,6 +113,7 @@
             <label asp-for="Car.Images" class="form-label"></label>
             <input asp-for="Car.Images" class="form-control" />
             <span asp-validation-for="Car.Images" class="text-danger"></span>
+            <span class="text-danger">@Html.ValidationMessage("CustomError")</span>
         </div>
     </div>
     <hr />

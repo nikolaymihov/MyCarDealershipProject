@@ -1,12 +1,12 @@
 ﻿namespace MyCarDealershipProject.Controllers
 {
-    using System.Diagnostics;
+    using System;
     using System.Linq;
     using System.Security.Claims;
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Authorization;
     using Models.Cars;
     using Models.Posts;
     using Services.Cars;
@@ -29,14 +29,9 @@
         public IActionResult Create()
         {
             var postViewModel = new CreatePostInputModel();
-            var car = new CreateCarInputModel
-            {
-                Categories = this.carsService.GetAllCategories(),
-                FuelTypes = this.carsService.GetAllFuelTypes(),
-                TransmissionTypes = this.carsService.GetAllTransmissionTypes(),
-                CarExtras = this.carsService.GetAllCarExtras()
-            };
+            var car = new CreateCarInputModel();
 
+            this.carsService.FillInputCarProperties(car);
             postViewModel.Car = car;
 
             return this.View(postViewModel);
@@ -46,24 +41,30 @@
         [Authorize]
         public async Task<IActionResult> Create(CreatePostInputModel input)
         {
+            var inputCar = input.Car;
+
             if (!this.ModelState.IsValid)
             {
-                input.Car.Categories = this.carsService.GetAllCategories();
-                input.Car.FuelTypes = this.carsService.GetAllFuelTypes();
-                input.Car.TransmissionTypes = this.carsService.GetAllTransmissionTypes();
-                input.Car.CarExtras = this.carsService.GetAllCarExtras();
-
+                this.carsService.FillInputCarProperties(inputCar);
                 return this.View(input);
             }
 
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            var inputCar = input.Car;
             var selectedExtrasIds = input.SelectedExtrasIds.ToList();
             var imagePath = $"{this.environment.WebRootPath}/images";
-            var car = await this.carsService.GetCarFromInputModel(inputCar, selectedExtrasIds, userId, imagePath);
             
-            await this.postsService.CreateAsync(car, userId);
-
+            try
+            { 
+                var car = await this.carsService.GetCarFromInputModel(inputCar, selectedExtrasIds, userId, imagePath);
+                await this.postsService.CreateAsync(car, userId);
+            }
+            catch (Exception ex)
+            {
+                this.ModelState.AddModelError("CustomError", ex.Message);
+                this.carsService.FillInputCarProperties(inputCar);
+                return this.View(input);
+            }
+           
             return this.RedirectToAction("Index", "Home");
         }
     }

@@ -10,6 +10,7 @@
     using Data.Models;
     using AutoMapper;
     using AutoMapper.QueryableExtensions;
+    using Microsoft.AspNetCore.Http;
     using MyCarDealershipProject.Models.Cars;
 
     public class CarsService : ICarsService
@@ -57,7 +58,7 @@
                 }
             }
 
-            // /wwwroot/images/cars/jhdsi-343g3h453-=g34g.jpg
+            // /wwwroot/images/cars/ce8f1a9e-6c4a-44a1-adf3-f7c3d54ff859.jpg
             Directory.CreateDirectory($"{imagePath}/cars/");
 
             foreach (var image in inputCar.Images)
@@ -66,7 +67,7 @@
 
                 if (!this.allowedExtensions.Any(ex => extension.EndsWith(ex)))
                 {
-                    throw new Exception($"Invalid image extension {extension}!");
+                    throw new Exception($"Invalid image extension! The allowed extensions are {string.Join(", ", this.allowedExtensions)}.");
                 }
 
                 if (image.Length > (2 * 1024 * 1024))
@@ -121,6 +122,14 @@
                 .OrderBy(e => e.TypeId)
                 .ProjectTo<CarExtrasServiceModel>(this.mapper)
                 .ToList();
+        }
+
+        public void FillInputCarProperties(CreateCarInputModel inputCar)
+        {
+            inputCar.Categories = this.GetAllCategories();
+            inputCar.FuelTypes = this.GetAllFuelTypes();
+            inputCar.TransmissionTypes = this.GetAllTransmissionTypes();
+            inputCar.CarExtras = this.GetAllCarExtras();
         }
     }
 }

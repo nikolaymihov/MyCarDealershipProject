@@ -17,5 +17,7 @@
         IEnumerable<CarTransmissionTypeServiceModel> GetAllTransmissionTypes();
 
         IEnumerable<CarExtrasServiceModel> GetAllCarExtras();
+
+        void FillInputCarProperties(CreateCarInputModel inputCar);
     }
 }

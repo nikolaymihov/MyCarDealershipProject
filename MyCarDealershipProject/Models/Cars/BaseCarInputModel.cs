@@ -36,11 +36,11 @@
         [Display(Name = "Car year:")]
         public int Year { get; set; }
 
-        [RangeWithCustomFormatAttribute(CarPriceMinValue, CarPriceMaxValue, "car price")]
+        [RangeWithCustomFormat(CarPriceMinValue, CarPriceMaxValue, "car price")]
         [Display(Name = "Car price:")]
         public decimal Price { get; set; }
 
-        [RangeWithCustomFormatAttribute(CarKilometersMinValue, CarKilometersMaxValue, "car kilometers")]
+        [RangeWithCustomFormat(CarKilometersMinValue, CarKilometersMaxValue, "car kilometers")]
         [Display(Name = "Car kilometers:")]
         public int Kilometers { get; set; }
 

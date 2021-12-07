@@ -2,8 +2,8 @@
 {
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-    using Microsoft.AspNetCore.Http;
     using Services.Cars.Models;
+    using Microsoft.AspNetCore.Http;
 
     public class CreateCarInputModel : BaseCarInputModel
     {
