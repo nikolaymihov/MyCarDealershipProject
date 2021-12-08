@@ -354,3 +354,9 @@ MigrationBackup/
 appsettings.Production.json
 *.min.css
 *.min.js
+
+# Ignore images
+*.jpg
+*.jpeg
+*.gif
+*.png
