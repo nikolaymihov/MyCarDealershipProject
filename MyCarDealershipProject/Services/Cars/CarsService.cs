@@ -7,10 +7,9 @@
     using System.Collections.Generic;
     using Data;
     using Models;
-    using Data.Models;
     using AutoMapper;
+    using Data.Models;
     using AutoMapper.QueryableExtensions;
-    using Microsoft.AspNetCore.Http;
     using MyCarDealershipProject.Models.Cars;
 
     public class CarsService : ICarsService
@@ -58,6 +57,11 @@
                 }
             }
 
+            if (inputCar.Images.Count() > 10)
+            {
+                throw new Exception($"The maximum allowed number of photos is 10.");
+            }
+
             // /wwwroot/images/cars/ce8f1a9e-6c4a-44a1-adf3-f7c3d54ff859.jpg
             Directory.CreateDirectory($"{imagePath}/cars/");
 
@@ -70,9 +74,9 @@
                     throw new Exception($"Invalid image extension! The allowed extensions are {string.Join(", ", this.allowedExtensions)}.");
                 }
 
-                if (image.Length > (2 * 1024 * 1024))
+                if (image.Length > (5 * 1024 * 1024))
                 {
-                    throw new Exception($"Invalid file size. The maximum allowed file size is 2Mb.");
+                    throw new Exception($"Invalid file size. The maximum allowed file size is 5Mb.");
                 }
 
                 var dbImage = new Image
