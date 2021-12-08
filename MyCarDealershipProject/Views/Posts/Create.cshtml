@@ -2,12 +2,12 @@
 @model MyCarDealershipProject.Models.Posts.CreatePostInputModel
 
 @{
-    this.ViewData["Title"] = "Create a new car post";
+    this.ViewData["Title"] = "Create new post";
     var extraTypes = new Dictionary<int, string>();
 }
 
 <form method="post" class="col-md-6 offset-md-3" enctype="multipart/form-data">
-    <h2 class="heading-margin text-center">@this.ViewData["Title"]</h2>
+    <h2 class="heading-margin text-center"><i>Create a new car post</i></h2>
     <div class="row mb-3">
         <div class="col-md-6 mb-3">
             <label asp-for="Car.Make" class="form-label"></label>
@@ -61,7 +61,7 @@
         </div>
     </div>
     <hr />
-    <h4 class="mb-1 text-center">Car extras:</h4>
+    <h5 class="mb-1 text-center">Car extras:</h5>
     <div class="row">
         <div class="col">
             @foreach (var carExtra in Model.Car.CarExtras)
@@ -73,19 +73,19 @@
                 }
 
                 <div class="form-check-inline mb-2">
-                    <input 
-                        id="extra_@carExtra.Id" 
-                        class="form-check-input" 
-                        type="checkbox" 
-                        name="SelectedExtrasIds" 
-                        value="@carExtra.Id"
-                        @(Model.SelectedExtrasIds.Contains(carExtra.Id) ? "checked" : "")>
+                    <input id="extra_@carExtra.Id"
+                           class="form-check-input"
+                           type="checkbox"
+                           name="SelectedExtrasIds"
+                           value="@carExtra.Id"
+                           @(Model.SelectedExtrasIds.Contains(carExtra.Id) ? "checked" : "")>
                     <label class="form-check-label" for="extra_@carExtra.Id">@carExtra.Name</label>
                 </div>
             }
         </div>
     </div>
     <hr />
+    <h5 class="mb-1 text-center">Car information:</h5>
     <div class="row mb-3">
         <div class="col-md-4 mb-3 mt-3">
             <label asp-for="Car.Year" class="form-label"></label>
@@ -117,5 +117,5 @@
         </div>
     </div>
     <hr />
-    <div align="center"><input type="submit" class="btn btn-primary col-4" value="Save" /></div>
+    <div align="center"><input type="submit" class="btn btn-primary col-4" value="Create" /></div>
 </form>
