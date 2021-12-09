@@ -6,7 +6,7 @@
 
     public class BaseCarInputModel
     {
-        [Required]
+        [Required(ErrorMessage = "The car make field is required.")]
         [StringLength(
             CarMakeMaxLength, 
             MinimumLength = CarMakeMinLength,
@@ -14,7 +14,7 @@
         [Display(Name = "Car make:")]
         public string Make { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "The car model field is required.")]
         [StringLength(
             CarModelMaxLength, 
             MinimumLength = CarModelMinLength,
@@ -22,7 +22,7 @@
         [Display(Name = "Car model:")]
         public string Model { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "The car description field is required.")]
         [StringLength(
             int.MaxValue,
             MinimumLength = CarDescriptionMinLength,

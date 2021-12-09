@@ -32,6 +32,7 @@
             var car = new CreateCarInputModel();
 
             this.carsService.FillInputCarProperties(car);
+
             postViewModel.Car = car;
 
             return this.View(postViewModel);
@@ -56,7 +57,7 @@
             try
             { 
                 var car = await this.carsService.GetCarFromInputModel(inputCar, selectedExtrasIds, userId, imagePath);
-                await this.postsService.CreateAsync(car, userId);
+                await this.postsService.CreateAsync(input, car, userId);
             }
             catch (Exception ex)
             {
