@@ -28,6 +28,14 @@
 
         public int Horsepower { get; set; }
 
+        [Required]
+        [MaxLength(CarLocationCountryMaxLength)]
+        public string LocationCountry { get; set; }
+
+        [Required]
+        [MaxLength(CarLocationCityMaxLength)]
+        public string LocationCity { get; set; }
+
         public int CategoryId { get; set; }
 
         public Category Category { get; set; }

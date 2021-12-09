@@ -50,5 +50,22 @@
             ErrorMessage = "The car horsepower must be between {1} and {2}.")]
         [Display(Name = "Car horsepower:")]
         public int Horsepower { get; set; }
+
+
+        [Required(ErrorMessage = "The car country field is required.")]
+        [StringLength(
+            CarLocationCountryMaxLength,
+            MinimumLength = CarLocationCountryMinLength,
+            ErrorMessage = "The country name must be between {2} and {1} characters long.")]
+        [Display(Name = "Car location - Country:")]
+        public string LocationCountry { get; set; }
+
+        [Required(ErrorMessage = "The car city field is required.")]
+        [StringLength(
+            CarLocationCityMaxLength,
+            MinimumLength = CarLocationCityMinLength,
+            ErrorMessage = "The city name must be between {2} and {1} characters long.")]
+        [Display(Name = "Car location - City:")]
+        public string LocationCity { get; set; }
     }
 }

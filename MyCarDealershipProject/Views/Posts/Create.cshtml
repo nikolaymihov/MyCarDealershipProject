@@ -10,20 +10,20 @@
     <h2 class="heading-margin text-center"><i>Create a new car post</i></h2>
     <div class="row mb-3">
         <div class="col-md-6 mb-3">
-            <label asp-for="Car.Make" class="form-label"></label>
-            <input asp-for="Car.Make" class="form-control" placeholder="Mercedes, BMW, Honda, etc...">
-            <span asp-validation-for="Car.Make" class="text-danger"></span>
+            <label asp-for="@Model.Car.Make" class="form-label"></label>
+            <input asp-for="@Model.Car.Make" class="form-control" placeholder="Mercedes, BMW, Honda, etc...">
+            <span asp-validation-for="@Model.Car.Make" class="text-danger"></span>
         </div>
         <div class="col-md-6 mb-3">
-            <label asp-for="Car.Model" class="form-label"></label>
-            <input asp-for="Car.Model" class="form-control" placeholder="S-Class, 640D, Accord, etc...">
-            <span asp-validation-for="Car.Model" class="text-danger"></span>
+            <label asp-for="@Model.Car.Model" class="form-label"></label>
+            <input asp-for="@Model.Car.Model" class="form-control" placeholder="S-Class, 640D, Accord, etc...">
+            <span asp-validation-for="@Model.Car.Model" class="text-danger"></span>
         </div>
     </div>
     <div class="mb-3">
-        <label asp-for="Car.Description" class="form-label"></label>
-        <textarea asp-for="Car.Description" class="form-control" rows="6" placeholder="This is the perfect car..."></textarea>
-        <span asp-validation-for="Car.Description" class="text-danger"></span>
+        <label asp-for="@Model.Car.Description" class="form-label"></label>
+        <textarea asp-for="@Model.Car.Description" class="form-control" rows="6" placeholder="This is the perfect car..."></textarea>
+        <span asp-validation-for="@Model.Car.Description" class="text-danger"></span>
     </div>
     <div class="row mb-3">
         <div class="col-md-4 mb-3 mt-3">
@@ -62,44 +62,44 @@
     </div>
     <div class="row mb-3">
         <div class="col-md-4 mb-3 mt-3">
-            <label asp-for="Car.Year" class="form-label"></label>
-            <input asp-for="Car.Year" class="form-control">
-            <span asp-validation-for="Car.Year" class="text-danger"></span>
+            <label asp-for="@Model.Car.Year" class="form-label"></label>
+            <input asp-for="@Model.Car.Year" class="form-control">
+            <span asp-validation-for="@Model.Car.Year" class="text-danger"></span>
         </div>
         <div class="col-md-4 mb-3 mt-3">
-            <label asp-for="Car.Kilometers" class="form-label"></label>
-            <input asp-for="Car.Kilometers" class="form-control">
-            <span asp-validation-for="Car.Kilometers" class="text-danger"></span>
+            <label asp-for="@Model.Car.Kilometers" class="form-label"></label>
+            <input asp-for="@Model.Car.Kilometers" class="form-control">
+            <span asp-validation-for="@Model.Car.Kilometers" class="text-danger"></span>
         </div>
         <div class="col-md-4 mb-3 mt-3">
-            <label asp-for="Car.Horsepower" class="form-label"></label>
-            <input asp-for="Car.Horsepower" class="form-control">
-            <span asp-validation-for="Car.Horsepower" class="text-danger"></span>
+            <label asp-for="@Model.Car.Horsepower" class="form-label"></label>
+            <input asp-for="@Model.Car.Horsepower" class="form-control">
+            <span asp-validation-for="@Model.Car.Horsepower" class="text-danger"></span>
         </div>
     </div>
     <div class="row mb-3">
         <div class="col-md-4 mb-3">
-            <label asp-for="Car.Price" class="form-label"></label>
-            <input asp-for="Car.Price" class="form-control">
-            <span asp-validation-for="Car.Price" class="text-danger"></span>
+            <label asp-for="@Model.Car.Price" class="form-label"></label>
+            <input asp-for="@Model.Car.Price" class="form-control">
+            <span asp-validation-for="@Model.Car.Price" class="text-danger"></span>
         </div>
         <div class="col-md-8 mb-3">
-            <label asp-for="Car.Images" class="form-label"></label>
-            <input asp-for="Car.Images" class="form-control" />
-            <span asp-validation-for="Car.Images" class="text-danger"></span>
+            <label asp-for="@Model.Car.Images" class="form-label"></label>
+            <input asp-for="@Model.Car.Images" class="form-control" />
+            <span asp-validation-for="@Model.Car.Images" class="text-danger"></span>
             <span class="text-danger">@Html.ValidationMessage("CustomError")</span>
         </div>
     </div>
     <div class="row mb-3">
         <div class="col-md-6 mb-3">
-            <label asp-for="@Model.CarLocationCountry" class="form-label"></label>
-            <input asp-for="@Model.CarLocationCountry" class="form-control">
-            <span asp-validation-for="@Model.CarLocationCountry" class="text-danger"></span>
+            <label asp-for="@Model.Car.LocationCountry" class="form-label"></label>
+            <input asp-for="@Model.Car.LocationCountry" class="form-control">
+            <span asp-validation-for="@Model.Car.LocationCountry" class="text-danger"></span>
         </div>
         <div class="col-md-6 mb-3">
-            <label asp-for="@Model.CarLocationCity" class="form-label"></label>
-            <input asp-for="@Model.CarLocationCity" class="form-control">
-            <span asp-validation-for="@Model.CarLocationCity" class="text-danger"></span>
+            <label asp-for="@Model.Car.LocationCity" class="form-label"></label>
+            <input asp-for="@Model.Car.LocationCity" class="form-control">
+            <span asp-validation-for="@Model.Car.LocationCity" class="text-danger"></span>
         </div>
     </div>
     <hr />

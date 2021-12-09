@@ -23,9 +23,7 @@
                 CreatorId = userId,
                 PublishedOn = DateTime.UtcNow,
                 SellerName = inputPost.SellerName,
-                SellerPhoneNumber = inputPost.SellerPhoneNumber,
-                CarLocationCountry = inputPost.CarLocationCountry,
-                CarLocationCity = inputPost.CarLocationCity
+                SellerPhoneNumber = inputPost.SellerPhoneNumber
             };
 
             await this.data.Posts.AddAsync(post);

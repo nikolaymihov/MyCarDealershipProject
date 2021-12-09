@@ -38,6 +38,8 @@
                 Kilometers = inputCar.Kilometers,
                 Horsepower = inputCar.Horsepower,
                 Price = inputCar.Price,
+                LocationCountry = inputCar.LocationCountry,
+                LocationCity = inputCar.LocationCity,
             };
 
             if (selectedExtrasIds.Any())

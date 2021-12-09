@@ -27,13 +27,5 @@
         [Required]
         [MaxLength(PostSellerPhoneNumberMaxLength)]
         public string SellerPhoneNumber { get; set; }
-
-        [Required]
-        [MaxLength(PostCarLocationCountryMaxLength)]
-        public string CarLocationCountry { get; set; }
-
-        [Required]
-        [MaxLength(PostCarLocationCityMaxLength)]
-        public string CarLocationCity { get; set; }
     }
 }

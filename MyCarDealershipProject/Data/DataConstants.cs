@@ -15,16 +15,16 @@
         public const int CarKilometersMaxValue = 2000000;
         public const int CarHorsepowerMinValue = 5;
         public const int CarHorsepowerMaxValue = 5000;
-        
+        public const int CarLocationCountryMaxLength = 20;
+        public const int CarLocationCountryMinLength = 3;
+        public const int CarLocationCityMaxLength = 30;
+        public const int CarLocationCityMinLength = 3;
+
         //Post constants
         public const int PostSellerNameMaxLength = 30;
         public const int PostSellerNameMinLength = 2;
         public const int PostSellerPhoneNumberMaxLength = 20;
         public const int PostSellerPhoneNumberMinLength = 6;
-        public const int PostCarLocationCountryMaxLength = 20;
-        public const int PostCarLocationCountryMinLength = 3;
-        public const int PostCarLocationCityMaxLength = 30;
-        public const int PostCarLocationCityMinLength = 3;
 
         //Other data entities constants
         public const int CategoryNameMaxLength = 30;
