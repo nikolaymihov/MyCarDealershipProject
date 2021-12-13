@@ -1,0 +1,22 @@
+﻿@model MyCarDealershipProject.Models.Posts.PostsListViewModel
+
+@{
+    this.ViewData["Title"] = "All car posts";
+}
+
+
+<h1 class="text-center">@this.ViewData["Title"]</h1>
+<hr />
+<div class="row">
+    @foreach (var post in Model.Posts)
+    {
+        <div class="card m-2" style="width: 18rem;">
+            <img src="@post.Car.CoverImage" class="card-img-top" alt="@post.Car.Make @post.Car.Model @post.Car.Year">
+            <div class="card-body">
+                <h5 class="card-title">@post.Car.Make @post.Car.Model @post.Car.Year</h5>
+                <p class="card-text"><i>@post.Car.Description</i></p>
+                <a href="#" class="btn btn-primary">View more</a>
+            </div>
+        </div>
+    }
+</div>

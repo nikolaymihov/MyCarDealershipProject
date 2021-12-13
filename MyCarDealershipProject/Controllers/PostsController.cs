@@ -68,5 +68,15 @@
            
             return this.RedirectToAction("Index", "Home");
         }
+
+        public IActionResult All()
+        {
+            var postsListViewModel = new PostsListViewModel()
+            {
+                Posts = this.postsService.GetAll(),
+            };
+
+            return this.View(postsListViewModel);
+        }
     }
 }
