@@ -34,10 +34,11 @@
             await this.data.SaveChangesAsync();
         }
 
-        public IEnumerable<PostInListViewModel> GetAll()
+        public IEnumerable<PostInListViewModel> GetAll(int page, int postsPerPage = 12)
         {
             var posts = this.data.Posts
                 .OrderByDescending(p => p.Id)
+                .Skip((page - 1) * postsPerPage).Take(postsPerPage) //page 1 --> skip 0 take 12, page 2 --> skip 12 take 12
                 .Select(p => new PostInListViewModel()
                 {
                     Car = new CarInListViewModel()
@@ -67,6 +68,11 @@
                 }).ToList();
 
             return posts;
+        }
+
+        public int GetCount()
+        {
+            return this.data.Posts.Count();
         }
     }
 }

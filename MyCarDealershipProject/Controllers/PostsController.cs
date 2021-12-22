@@ -69,12 +69,27 @@
             return this.RedirectToAction("All");
         }
 
-        public IActionResult All()
+        public IActionResult All(int id = 1)
         {
+            if (id <= 0)
+            {
+                return this.NotFound();
+            }
+
+            const int PostsPerPage = 12;
+
             var postsListViewModel = new PostsListViewModel()
             {
-                Posts = this.postsService.GetAll(),
+                PageNumber = id,
+                PostsPerPage = PostsPerPage,
+                PostsCount = this.postsService.GetCount(),
+                Posts = this.postsService.GetAll(id, PostsPerPage),
             };
+
+            if (id > postsListViewModel.PagesCount)
+            {
+                return this.NotFound();
+            }
 
             return this.View(postsListViewModel);
         }

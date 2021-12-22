@@ -2,7 +2,7 @@
 @model MyCarDealershipProject.Models.Posts.PostsListViewModel
 
 @{
-    this.ViewData["Title"] = "All car posts";
+    this.ViewData["Title"] = "All car posts, page " + Model.PageNumber;
 }
 
 
@@ -28,3 +28,5 @@
         </div>
     }
 </div>
+<hr/>
+<partial name="_PagingPartial" model="@Model" />

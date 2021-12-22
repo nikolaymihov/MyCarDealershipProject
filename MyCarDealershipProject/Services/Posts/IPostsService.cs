@@ -9,6 +9,8 @@
     {
         Task CreateAsync(CreatePostInputModel inputPost, Car car, string userId);
 
-        IEnumerable<PostInListViewModel> GetAll();
+        IEnumerable<PostInListViewModel> GetAll(int page, int postsPerPage = 12);
+
+        int GetCount();
     }
 }
