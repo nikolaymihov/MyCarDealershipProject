@@ -60,7 +60,10 @@
                         CoverImage = "/images/cars/" + p.Car.Images.FirstOrDefault().Id + "." +
                                      p.Car.Images.FirstOrDefault().Extension,
                     },
-                    PublishedOn = p.PublishedOn.Date.ToString(CultureInfo.InvariantCulture),
+                    PublishedOn = p.PublishedOn.Date == DateTime.UtcNow.Date ? 
+                                                                "Today, " + p.PublishedOn.ToString("t", CultureInfo.InvariantCulture) 
+                                                                : 
+                                                                p.PublishedOn.ToString("d", CultureInfo.InvariantCulture),
                 }).ToList();
 
             return posts;

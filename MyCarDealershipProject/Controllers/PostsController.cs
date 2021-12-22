@@ -66,7 +66,7 @@
                 return this.View(input);
             }
            
-            return this.RedirectToAction("Index", "Home");
+            return this.RedirectToAction("All");
         }
 
         public IActionResult All()
