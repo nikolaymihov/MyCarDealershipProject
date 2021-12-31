@@ -12,5 +12,7 @@
         IEnumerable<PostInListViewModel> GetAll(int page, int postsPerPage = 12);
 
         int GetCount();
+
+        SinglePostViewModel GetById(int id);
     }
 }

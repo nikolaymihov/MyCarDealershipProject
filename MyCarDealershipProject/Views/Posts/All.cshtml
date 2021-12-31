@@ -21,12 +21,14 @@
                 <h6 class="card-title mb-3">@post.Car.Year, @post.Car.FuelType, @post.Car.Kilometers km, @post.Car.TransmissionType</h6>
                 <p class="card-text"><i>@post.Car.Description</i></p>
                 <div class="row mt-auto">
-                    <div class="col"><p class="card-text">@post.Car.LocationCity, @post.Car.LocationCountry</p></div>
-                    <div class="col align-self-end"><a href="#" class="btn btn-primary">View more</a></div>
+                    <div class="col">
+                        <p class="card-text">@post.Car.LocationCity, @post.Car.LocationCountry</p>
+                    </div>
+                    <div class="col align-self-end"><a asp-action="Details" asp-route-id="@post.Car.Id" class="btn btn-primary">View more</a></div>
                 </div>
             </div>
         </div>
     }
 </div>
-<hr/>
+<hr />
 <partial name="_PagingPartial" model="@Model" />

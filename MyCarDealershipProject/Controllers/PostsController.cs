@@ -93,5 +93,12 @@
 
             return this.View(postsListViewModel);
         }
+
+        public IActionResult Details(int id)
+        {
+            var singlePostData = this.postsService.GetById(id);
+
+            return this.View(singlePostData);
+        }
     }
 }

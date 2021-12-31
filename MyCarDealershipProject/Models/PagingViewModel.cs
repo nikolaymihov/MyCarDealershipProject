@@ -18,6 +18,7 @@
         public int PostsCount { get; set; }
 
         public int PostsPerPage { get; set; }
+
         public int FirstPage => 1;
 
         public int LastPage => this.PagesCount;

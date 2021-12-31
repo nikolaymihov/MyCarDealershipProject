@@ -1,0 +1,9 @@
+﻿@model MyCarDealershipProject.Models.Posts.SinglePostViewModel
+
+@{
+    this.ViewData["Title"] = $"{Model.Car.Make} {Model.Car.Model} {Model.Car.Year}";
+}
+
+
+<h1 class="text-center">@this.ViewData["Title"] details:</h1>
+<hr />
