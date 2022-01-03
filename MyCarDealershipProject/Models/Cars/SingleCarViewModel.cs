@@ -18,6 +18,8 @@
 
         public int Kilometers { get; init; }
 
+        public int Horsepower { get; set; }
+
         public string Category { get; init; }
 
         public string FuelType { get; init; }

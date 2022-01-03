@@ -94,7 +94,7 @@
             return this.View(postsListViewModel);
         }
 
-        public IActionResult Details(int id)
+        public IActionResult Offer(int id)
         {
             var singlePostData = this.postsService.GetById(id);
 

@@ -78,30 +78,31 @@
         public SinglePostViewModel GetById(int id)
         {
             var post = this.data.Posts
-                                .Where(p => p.CarId == id)
-                                .Select(p => new SinglePostViewModel()
-                                {
-                                    Car = new SingleCarViewModel()
-                                    {
-                                        Id = p.Car.Id,
-                                        Make = p.Car.Make,
-                                        Model = p.Car.Model,
-                                        Description = p.Car.Description,
-                                        Price = p.Car.Price,
-                                        Year = p.Car.Year,
-                                        Kilometers = p.Car.Kilometers,
-                                        FuelType = p.Car.FuelType.Name,
-                                        TransmissionType = p.Car.TransmissionType.Name,
-                                        Category = p.Car.Category.Name,
-                                        LocationCity = p.Car.LocationCity,
-                                        LocationCountry = p.Car.LocationCountry,
-                                        Extras = p.Car.CarExtras.Select(ce => ce.Extra.Name).ToList(),
-                                    },
-                                    PublishedOn = p.PublishedOn.ToString("d", CultureInfo.InvariantCulture),
-                                    SellerName = p.SellerName,
-                                    SellerPhoneNumber = p.SellerPhoneNumber
-                                })
-                                .FirstOrDefault();
+                .Where(p => p.CarId == id)
+                .Select(p => new SinglePostViewModel()
+                {
+                    Car = new SingleCarViewModel()
+                    {
+                        Id = p.Car.Id,
+                        Make = p.Car.Make,
+                        Model = p.Car.Model,
+                        Description = p.Car.Description,
+                        Price = p.Car.Price,
+                        Year = p.Car.Year,
+                        Kilometers = p.Car.Kilometers,
+                        Horsepower = p.Car.Horsepower,
+                        FuelType = p.Car.FuelType.Name,
+                        TransmissionType = p.Car.TransmissionType.Name,
+                        Category = p.Car.Category.Name,
+                        LocationCity = p.Car.LocationCity,
+                        LocationCountry = p.Car.LocationCountry,
+                        Extras = p.Car.CarExtras.Select(ce => ce.Extra.Name).ToList(),
+                    },
+                    PublishedOn = p.PublishedOn.ToString("d", CultureInfo.InvariantCulture),
+                    SellerName = p.SellerName,
+                    SellerPhoneNumber = p.SellerPhoneNumber
+                })
+                .FirstOrDefault();
 
             return post;
         }
