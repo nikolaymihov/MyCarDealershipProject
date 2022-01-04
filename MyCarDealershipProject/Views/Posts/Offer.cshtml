@@ -5,5 +5,49 @@
 }
 
 
-<h1 class="text-center">@this.ViewData["Title"] details:</h1>
+<h1 class="text-center"><u>@this.ViewData["Title"]</u> details:</h1>
 <hr />
+
+<div class="row">
+    <div class="col-4">
+        @Model.Car.Description
+        <hr />
+        <h4>Car extras:</h4>
+        
+            @foreach (var extra in Model.Car.Extras)
+            {
+                @extra
+            }
+    </div>
+    
+    <div class="col-8 ">
+        <div class="owl-carousel owl-theme">
+            @foreach (var image in Model.Car.Images)
+            {
+                <img src="@image" alt="@Model.Car.Make @Model.Car.Model @Model.Car.Year">
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script src="~/js/owl.carousel.min.js" asp-append-version="true"></script>
+    
+    <script>
+        $(document).ready(function () {
+            $(".owl-carousel").owlCarousel({
+                loop: true,
+                margin:10,
+                nav: true,
+                navText: ["<i class='fas fa-chevron-left'></i>", "<i class='fas fa-chevron-right'></i>"],
+                responsive: {
+                    0: {
+                        items:1
+                    }
+                }
+            });
+        });
+
+    </script>
+}

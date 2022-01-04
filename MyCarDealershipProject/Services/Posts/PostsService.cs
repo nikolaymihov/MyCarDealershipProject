@@ -7,6 +7,7 @@
     using System.Collections.Generic;
     using Data;
     using Data.Models;
+    using Microsoft.AspNetCore.Identity.UI.V4.Pages.Internal.Account.Manage;
     using Models.Cars;
     using Models.Posts;
 
@@ -97,6 +98,7 @@
                         LocationCity = p.Car.LocationCity,
                         LocationCountry = p.Car.LocationCountry,
                         Extras = p.Car.CarExtras.Select(ce => ce.Extra.Name).ToList(),
+                        Images = p.Car.Images.Select(img => "/images/cars/" + img.Id + "." + img.Extension).ToList(),
                     },
                     PublishedOn = p.PublishedOn.ToString("d", CultureInfo.InvariantCulture),
                     SellerName = p.SellerName,
