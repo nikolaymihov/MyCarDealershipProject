@@ -28,7 +28,11 @@
 
         public ICollection<string> Images { get; init; }
 
-        public ICollection<string> Extras { get; init; }
+        public ICollection<string> ComfortExtras { get; init; }
+
+        public ICollection<string> SafetyExtras { get; init; }
+
+        public ICollection<string> OtherExtras { get; init; }
 
         public string LocationCountry { get; init; }
 
