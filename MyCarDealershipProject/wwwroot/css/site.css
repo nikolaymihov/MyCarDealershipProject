@@ -90,3 +90,10 @@ body {
     border-radius: 10px;
     line-height: 1.5rem;
 }
+
+.post-price {
+    background-color: #fff;
+    border: 1px solid #f60;
+    padding: 5px;
+    border-radius: 10px;
+}

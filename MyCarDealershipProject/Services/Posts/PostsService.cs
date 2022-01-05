@@ -7,7 +7,6 @@
     using System.Collections.Generic;
     using Data;
     using Data.Models;
-    using Microsoft.AspNetCore.Identity.UI.V4.Pages.Internal.Account.Manage;
     using Models.Cars;
     using Models.Posts;
 
@@ -62,10 +61,7 @@
                         CoverImage = "/images/cars/" + p.Car.Images.FirstOrDefault().Id + "." +
                                      p.Car.Images.FirstOrDefault().Extension,
                     },
-                    PublishedOn = p.PublishedOn.Date == DateTime.UtcNow.Date ? 
-                                                                "Today, " + p.PublishedOn.ToString("t", CultureInfo.InvariantCulture) 
-                                                                : 
-                                                                p.PublishedOn.ToString("d", CultureInfo.InvariantCulture),
+                    PublishedOn = GetFormattedDate(p.PublishedOn),
                 }).ToList();
 
             return posts;
@@ -102,13 +98,23 @@
                         OtherExtras = p.Car.CarExtras.Where(ce => ce.Extra.TypeId == 3).Select(ce => ce.Extra.Name).ToList(),
                         Images = p.Car.Images.Select(img => "/images/cars/" + img.Id + "." + img.Extension).ToList(),
                     },
-                    PublishedOn = p.PublishedOn.ToString("d", CultureInfo.InvariantCulture),
+                    PublishedOn = GetFormattedDate(p.PublishedOn),
                     SellerName = p.SellerName,
                     SellerPhoneNumber = p.SellerPhoneNumber
                 })
                 .FirstOrDefault();
 
             return post;
+        }
+
+        private static string GetFormattedDate(DateTime inputDateTime)
+        {   
+            if (inputDateTime.Date == DateTime.UtcNow.Date)
+            {
+                return "Today, " + inputDateTime.ToString("t", CultureInfo.InvariantCulture);
+            }
+
+            return inputDateTime.ToString("d", CultureInfo.InvariantCulture);
         }
     }
 }
