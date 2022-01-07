@@ -97,3 +97,8 @@ body {
     padding: 5px;
     border-radius: 10px;
 }
+
+.gallery-item {
+    max-width: 150px;
+    cursor: pointer;
+}

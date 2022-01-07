@@ -23,7 +23,7 @@
 
 <div class="row text-black">
     <h5 class="text-black">@Model.Car.Year, @Model.Car.Category, @Model.Car.FuelType, @(Model.Car.Kilometers)km, @Model.Car.TransmissionType, @(Model.Car.Horsepower)Hp</h5>
-    <hr/>
+    <hr />
 </div>
 
 <div class="row">
@@ -85,21 +85,31 @@
         <div class="owl-carousel owl-theme">
             @foreach (var image in Model.Car.Images)
             {
-                <img src="@image" class="img-fluid rounded float-end" alt="@Model.Car.Make @Model.Car.Model @Model.Car.Year">
+                <img src="@image" class="img-fluid float-end" alt="@Model.Car.Make @Model.Car.Model @Model.Car.Year">
+            }
+        </div>
+        <div class="row">
+            @for (int i = 0; i < Model.Car.Images.Count; i++)
+            {
+                var image = Model.Car.Images[i];
+
+                <img src="@image" class="gallery-item rounded m-1" onclick="loadCarouselItem(@i)" alt="@Model.Car.Make @Model.Car.Model @Model.Car.Year">
             }
         </div>
     </div>
 </div>
 
-<div class="card" style="width: 15rem;">
-    <div class="card-header text-center text-black">
-        Seller information:
+<div class="row mt-3">
+    <div class="card" style="width: 15rem;">
+        <div class="card-header text-center text-black">
+            Seller information:
+        </div>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item text-black fas fa-user-alt">&nbsp;&nbsp;@Model.SellerName</li>
+            <li class="list-group-item text-black fas fa-phone-alt">&nbsp;&nbsp;@Model.SellerPhoneNumber</li>
+            <li class="list-group-item text-black fas fa-map-marker-alt">&nbsp;&nbsp;@Model.Car.LocationCity, @Model.Car.LocationCountry</li>
+        </ul>
     </div>
-    <ul class="list-group list-group-flush">
-        <li class="list-group-item text-black fas fa-user-alt">&nbsp;&nbsp;@Model.SellerName</li>
-        <li class="list-group-item text-black fas fa-phone-alt">&nbsp;&nbsp;@Model.SellerPhoneNumber</li>
-        <li class="list-group-item text-black fas fa-map-marker-alt">&nbsp;&nbsp;@Model.Car.LocationCity, @Model.Car.LocationCountry</li>
-    </ul>
 </div>
 
 @section Scripts
@@ -110,7 +120,6 @@
         $(document).ready(function () {
             $(".owl-carousel").owlCarousel({
                 loop: true,
-                margin: 10,
                 nav: true,
                 navText: ["<i class='fas fa-chevron-left'></i>", "<i class='fas fa-chevron-right'></i>"],
                 responsive: {
@@ -121,5 +130,8 @@
             });
         });
 
+        function loadCarouselItem(position) {
+            $(".owl-carousel").trigger('to.owl.carousel', position);
+        };
     </script>
 }

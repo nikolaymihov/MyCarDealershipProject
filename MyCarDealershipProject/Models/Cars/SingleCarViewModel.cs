@@ -26,7 +26,7 @@
 
         public string TransmissionType { get; init; }
 
-        public ICollection<string> Images { get; init; }
+        public IList<string> Images { get; init; }
 
         public ICollection<string> ComfortExtras { get; init; }
 
