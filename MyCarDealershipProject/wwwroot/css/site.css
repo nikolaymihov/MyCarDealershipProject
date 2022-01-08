@@ -99,6 +99,6 @@ body {
 }
 
 .gallery-item {
-    max-width: 150px;
+    max-width: 120px;
     cursor: pointer;
 }
