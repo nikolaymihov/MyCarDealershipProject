@@ -1,22 +1,29 @@
 ﻿namespace MyCarDealershipProject.Controllers
 {
-    using Models;
     using System.Diagnostics;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Logging;
+    using Models;
+    using Models.Posts;
+    using Services.Posts;
 
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly IPostsService postsService;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IPostsService postsService)
         {
-            _logger = logger;
+            this.postsService = postsService;
         }
 
         public IActionResult Index()
         {
-            return this.View();
+            var randomPosts = new RandomPostsViewModel()
+            {
+                RandomPosts = this.postsService.GetRandom(6),
+            };
+
+            return this.View(randomPosts);
         }
 
         public IActionResult Privacy()

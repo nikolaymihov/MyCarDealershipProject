@@ -46,10 +46,10 @@
                         Id = p.Car.Id,
                         Make = p.Car.Make,
                         Model = p.Car.Model,
-                        Description = p.Car.Description.Length <= 100 ? 
-                                                        p.Car.Description 
-                                                        : 
-                                                        p.Car.Description.Substring(0, 100) + "...",
+                        Description = p.Car.Description.Length <= 100 ?
+                            p.Car.Description
+                            :
+                            p.Car.Description.Substring(0, 100) + "...",
                         Price = p.Car.Price,
                         Year = p.Car.Year,
                         Kilometers = p.Car.Kilometers,
@@ -107,6 +107,32 @@
             return post;
         }
 
+        public IEnumerable<PostInRandomListViewModel> GetRandom(int count)
+        {
+            var posts = this.data.Posts
+                .OrderBy(p => Guid.NewGuid())
+                .Take(count)
+                .Select(p => new PostInRandomListViewModel()
+                {
+                    Car = new RandomCarViewModel()
+                    {
+                        Id = p.Car.Id,
+                        Make = p.Car.Make,
+                        Model = p.Car.Model,
+                        Price = p.Car.Price,
+                        Year = p.Car.Year,
+                        Horsepower = p.Car.Horsepower,
+                        FuelType = p.Car.FuelType.Name,
+                        TransmissionType = p.Car.TransmissionType.Name,
+                        CoverImage = "/images/cars/" + p.Car.Images.FirstOrDefault().Id + "." +
+                                     p.Car.Images.FirstOrDefault().Extension,
+                    },
+                    PublishedOn = GetFormattedDate(p.PublishedOn),
+                }).ToList();
+
+            return posts;
+        }
+        
         private static string GetFormattedDate(DateTime inputDateTime)
         {   
             if (inputDateTime.Date == DateTime.UtcNow.Date)

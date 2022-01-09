@@ -14,5 +14,7 @@
         int GetCount();
 
         SinglePostViewModel GetById(int id);
+
+        IEnumerable<PostInRandomListViewModel> GetRandom(int count);
     }
 }

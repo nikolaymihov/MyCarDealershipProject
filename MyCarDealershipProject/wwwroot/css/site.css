@@ -102,3 +102,8 @@ body {
     max-width: 120px;
     cursor: pointer;
 }
+
+.carousel .carousel-item {
+    height: 500px;
+}
+
