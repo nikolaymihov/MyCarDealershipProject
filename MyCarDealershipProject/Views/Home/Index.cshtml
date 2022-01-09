@@ -22,19 +22,19 @@
         <div class="carousel-item active">
             <img class="d-block w-100" src="~/images/homePage/homeImage1.jpg" alt="Many parked cars">
             <div class="carousel-caption d-none d-md-block">
-                <a class="btn btn-primary btn-lg" asp-controller="Posts" asp-action="All">View all car posts</a>
+                <a class="btn btn-light btn-lg text-uppercase" asp-controller="Posts" asp-action="All"><strong>View all car posts</strong></a>
             </div>
         </div>
         <div class="carousel-item">
             <img class="d-block w-100" src="~/images/homePage/homeImage2.jpg" alt="New cars in a store">
             <div class="carousel-caption d-none d-md-block">
-                <a class="btn btn-primary btn-lg" asp-controller="Posts" asp-action="All">Search new and used cars</a>
+                <a class="btn btn-light btn-lg text-uppercase" asp-controller="Posts" asp-action="All"><strong>Search new and used cars</strong></a>
             </div>
         </div>
         <div class="carousel-item">
             <img class="d-block w-100" src="~/images/homePage/homeImage3.jpg" alt="Parked car in front of a store">
             <div class="carousel-caption d-none d-md-block">
-                <a class="btn btn-primary btn-lg" asp-controller="Posts" asp-action="Create">Sell a car</a>
+                <a class="btn btn-light btn-lg text-uppercase" asp-controller="Posts" asp-action="Create"><strong>Sell a car</strong></a>
             </div>
         </div>
     </div>
@@ -60,7 +60,7 @@
                 <hr class="mt-1 mb-2" />
                 <h6 class="card-title">@post.Car.Year, @post.Car.FuelType, @post.Car.TransmissionType, @(post.Car.Horsepower)Hp</h6>
                 <div class="row mt-auto">
-                    <a asp-controller="Posts" asp-action="Offer" asp-route-id="@post.Car.Id" class="btn btn-primary text-center">View more</a>
+                    <a asp-controller="Posts" asp-action="Offer" asp-route-id="@post.Car.Id" class="btn btn-dark text-center">View more</a>
                 </div>
             </div>
         </div>
