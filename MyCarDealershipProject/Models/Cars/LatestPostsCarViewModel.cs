@@ -1,6 +1,6 @@
 ﻿namespace MyCarDealershipProject.Models.Cars
 {
-    public class RandomCarViewModel
+    public class LatestPostsCarViewModel
     {
         public int Id { get; init; }
 

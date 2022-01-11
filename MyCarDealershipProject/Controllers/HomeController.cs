@@ -18,12 +18,12 @@
 
         public IActionResult Index()
         {
-            var randomPosts = new RandomPostsViewModel()
+            var latestPosts = new LatestPostsViewModel()
             {
-                RandomPosts = this.postsService.GetRandom(6),
+                LatestPosts = this.postsService.GetLatest(6),
             };
 
-            return this.View(randomPosts);
+            return this.View(latestPosts);
         }
 
         public IActionResult Privacy()

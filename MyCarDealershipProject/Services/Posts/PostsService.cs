@@ -107,14 +107,14 @@
             return post;
         }
 
-        public IEnumerable<PostInRandomListViewModel> GetRandom(int count)
+        public IEnumerable<PostInLatestListViewModel> GetLatest(int count)
         {
             var posts = this.data.Posts
-                .OrderBy(p => Guid.NewGuid())
+                .OrderByDescending(p => p.PublishedOn)
                 .Take(count)
-                .Select(p => new PostInRandomListViewModel()
+                .Select(p => new PostInLatestListViewModel()
                 {
-                    Car = new RandomCarViewModel()
+                    Car = new LatestPostsCarViewModel()
                     {
                         Id = p.Car.Id,
                         Make = p.Car.Make,

@@ -2,9 +2,9 @@
 {
     using Cars;
 
-    public class PostInRandomListViewModel
+    public class PostInLatestListViewModel
     {
-        public RandomCarViewModel Car { get; init; }
+        public LatestPostsCarViewModel Car { get; init; }
 
         public string PublishedOn { get; init; }
     }

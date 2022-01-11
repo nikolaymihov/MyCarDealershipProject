@@ -15,6 +15,6 @@
 
         SinglePostViewModel GetById(int id);
 
-        IEnumerable<PostInRandomListViewModel> GetRandom(int count);
+        IEnumerable<PostInLatestListViewModel> GetLatest(int count);
     }
 }

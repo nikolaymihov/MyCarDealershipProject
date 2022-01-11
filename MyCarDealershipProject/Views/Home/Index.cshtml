@@ -1,5 +1,5 @@
 ﻿@using System.Globalization
-@model MyCarDealershipProject.Models.Posts.RandomPostsViewModel
+@model MyCarDealershipProject.Models.Posts.LatestPostsViewModel
 
 @{
     ViewData["Title"] = "Used and new cars";
@@ -7,7 +7,7 @@
 
 <div class="jumbotron">
     <h1 class="display-4 text-center">Welcome to the best vehicle marketplace!</h1>
-    @if (!Model.RandomPosts.Any())
+    @if (!Model.LatestPosts.Any())
     {
         <hr class="my-4">
         <p class="lead">There are no car posts in the system currently available so why don't you just add one?</p>
@@ -47,9 +47,10 @@
         <span class="sr-only">Next</span>
     </a>
 </div>
-<hr class="my-4">
+<hr class="my-4 my-3">
+<h3>Latest posts:</h3>
 <div class="row align-content-center">
-    @foreach (var post in Model.RandomPosts)
+    @foreach (var post in Model.LatestPosts)
     {
         <div class="card m-1" style="width: 13rem;">
             <div class="mb-1 align-self-end">@post.PublishedOn</div>
