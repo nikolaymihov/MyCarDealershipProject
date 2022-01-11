@@ -137,5 +137,13 @@
             inputCar.TransmissionTypes = this.GetAllTransmissionTypes();
             inputCar.CarExtras = this.GetAllCarExtras();
         }
+
+        public void FillSearchCarProperties(SearchCarInputModel searchCar)
+        {
+            searchCar.Categories = this.GetAllCategories();
+            searchCar.FuelTypes = this.GetAllFuelTypes();
+            searchCar.TransmissionTypes = this.GetAllTransmissionTypes();
+            searchCar.CarExtras = this.GetAllCarExtras();
+        }
     }
 }

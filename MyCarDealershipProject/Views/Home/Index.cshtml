@@ -6,7 +6,7 @@
 }
 
 <div class="jumbotron">
-    <h1 class="display-4 text-center">Welcome to the best vehicle marketplace!</h1>
+    <h1 class="display-4 text-center">Welcome to the best car marketplace!</h1>
     @if (!Model.LatestPosts.Any())
     {
         <hr class="my-4">
@@ -28,7 +28,7 @@
         <div class="carousel-item">
             <img class="d-block w-100" src="~/images/homePage/homeImage2.jpg" alt="New cars in a store">
             <div class="carousel-caption d-none d-md-block">
-                <a class="btn btn-light btn-lg text-uppercase" asp-controller="Posts" asp-action="All"><strong>Search new and used cars</strong></a>
+                <a class="btn btn-light btn-lg text-uppercase" asp-controller="Posts" asp-action="Search"><strong>Search new and used cars</strong></a>
             </div>
         </div>
         <div class="carousel-item">

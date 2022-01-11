@@ -28,14 +28,14 @@
         [Authorize]
         public IActionResult Create()
         {
-            var postViewModel = new CreatePostInputModel();
-            var car = new CreateCarInputModel();
+            var createPostInputModel = new CreatePostInputModel();
+            var createCarInputModel = new CreateCarInputModel();
 
-            this.carsService.FillInputCarProperties(car);
+            this.carsService.FillInputCarProperties(createCarInputModel);
 
-            postViewModel.Car = car;
+            createPostInputModel.Car = createCarInputModel;
 
-            return this.View(postViewModel);
+            return this.View(createPostInputModel);
         }
 
         [HttpPost]
@@ -67,6 +67,18 @@
             }
            
             return this.RedirectToAction("All");
+        }
+        
+        public IActionResult Search()
+        {
+            var searchPostInputModel = new SearchPostInputModel();
+            var searchCarInputModel = new SearchCarInputModel();
+
+            this.carsService.FillSearchCarProperties(searchCarInputModel);
+
+            searchPostInputModel.Car = searchCarInputModel;
+
+            return this.View(searchPostInputModel);
         }
 
         public IActionResult All(int id = 1)
