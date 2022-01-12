@@ -1,6 +1,8 @@
 ﻿namespace MyCarDealershipProject.Models
 {
     using System;
+    using Posts;
+
     public class PagingViewModel
     {
         public int PageNumber { get; set; }

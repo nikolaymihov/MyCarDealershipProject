@@ -7,6 +7,7 @@
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Http.Extensions;
     using Models.Cars;
     using Models.Posts;
     using Services.Cars;
@@ -68,42 +69,52 @@
            
             return this.RedirectToAction("All");
         }
-        
+
         public IActionResult Search()
         {
-            var searchPostInputModel = new SearchPostInputModel();
+            var searchPostInputModel = new SearchPostInputModel(); 
             var searchCarInputModel = new SearchCarInputModel();
-
+            
             this.carsService.FillSearchCarProperties(searchCarInputModel);
-
+            
             searchPostInputModel.Car = searchCarInputModel;
-
+            
             return this.View(searchPostInputModel);
         }
 
-        public IActionResult All(int id = 1)
+        public IActionResult All(SearchPostInputModel searchPostInputModel, int id = 1)
         {
-            if (id <= 0)
+            try
             {
-                return this.NotFound();
+                if (id <= 0)
+                {
+                    return this.NotFound();
+                }
+
+                const int PostsPerPage = 12;
+
+                var matchingPosts = this.postsService.GetMatchingPosts(searchPostInputModel).ToList();
+
+                var postsListViewModel = new PostsListViewModel()
+                {
+                    PageNumber = id,
+                    PostsPerPage = PostsPerPage,
+                    PostsCount = matchingPosts.Count(),
+                    Posts = this.postsService.GetPostsByPage(matchingPosts, id, PostsPerPage),
+                };
+
+                if (id > postsListViewModel.PagesCount)
+                {
+                    return this.NotFound();
+                }
+
+                return this.View(postsListViewModel);
             }
-
-            const int PostsPerPage = 12;
-
-            var postsListViewModel = new PostsListViewModel()
+            catch (Exception ex)
             {
-                PageNumber = id,
-                PostsPerPage = PostsPerPage,
-                PostsCount = this.postsService.GetCount(),
-                Posts = this.postsService.GetAll(id, PostsPerPage),
-            };
-
-            if (id > postsListViewModel.PagesCount)
-            {
-                return this.NotFound();
+                this.TempData["message"] =  ex.Message;
+                return this.RedirectToAction("Search");
             }
-
-            return this.View(postsListViewModel);
         }
 
         public IActionResult Offer(int id)

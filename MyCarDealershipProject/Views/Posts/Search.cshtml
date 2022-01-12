@@ -6,7 +6,14 @@
     var extraTypes = new Dictionary<int, string>();
 }
 
-<form method="get" class="col-md-6 offset-md-3" enctype="multipart/form-data">
+@if (this.TempData["message"] != null)
+{
+    <div class="alert alert-danger">
+        @this.TempData["message"]
+    </div>
+}
+
+<form method="get" asp-action="All" class="col-md-6 offset-md-3">
     <h2 class="heading-margin text-center"><i>@this.ViewData["Title"]</i></h2>
     <div class="row mb-4">
         <div class="col">
@@ -46,7 +53,7 @@
             <input asp-for="@Model.Car.MaxPrice" class="form-control" placeholder="€">
         </div>
     </div>
-    <hr class="my-4"/>
+    <hr class="my-4" />
     <h5 class="my-3 text-center">Car category:</h5>
     <div class="row">
         <div class="col">
@@ -56,7 +63,7 @@
                     <input id="category_@category.Id"
                            class="form-check-input"
                            type="checkbox"
-                           name="category"
+                           name="SelectedCategoriesIds"
                            value="@category.Id"
                            @(Model.SelectedCategoriesIds.Contains(category.Id) ? "checked" : "")>
                     <label class="form-check-label" for="category_@category.Id">@category.Name</label>
@@ -64,7 +71,7 @@
             }
         </div>
     </div>
-    <hr class="my-4"/>
+    <hr class="my-4" />
     <h5 class="mb-3 text-center">Car fuel type:</h5>
     <div class="row">
         <div class="col">
@@ -74,7 +81,7 @@
                     <input id="fuelType_@fuelType.Id"
                            class="form-check-input"
                            type="checkbox"
-                           name="fuelType"
+                           name="SelectedFuelTypesIds"
                            value="@fuelType.Id"
                            @(Model.SelectedFuelTypesIds.Contains(fuelType.Id) ? "checked" : "")>
                     <label class="form-check-label" for="fuelType_@fuelType.Id">@fuelType.Name</label>
@@ -82,7 +89,7 @@
             }
         </div>
     </div>
-    <hr class="my-4"/>
+    <hr class="my-4" />
     <h5 class="mb-3 text-center">Car transmission type:</h5>
     <div class="row">
         <div class="col">
@@ -92,7 +99,7 @@
                     <input id="transmissionType_@transmissionType.Id"
                            class="form-check-input"
                            type="checkbox"
-                           name="transmissionType"
+                           name="SelectedTransmissionTypesIds"
                            value="@transmissionType.Id"
                            @(Model.SelectedTransmissionTypesIds.Contains(transmissionType.Id) ? "checked" : "")>
                     <label class="form-check-label" for="transmissionType_@transmissionType.Id">@transmissionType.Name</label>
@@ -100,7 +107,7 @@
             }
         </div>
     </div>
-    <hr class="my-4"/>
+    <hr class="my-4" />
     <h5 class="mb-1 text-center">Car extras:</h5>
     <div class="row">
         <div class="col">
@@ -116,7 +123,7 @@
                     <input id="extra_@carExtra.Id"
                            class="form-check-input"
                            type="checkbox"
-                           name="extra"
+                           name="SelectedExtrasIds"
                            value="@carExtra.Id"
                            @(Model.SelectedExtrasIds.Contains(carExtra.Id) ? "checked" : "")>
                     <label class="form-check-label" for="extra_@carExtra.Id">@carExtra.Name</label>

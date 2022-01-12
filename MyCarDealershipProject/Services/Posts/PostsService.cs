@@ -34,42 +34,118 @@
             await this.data.SaveChangesAsync();
         }
 
-        public IEnumerable<PostInListViewModel> GetAll(int page, int postsPerPage = 12)
+        public IEnumerable<PostInListViewModel> GetPostsByPage(IEnumerable<PostInListViewModel> posts, int page, int postsPerPage = 12)
         {
-            var posts = this.data.Posts
-                .OrderByDescending(p => p.Id)
-                .Skip((page - 1) * postsPerPage).Take(postsPerPage) //page 1 --> skip 0 take 12, page 2 --> skip 12 take 12
-                .Select(p => new PostInListViewModel()
-                {
-                    Car = new CarInListViewModel()
-                    {
-                        Id = p.Car.Id,
-                        Make = p.Car.Make,
-                        Model = p.Car.Model,
-                        Description = p.Car.Description.Length <= 100 ?
-                            p.Car.Description
-                            :
-                            p.Car.Description.Substring(0, 100) + "...",
-                        Price = p.Car.Price,
-                        Year = p.Car.Year,
-                        Kilometers = p.Car.Kilometers,
-                        FuelType = p.Car.FuelType.Name,
-                        TransmissionType = p.Car.TransmissionType.Name,
-                        Category = p.Car.Category.Name,
-                        LocationCity = p.Car.LocationCity,
-                        LocationCountry = p.Car.LocationCountry,
-                        CoverImage = "/images/cars/" + p.Car.Images.FirstOrDefault().Id + "." +
-                                     p.Car.Images.FirstOrDefault().Extension,
-                    },
-                    PublishedOn = GetFormattedDate(p.PublishedOn),
-                }).ToList();
-
-            return posts;
+            return posts.Skip((page - 1) * postsPerPage).Take(postsPerPage).ToList();
         }
 
-        public int GetCount()
+        public IEnumerable<PostInListViewModel> GetMatchingPosts(SearchPostInputModel searchInputModel)
         {
-            return this.data.Posts.Count();
+            var postsQuery = this.data.Posts.AsQueryable();
+            
+            if (searchInputModel.Car != null)
+            {
+                var searchedCarDetails = searchInputModel.Car;
+
+                if (!string.IsNullOrWhiteSpace(searchedCarDetails.TextSearchTerm))
+                {
+                    postsQuery = postsQuery.Where(p =>
+                        (p.Car.Make + " " + p.Car.Model + " " + p.Car.Description).ToLower()
+                        .Contains(searchedCarDetails.TextSearchTerm.ToLower()));
+                }
+
+                if (searchedCarDetails.FromYear is > 0)
+                {
+                    postsQuery = postsQuery.Where(p =>
+                        p.Car.Year >= searchedCarDetails.FromYear);
+                }
+
+                if (searchedCarDetails.ToYear is > 0)
+                {
+                    postsQuery = postsQuery.Where(p =>
+                        p.Car.Year <= searchedCarDetails.ToYear);
+                }
+
+                if (searchedCarDetails.MinHorsepower is > 0)
+                {
+                    postsQuery = postsQuery.Where(p =>
+                        p.Car.Horsepower >= searchedCarDetails.MinHorsepower);
+                }
+
+                if (searchedCarDetails.MaxHorsepower is > 0)
+                {
+                    postsQuery = postsQuery.Where(p =>
+                        p.Car.Horsepower <= searchedCarDetails.MaxHorsepower);
+                }
+
+                if (searchedCarDetails.MinPrice is > 0)
+                {
+                    postsQuery = postsQuery.Where(p =>
+                        p.Car.Price >= searchedCarDetails.MinPrice);
+                }
+
+                if (searchedCarDetails.MaxPrice is > 0)
+                {
+                    postsQuery = postsQuery.Where(p =>
+                        p.Car.Price <= searchedCarDetails.MaxPrice);
+                }
+            }
+
+            if (searchInputModel.SelectedCategoriesIds.Any())
+            {
+                postsQuery = postsQuery.Where(p => searchInputModel.SelectedCategoriesIds.Contains(p.Car.CategoryId));
+            }
+
+            if (searchInputModel.SelectedFuelTypesIds.Any())
+            {
+                postsQuery = postsQuery.Where(p => searchInputModel.SelectedFuelTypesIds.Contains(p.Car.FuelTypeId));
+            }
+
+            if (searchInputModel.SelectedTransmissionTypesIds.Any())
+            {
+                postsQuery = postsQuery.Where(p => searchInputModel.SelectedTransmissionTypesIds.Contains(p.Car.TransmissionTypeId));
+            }
+
+            if (searchInputModel.SelectedExtrasIds.Any())
+            {
+                postsQuery = postsQuery.Where(p => p.Car.CarExtras.Any(ce => searchInputModel.SelectedExtrasIds.Contains(ce.ExtraId)));
+            }
+
+            if (postsQuery.Any())
+            {
+                var posts = postsQuery
+                    .OrderByDescending(p => p.Id)
+                    .Select(p => new PostInListViewModel()
+                    {
+                        Car = new CarInListViewModel()
+                        {
+                            Id = p.Car.Id,
+                            Make = p.Car.Make,
+                            Model = p.Car.Model,
+                            Description = p.Car.Description.Length <= 100 ?
+                                p.Car.Description
+                                :
+                                p.Car.Description.Substring(0, 100) + "...",
+                            Price = p.Car.Price,
+                            Year = p.Car.Year,
+                            Kilometers = p.Car.Kilometers,
+                            FuelType = p.Car.FuelType.Name,
+                            TransmissionType = p.Car.TransmissionType.Name,
+                            Category = p.Car.Category.Name,
+                            LocationCity = p.Car.LocationCity,
+                            LocationCountry = p.Car.LocationCountry,
+                            CoverImage = "/images/cars/" + p.Car.Images.FirstOrDefault().Id + "." +
+                                         p.Car.Images.FirstOrDefault().Extension,
+                        },
+                        PublishedOn = GetFormattedDate(p.PublishedOn),
+                    }).ToList();
+
+                return posts;
+            }
+            else
+            {
+                throw new Exception("Unfortunately, there aren't any cars in our system which are matching your search criteria.");
+            }
         }
 
         public SinglePostViewModel GetById(int id)

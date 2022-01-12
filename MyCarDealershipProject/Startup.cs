@@ -89,6 +89,9 @@ namespace MyCarDealershipProject
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapDefaultControllerRoute();
+                //endpoints.MapControllerRoute(
+                //    name: "search",
+                //    pattern: "Posts/All/{id?}/{searchParams}");
                 endpoints.MapRazorPages();
             });
 
