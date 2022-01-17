@@ -39,11 +39,27 @@
             </div>
         </nav>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
+<div class="container">
+    <main role="main" class="pb-3">
+        @if (this.TempData.ContainsKey(GlobalConstants.GlobalErrorMessageKey))
+        {
+            <div class="alert alert-danger text-center alert-dismissible fade show">
+                @this.TempData[GlobalConstants.GlobalErrorMessageKey]
+                <button type="button" class="btn-close" data-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+
+        @if (this.TempData.ContainsKey(GlobalConstants.GlobalSuccessMessageKey))
+        {
+            <div class="alert alert-success text-center alert-dismissible fade show">
+                @this.TempData[GlobalConstants.GlobalSuccessMessageKey]
+                <button type="button" class="btn-close" data-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+
+        @RenderBody()
+    </main>
+</div>
 
     <footer class="border-top footer text-muted">
         <div class="container">

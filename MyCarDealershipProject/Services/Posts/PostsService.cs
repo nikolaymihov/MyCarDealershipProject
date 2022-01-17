@@ -111,41 +111,39 @@
                 postsQuery = postsQuery.Where(p => p.Car.CarExtras.Any(ce => searchInputModel.SelectedExtrasIds.Contains(ce.ExtraId)));
             }
 
-            if (postsQuery.Any())
+            if (!postsQuery.Any())
             {
-                var posts = postsQuery
-                    .OrderByDescending(p => p.Id)
-                    .Select(p => new PostInListViewModel()
-                    {
-                        Car = new CarInListViewModel()
-                        {
-                            Id = p.Car.Id,
-                            Make = p.Car.Make,
-                            Model = p.Car.Model,
-                            Description = p.Car.Description.Length <= 100 ?
-                                p.Car.Description
-                                :
-                                p.Car.Description.Substring(0, 100) + "...",
-                            Price = p.Car.Price,
-                            Year = p.Car.Year,
-                            Kilometers = p.Car.Kilometers,
-                            FuelType = p.Car.FuelType.Name,
-                            TransmissionType = p.Car.TransmissionType.Name,
-                            Category = p.Car.Category.Name,
-                            LocationCity = p.Car.LocationCity,
-                            LocationCountry = p.Car.LocationCountry,
-                            CoverImage = "/images/cars/" + p.Car.Images.FirstOrDefault().Id + "." +
-                                         p.Car.Images.FirstOrDefault().Extension,
-                        },
-                        PublishedOn = GetFormattedDate(p.PublishedOn),
-                    }).ToList();
+                throw new Exception("Unfortunately, there are no cars in our system that match your search criteria.");
+            }
 
-                return posts;
-            }
-            else
-            {
-                throw new Exception("Unfortunately, there aren't any cars in our system which are matching your search criteria.");
-            }
+            var posts = postsQuery
+                .OrderByDescending(p => p.Id)
+                .Select(p => new PostInListViewModel()
+                {
+                    Car = new CarInListViewModel()
+                    {
+                        Id = p.Car.Id,
+                        Make = p.Car.Make,
+                        Model = p.Car.Model,
+                        Description = p.Car.Description.Length <= 100 ?
+                            p.Car.Description
+                            :
+                            p.Car.Description.Substring(0, 100) + "...",
+                        Price = p.Car.Price,
+                        Year = p.Car.Year,
+                        Kilometers = p.Car.Kilometers,
+                        FuelType = p.Car.FuelType.Name,
+                        TransmissionType = p.Car.TransmissionType.Name,
+                        Category = p.Car.Category.Name,
+                        LocationCity = p.Car.LocationCity,
+                        LocationCountry = p.Car.LocationCountry,
+                        CoverImage = "/images/cars/" + p.Car.Images.FirstOrDefault().Id + "." +
+                                     p.Car.Images.FirstOrDefault().Extension,
+                    },
+                    PublishedOn = GetFormattedDate(p.PublishedOn),
+                }).ToList();
+
+            return posts;
         }
 
         public SinglePostViewModel GetById(int id)

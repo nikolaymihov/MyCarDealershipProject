@@ -44,6 +44,12 @@ namespace MyCarDealershipProject
                     options.MinimumSameSitePolicy = SameSiteMode.None;
                 });
 
+            services.Configure<CookieTempDataProviderOptions>(
+                options =>
+                {
+                    options.Cookie.IsEssential = true; //without this configuration the TempData doesn't works
+                });
+
             services.AddAutoMapper(typeof(Startup));
 
             services.AddControllersWithViews(

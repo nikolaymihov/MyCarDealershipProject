@@ -7,11 +7,11 @@
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Authorization;
-    using Microsoft.AspNetCore.Http.Extensions;
     using Models.Cars;
     using Models.Posts;
     using Services.Cars;
     using Services.Posts;
+    using Infrastructure;
 
     public class PostsController : Controller
     {
@@ -66,7 +66,9 @@
                 this.carsService.FillInputCarProperties(inputCar);
                 return this.View(input);
             }
-           
+
+            TempData[GlobalConstants.GlobalSuccessMessageKey] = "Your car post was added successfully!";
+
             return this.RedirectToAction("All");
         }
 
@@ -112,7 +114,7 @@
             }
             catch (Exception ex)
             {
-                this.TempData["message"] =  ex.Message;
+                this.TempData[GlobalConstants.GlobalErrorMessageKey] =  ex.Message;
                 return this.RedirectToAction("Search");
             }
         }
