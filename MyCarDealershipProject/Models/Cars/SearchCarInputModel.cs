@@ -1,46 +1,42 @@
 ﻿namespace MyCarDealershipProject.Models.Cars
 {
-    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-    using Services.Cars.Models;
+    using Infrastructure.ValidationAttributes;
+    using static Data.DataConstants;
 
-    public class SearchCarInputModel
+    public class SearchCarInputModel : BaseCarInputModel
     {
         [Display(Name = "Make, model or/and specification:")]
         public string TextSearchTerm { get; set; }
-        
+
+        [RangeUntilCurrentYear(
+            CarYearMinValue,
+            ErrorMessage = "The car year must be between {1} and {2}.")]
         public int? FromYear { get; set; }
-        
+
+        [RangeUntilCurrentYear(
+            CarYearMinValue,
+            ErrorMessage = "The car year must be between {1} and {2}.")]
         public int? ToYear { get; set; }
 
+        [Range(
+            CarHorsepowerMinValue,
+            CarHorsepowerMaxValue,
+            ErrorMessage = "The car horsepower must be between {1} and {2}.")]
         public int? MinHorsepower { get; set; }
 
+        [Range(
+            CarHorsepowerMinValue,
+            CarHorsepowerMaxValue,
+            ErrorMessage = "The car horsepower must be between {1} and {2}.")]
         public int? MaxHorsepower { get; set; }
 
+        [RangeWithCustomFormat(CarPriceMinValue, CarPriceMaxValue, "car price")]
         [Display(Name = "Minimum price (in Euro):")]
         public decimal? MinPrice { get; set; }
 
+        [RangeWithCustomFormat(CarPriceMinValue, CarPriceMaxValue, "car price")]
         [Display(Name = "Maximum price (in Euro):")]
         public decimal? MaxPrice { get; set; }
-        
-        [Display(Name = "Category:")]
-        public int CategoryId { get; init; }
-
-        public IEnumerable<CarCategoryServiceModel> Categories { get; set; }
-
-        [Display(Name = "Fuel type:")]
-        public int FuelTypeId { get; init; }
-
-        public IEnumerable<CarFuelTypeServiceModel> FuelTypes { get; set; }
-
-        [Display(Name = "Transmission type:")]
-        public int TransmissionTypeId { get; init; }
-
-        public IEnumerable<CarTransmissionTypeServiceModel> TransmissionTypes { get; set; }
-
-        [Display(Name = "Extras:")]
-        public int CarExtraId { get; init; }
-
-        public IEnumerable<CarExtrasServiceModel> CarExtras { get; set; }
     }
 }

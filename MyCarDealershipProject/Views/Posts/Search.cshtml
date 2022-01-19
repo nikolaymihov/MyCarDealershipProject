@@ -16,13 +16,15 @@
     </div>
     <div class="row mb-4">
         <div class="row">
-            <label asp-for="@Model.Car.FromYear" class="form-label">First registration:</label>
+            <label asp-for="@Model.Car.FromYear" class="form-label">Year of first registration:</label>
         </div>
         <div class="col-md-4 mt-1">
             <input asp-for="@Model.Car.FromYear" class="form-control" placeholder="From year">
+            <span asp-validation-for="@Model.Car.FromYear" class="text-danger"></span>
         </div>
         <div class="col-md-4 mt-1">
             <input asp-for="@Model.Car.ToYear" class="form-control" placeholder="To year">
+            <span asp-validation-for="@Model.Car.ToYear" class="text-danger"></span>
         </div>
     </div>
     <div class="row mb-4">
@@ -31,19 +33,23 @@
         </div>
         <div class="col-md-4 mt-1">
             <input asp-for="@Model.Car.MinHorsepower" class="form-control" placeholder="Min (Hp)">
+            <span asp-validation-for="@Model.Car.MinHorsepower" class="text-danger"></span>
         </div>
         <div class="col-md-4 mt-1">
             <input asp-for="@Model.Car.MaxHorsepower" class="form-control" placeholder="Max (Hp)">
+            <span asp-validation-for="@Model.Car.MaxHorsepower" class="text-danger"></span>
         </div>
     </div>
     <div class="row mb-4">
         <div class="col-md-4 mt-1">
             <label asp-for="@Model.Car.MinPrice" class="form-label"></label>
             <input asp-for="@Model.Car.MinPrice" class="form-control" placeholder="€">
+            <span asp-validation-for="@Model.Car.MinPrice" class="text-danger"></span>
         </div>
         <div class="col-md-4 mt-1">
             <label asp-for="@Model.Car.MaxPrice" class="form-label"></label>
             <input asp-for="@Model.Car.MaxPrice" class="form-control" placeholder="€">
+            <span asp-validation-for="@Model.Car.MaxPrice" class="text-danger"></span>
         </div>
     </div>
     <hr class="my-4"/>

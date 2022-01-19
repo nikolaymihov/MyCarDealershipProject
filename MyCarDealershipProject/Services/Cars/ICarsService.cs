@@ -18,8 +18,6 @@
 
         IEnumerable<CarExtrasServiceModel> GetAllCarExtras();
 
-        void FillInputCarProperties(CreateCarInputModel inputCar);
-
-        void FillSearchCarProperties(SearchCarInputModel searchCar);
+        void FillBaseInputCarProperties(BaseCarInputModel inputCar);
     }
 }

@@ -32,7 +32,7 @@
             var createPostInputModel = new CreatePostInputModel();
             var createCarInputModel = new CreateCarInputModel();
 
-            this.carsService.FillInputCarProperties(createCarInputModel);
+            this.carsService.FillBaseInputCarProperties(createCarInputModel);
 
             createPostInputModel.Car = createCarInputModel;
 
@@ -47,7 +47,7 @@
 
             if (!this.ModelState.IsValid)
             {
-                this.carsService.FillInputCarProperties(inputCar);
+                this.carsService.FillBaseInputCarProperties(inputCar);
                 return this.View(input);
             }
 
@@ -63,7 +63,7 @@
             catch (Exception ex)
             {
                 this.ModelState.AddModelError("CustomError", ex.Message);
-                this.carsService.FillInputCarProperties(inputCar);
+                this.carsService.FillBaseInputCarProperties(inputCar);
                 return this.View(input);
             }
 
@@ -77,7 +77,7 @@
             var searchPostInputModel = new SearchPostInputModel(); 
             var searchCarInputModel = new SearchCarInputModel();
             
-            this.carsService.FillSearchCarProperties(searchCarInputModel);
+            this.carsService.FillBaseInputCarProperties(searchCarInputModel);
             
             searchPostInputModel.Car = searchCarInputModel;
             
@@ -114,8 +114,9 @@
             }
             catch (Exception ex)
             {
-                this.TempData[GlobalConstants.GlobalErrorMessageKey] =  ex.Message;
-                return this.RedirectToAction("Search");
+                this.TempData[GlobalConstants.GlobalErrorMessageKey] = ex.Message;
+                this.carsService.FillBaseInputCarProperties(searchPostInputModel.Car);
+                return this.View("Search", searchPostInputModel);
             }
         }
 

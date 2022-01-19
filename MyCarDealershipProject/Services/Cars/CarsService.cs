@@ -130,20 +130,12 @@
                 .ToList();
         }
 
-        public void FillInputCarProperties(CreateCarInputModel inputCar)
+        public void FillBaseInputCarProperties(BaseCarInputModel inputCar)
         {
             inputCar.Categories = this.GetAllCategories();
             inputCar.FuelTypes = this.GetAllFuelTypes();
             inputCar.TransmissionTypes = this.GetAllTransmissionTypes();
             inputCar.CarExtras = this.GetAllCarExtras();
-        }
-
-        public void FillSearchCarProperties(SearchCarInputModel searchCar)
-        {
-            searchCar.Categories = this.GetAllCategories();
-            searchCar.FuelTypes = this.GetAllFuelTypes();
-            searchCar.TransmissionTypes = this.GetAllTransmissionTypes();
-            searchCar.CarExtras = this.GetAllCarExtras();
         }
     }
 }
