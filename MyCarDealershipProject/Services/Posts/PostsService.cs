@@ -42,7 +42,7 @@
         public IEnumerable<PostInListViewModel> GetMatchingPosts(SearchPostInputModel searchInputModel)
         {
             var postsQuery = this.data.Posts.AsQueryable();
-            
+
             if (searchInputModel.Car != null)
             {
                 var searchedCarDetails = searchInputModel.Car;
@@ -108,7 +108,26 @@
 
             if (searchInputModel.SelectedExtrasIds.Any())
             {
-                postsQuery = postsQuery.Where(p => p.Car.CarExtras.Any(ce => searchInputModel.SelectedExtrasIds.Contains(ce.ExtraId)));
+                var searchedExtrasIds = searchInputModel.SelectedExtrasIds;
+                var currentQueuedCars = postsQuery.Select(p => p.Car).ToList();
+                var allMatchedCarIds = new List<int>();
+
+                
+                foreach (var car in currentQueuedCars)
+                {
+                    var currentCarExtrasIds = data.CarExtras
+                                                            .Where(ce => ce.Car.Id == car.Id)
+                                                            .Select(ce => ce.ExtraId)
+                                                            .ToList();
+
+                    //The below code checks if all the searched extras are contained in the current car extras
+                    if (searchedExtrasIds.Intersect(currentCarExtrasIds).Count() == searchedExtrasIds.Count())
+                    {
+                        allMatchedCarIds.Add(car.Id);
+                    }
+                }
+
+                postsQuery = postsQuery.Where(p => allMatchedCarIds.Contains(p.Car.Id));
             }
 
             if (!postsQuery.Any())
@@ -206,9 +225,9 @@
 
             return posts;
         }
-        
+
         private static string GetFormattedDate(DateTime inputDateTime)
-        {   
+        {
             if (inputDateTime.Date == DateTime.UtcNow.Date)
             {
                 return "Today, " + inputDateTime.ToString("t", CultureInfo.InvariantCulture);
