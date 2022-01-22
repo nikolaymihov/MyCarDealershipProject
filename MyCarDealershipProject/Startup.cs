@@ -18,7 +18,6 @@ namespace MyCarDealershipProject
     {
         public Startup(IConfiguration configuration)
             => this.Configuration = configuration;
-        
 
         public IConfiguration Configuration { get; }
 
@@ -57,10 +56,9 @@ namespace MyCarDealershipProject
                 {
                     options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
                 }).AddRazorRuntimeCompilation();
-
+            
             services.AddTransient<ICarsService, CarsService>();
             services.AddTransient<IPostsService, PostsService>();
-
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -95,9 +93,6 @@ namespace MyCarDealershipProject
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapDefaultControllerRoute();
-                //endpoints.MapControllerRoute(
-                //    name: "search",
-                //    pattern: "Posts/All/{id?}/{searchParams}");
                 endpoints.MapRazorPages();
             });
 

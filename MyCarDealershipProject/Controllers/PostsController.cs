@@ -7,6 +7,7 @@
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Authorization;
+    using Models;
     using Models.Cars;
     using Models.Posts;
     using Services.Cars;
@@ -84,7 +85,7 @@
             return this.View(searchPostInputModel);
         }
 
-        public IActionResult All(SearchPostInputModel searchPostInputModel, int id = 1)
+        public IActionResult All(SearchPostInputModel searchPostInputModel, int id = 1, int sorting = 0)
         {
             try
             {
@@ -94,8 +95,8 @@
                 }
 
                 const int PostsPerPage = 12;
-
-                var matchingPosts = this.postsService.GetMatchingPosts(searchPostInputModel).ToList();
+                
+                var matchingPosts = this.postsService.GetMatchingPosts(searchPostInputModel, (PostsSorting)sorting).ToList();
 
                 var postsListViewModel = new PostsListViewModel()
                 {
@@ -104,6 +105,11 @@
                     PostsCount = matchingPosts.Count(),
                     Posts = this.postsService.GetPostsByPage(matchingPosts, id, PostsPerPage),
                 };
+
+                if (sorting > 0)
+                {
+                    Console.WriteLine();
+                }
 
                 if (id > postsListViewModel.PagesCount)
                 {

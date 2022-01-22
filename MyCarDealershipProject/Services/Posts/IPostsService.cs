@@ -3,13 +3,14 @@
     using System.Threading.Tasks;
     using System.Collections.Generic;
     using Data.Models;
+    using Models;
     using Models.Posts;
 
     public interface IPostsService
     {
         Task CreateAsync(CreatePostInputModel inputPost, Car car, string userId);
 
-        IEnumerable<PostInListViewModel> GetMatchingPosts(SearchPostInputModel searchInputModel);
+        IEnumerable<PostInListViewModel> GetMatchingPosts(SearchPostInputModel searchInputModel, PostsSorting sorting = PostsSorting.NewestFirst);
         
         IEnumerable<PostInListViewModel> GetPostsByPage(IEnumerable<PostInListViewModel> posts, int page, int postsPerPage = 12);
 
