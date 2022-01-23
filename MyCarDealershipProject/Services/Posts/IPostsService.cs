@@ -12,7 +12,9 @@
 
         IEnumerable<PostInListViewModel> GetMatchingPosts(SearchPostInputModel searchInputModel, PostsSorting sorting = PostsSorting.NewestFirst);
         
-        IEnumerable<PostInListViewModel> GetPostsByPage(IEnumerable<PostInListViewModel> posts, int page, int postsPerPage = 12);
+        IEnumerable<T> GetPostsByPage<T>(IEnumerable<T> posts, int page, int postsPerPage);
+
+        IEnumerable<PostByUserViewModel> GetPostsByUser(string userId);
 
         SinglePostViewModel GetById(int id);
 

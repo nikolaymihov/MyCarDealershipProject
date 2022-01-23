@@ -1,7 +1,6 @@
 ﻿namespace MyCarDealershipProject.Models
 {
     using System;
-    using Posts;
 
     public class PagingViewModel
     {

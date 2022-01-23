@@ -1,18 +1,8 @@
 ﻿namespace MyCarDealershipProject.Models.Cars
 {
-    public class CarInListViewModel
+    public class CarInListViewModel : BaseCarViewModel
     {
-        public int Id { get; init; }
-
-        public string Make { get; init; }
-        
-        public string Model { get; init; }
-        
         public string Description { get; init; }
-
-        public int Year { get; init; }
-
-        public decimal Price { get; init; }
 
         public int Kilometers { get; init; }
         

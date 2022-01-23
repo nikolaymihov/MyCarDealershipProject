@@ -1,17 +1,7 @@
 ﻿namespace MyCarDealershipProject.Models.Cars
 {
-    public class LatestPostsCarViewModel
+    public class LatestPostsCarViewModel : BaseCarViewModel
     {
-        public int Id { get; init; }
-
-        public string Make { get; init; }
-
-        public string Model { get; init; }
-
-        public int Year { get; init; }
-
-        public decimal Price { get; init; }
-
         public int Horsepower { get; set; }
 
         public string FuelType { get; init; }

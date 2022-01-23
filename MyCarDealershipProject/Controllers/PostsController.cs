@@ -106,11 +106,6 @@
                     Posts = this.postsService.GetPostsByPage(matchingPosts, id, PostsPerPage),
                 };
 
-                if (sorting > 0)
-                {
-                    Console.WriteLine();
-                }
-
                 if (id > postsListViewModel.PagesCount)
                 {
                     return this.NotFound();
@@ -131,6 +126,35 @@
             var singlePostData = this.postsService.GetById(id);
 
             return this.View(singlePostData);
+        }
+
+        [Authorize]
+        public IActionResult Mine(int id = 1)
+        {
+            if (id <= 0)
+            {
+                return this.NotFound();
+            }
+
+            const int PostsPerPage = 12;
+
+            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var currentUserPosts = this.postsService.GetPostsByUser(userId).ToList();
+
+            var postsByUserViewModel = new PostsByUserViewModel()
+            {
+                PageNumber = id,
+                PostsPerPage = PostsPerPage,
+                PostsCount = currentUserPosts.Count(),
+                Posts = this.postsService.GetPostsByPage(currentUserPosts, id, PostsPerPage),
+            };
+
+            if (id > postsByUserViewModel.PagesCount)
+            {
+                return this.NotFound();
+            }
+
+            return this.View(postsByUserViewModel);
         }
     }
 }

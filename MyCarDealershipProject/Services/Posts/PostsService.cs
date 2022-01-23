@@ -35,9 +35,32 @@
             await this.data.SaveChangesAsync();
         }
 
-        public IEnumerable<PostInListViewModel> GetPostsByPage(IEnumerable<PostInListViewModel> posts, int page, int postsPerPage = 12)
+        public IEnumerable<T> GetPostsByPage<T>(IEnumerable<T> posts, int page, int postsPerPage)
         {
             return posts.Skip((page - 1) * postsPerPage).Take(postsPerPage).ToList();
+        }
+
+        public IEnumerable<PostByUserViewModel> GetPostsByUser(string userId)
+        {
+            var posts = this.data.Posts
+                .Where(p => p.CreatorId == userId)
+                .OrderByDescending(p => p.PublishedOn)
+                .Select(p => new PostByUserViewModel()
+                {
+                    Car = new CarByUserViewModel()
+                    {
+                        Id = p.Car.Id,
+                        Make = p.Car.Make,
+                        Model = p.Car.Model,
+                        Price = p.Car.Price,
+                        Year = p.Car.Year,
+                        CoverImage = "/images/cars/" + p.Car.Images.FirstOrDefault().Id + "." +
+                                     p.Car.Images.FirstOrDefault().Extension,
+                    },
+                    PublishedOn = GetFormattedDate(p.PublishedOn),
+                }).ToList();
+
+            return posts;
         }
 
         public IEnumerable<PostInListViewModel> GetMatchingPosts(SearchPostInputModel searchInputModel, PostsSorting sorting = PostsSorting.NewestFirst)

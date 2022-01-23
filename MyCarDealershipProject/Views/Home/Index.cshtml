@@ -9,10 +9,12 @@
     @if (!Model.LatestPosts.Any())
     {
         <hr class="my-4">
-        <p class="lead">There are no car posts in the system currently available so why don't you just add one?</p>
-        <p class="lead">
-            <a asp-controller="Posts" asp-action="Create" class="btn btn-primary btn-lg" role="button">Add a car post</a>
-        </p>
+        <div class="text-center">
+            <p class="lead">Unfortunately, there are no car posts in the system currently available so why don't you just add one?</p>
+            <p class="lead">
+                <a asp-controller="Posts" asp-action="Create" class="btn btn-dark" role="button">Add a car post</a>
+            </p>
+        </div>
     }
     <hr class="my-4">
 </div>
