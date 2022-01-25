@@ -20,7 +20,7 @@
             this.data = data;
         }
 
-        public async Task CreateAsync(CreatePostInputModel inputPost, Car car, string userId)
+        public async Task<int> CreateAsync(CreatePostInputModel inputPost, Car car, string userId)
         {
             var post = new Post
             {
@@ -33,6 +33,8 @@
 
             await this.data.Posts.AddAsync(post);
             await this.data.SaveChangesAsync();
+
+            return post.Id;
         }
 
         public IEnumerable<T> GetPostsByPage<T>(IEnumerable<T> posts, int page, int postsPerPage)

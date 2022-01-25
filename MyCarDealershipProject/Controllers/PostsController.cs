@@ -19,7 +19,7 @@
         private readonly ICarsService carsService;
         private readonly IPostsService postsService;
         private readonly IWebHostEnvironment environment;
-        
+
         public PostsController(ICarsService carsService, IPostsService postsService, IWebHostEnvironment environment)
         {
             this.carsService = carsService;
@@ -45,7 +45,7 @@
         public async Task<IActionResult> Create(CreatePostInputModel input)
         {
             var inputCar = input.Car;
-
+            
             if (!this.ModelState.IsValid)
             {
                 this.carsService.FillBaseInputCarProperties(inputCar);
@@ -55,11 +55,12 @@
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             var selectedExtrasIds = input.SelectedExtrasIds.ToList();
             var imagePath = $"{this.environment.WebRootPath}/images";
-            
+            int postId;
+
             try
-            { 
+            {
                 var car = await this.carsService.GetCarFromInputModel(inputCar, selectedExtrasIds, userId, imagePath);
-                await this.postsService.CreateAsync(input, car, userId);
+                postId = await this.postsService.CreateAsync(input, car, userId);
             }
             catch (Exception ex)
             {
@@ -70,18 +71,18 @@
 
             TempData[GlobalConstants.GlobalSuccessMessageKey] = "Your car post was added successfully!";
 
-            return this.RedirectToAction("All");
+            return this.RedirectToAction("Offer", new { Id = postId });
         }
 
         public IActionResult Search()
         {
-            var searchPostInputModel = new SearchPostInputModel(); 
+            var searchPostInputModel = new SearchPostInputModel();
             var searchCarInputModel = new SearchCarInputModel();
-            
+
             this.carsService.FillBaseInputCarProperties(searchCarInputModel);
-            
+
             searchPostInputModel.Car = searchCarInputModel;
-            
+
             return this.View(searchPostInputModel);
         }
 
@@ -95,7 +96,7 @@
                 }
 
                 const int PostsPerPage = 12;
-                
+
                 var matchingPosts = this.postsService.GetMatchingPosts(searchPostInputModel, (PostsSorting)sorting).ToList();
 
                 var postsListViewModel = new PostsListViewModel()
@@ -149,7 +150,7 @@
                 Posts = this.postsService.GetPostsByPage(currentUserPosts, id, PostsPerPage),
             };
 
-            if (id > postsByUserViewModel.PagesCount)
+            if (id > postsByUserViewModel.PagesCount && id > 1)
             {
                 return this.NotFound();
             }

@@ -8,7 +8,7 @@
 
     public interface IPostsService
     {
-        Task CreateAsync(CreatePostInputModel inputPost, Car car, string userId);
+        Task<int> CreateAsync(CreatePostInputModel inputPost, Car car, string userId);
 
         IEnumerable<PostInListViewModel> GetMatchingPosts(SearchPostInputModel searchInputModel, PostsSorting sorting = PostsSorting.NewestFirst);
         
