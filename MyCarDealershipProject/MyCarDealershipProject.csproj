@@ -16,4 +16,8 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.6" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Services\Statistics\Models\" />
+  </ItemGroup>
+
 </Project>

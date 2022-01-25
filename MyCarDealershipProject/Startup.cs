@@ -13,6 +13,7 @@ namespace MyCarDealershipProject
     using Microsoft.Extensions.Hosting;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using Services.Statistics;
 
     public class Startup
     {
@@ -59,6 +60,7 @@ namespace MyCarDealershipProject
             
             services.AddTransient<ICarsService, CarsService>();
             services.AddTransient<IPostsService, PostsService>();
+            services.AddTransient<IStatisticsService, StatisticsService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

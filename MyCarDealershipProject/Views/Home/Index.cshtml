@@ -4,7 +4,7 @@
     ViewData["Title"] = "Used and new cars";
 }
 
-<div class="jumbotron">
+<div>
     <h1 class="display-4 text-center">Welcome to the best car marketplace!</h1>
     @if (!Model.LatestPosts.Any())
     {
@@ -18,6 +18,18 @@
     }
     <hr class="my-4">
 </div>
+<div class="row">
+    <div class="col-12 text-center">
+        <button class="btn btn-dark" id="statistics-button">Show site statistics</button>
+    </div>
+</div>
+<div class="bg-dark text-white rounded d-none my-4" id="statistics">
+    <div class="row">
+        <h2 class="col-md-6 text-center" id="total-users"></h2>
+        <h2 class="col-md-6 text-center" id="total-posts"></h2>
+    </div>
+</div>
+<hr class="my-4">
 <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
     <div class="carousel-inner">
         <div class="carousel-item active">
@@ -48,7 +60,7 @@
         <span class="sr-only">Next</span>
     </a>
 </div>
-<hr class="my-4 my-3">
+<hr class="my-4">
 <h3>Latest posts:</h3>
 <div class="row align-content-center">
     @foreach (var post in Model.LatestPosts)
@@ -68,3 +80,27 @@
         </div>
     }
 </div>
+
+@section Scripts
+{
+    <script>
+        $(document).ready(function () {
+            $('#statistics-button').click(function () {
+
+                if ($('#statistics').is(":hidden")) {
+                    $(this.innerHTML = 'Hide site statistics');
+
+                    $.get('/api/statistics', (data) => {
+                        $('#total-users').text(data.totalUsers + " Users");
+                        $('#total-posts').text(data.totalPosts + " Posts");
+                    });
+
+                    $('#statistics').removeClass('d-none');
+                } else {
+                    $('#statistics').addClass('d-none');
+                    $(this.innerHTML = 'Show site statistics');
+                }
+            });
+        });
+    </script>
+}
