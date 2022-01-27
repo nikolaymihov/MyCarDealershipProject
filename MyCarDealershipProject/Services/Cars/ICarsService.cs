@@ -8,7 +8,7 @@
 
     public interface ICarsService
     {
-        Task<Car> GetCarFromInputModel(CreateCarInputModel inputCar, List<int> selectedExtrasIds, string userId, string imagePath);
+        Task<Car> GetCarFromInputModelAsync(CreateCarInputModel inputCar, List<int> selectedExtrasIds, string userId, string imagePath);
 
         IEnumerable<CarCategoryServiceModel> GetAllCategories();
 

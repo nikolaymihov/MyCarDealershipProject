@@ -24,7 +24,7 @@
             this.mapper = mapper.ConfigurationProvider;
         }
         
-        public async Task<Car> GetCarFromInputModel(CreateCarInputModel inputCar, List<int> selectedExtrasIds, string userId, string imagePath)
+        public async Task<Car> GetCarFromInputModelAsync(CreateCarInputModel inputCar, List<int> selectedExtrasIds, string userId, string imagePath)
         {
             var car = new Car()
             {

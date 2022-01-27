@@ -59,7 +59,7 @@
 
             try
             {
-                var car = await this.carsService.GetCarFromInputModel(inputCar, selectedExtrasIds, userId, imagePath);
+                var car = await this.carsService.GetCarFromInputModelAsync(inputCar, selectedExtrasIds, userId, imagePath);
                 postId = await this.postsService.CreateAsync(input, car, userId);
             }
             catch (Exception ex)
@@ -130,7 +130,7 @@
         }
 
         [Authorize]
-        public IActionResult Mine(int id = 1)
+        public IActionResult Mine(int id = 1, int sorting = 0)
         {
             if (id <= 0)
             {
@@ -140,7 +140,7 @@
             const int PostsPerPage = 12;
 
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            var currentUserPosts = this.postsService.GetPostsByUser(userId).ToList();
+            var currentUserPosts = this.postsService.GetPostsByUser(userId, (PostsSorting)sorting).ToList();
 
             var postsByUserViewModel = new PostsByUserViewModel()
             {

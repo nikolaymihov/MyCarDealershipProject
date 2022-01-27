@@ -17,6 +17,7 @@
 }
 else
 {
+    <partial name="_SortingPartial" model="@Model" />
     <hr />
     <div class="row">
         @foreach (var post in Model.Posts)
@@ -39,4 +40,19 @@ else
     </div>
     <hr />
     <partial name="_PagingPartial" model="@Model" />
+}
+
+@section Scripts
+{
+    <script>
+        $(document).ready(function () {
+            $("#sortingDropDown").change(function () {
+                const sortingValue = $(this).val();
+                const url = new URL(window.location.href);
+
+                url.searchParams.set("sorting", sortingValue);
+                window.location.href = url;
+            });
+        });
+    </script>
 }

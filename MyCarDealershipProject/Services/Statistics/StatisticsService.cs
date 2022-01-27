@@ -17,11 +17,13 @@
         {
             var totalUsers = this.data.Users.Count();
             var totalPosts = this.data.Posts.Count();
+            var totalCategories = this.data.Categories.Count();
 
             return new StatisticsServiceModel
             {
                 TotalUsers = totalUsers,
-                TotalPosts = totalPosts
+                TotalPosts = totalPosts,
+                TotalCategories = totalCategories,
             };
         }
     }

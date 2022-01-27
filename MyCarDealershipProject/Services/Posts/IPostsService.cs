@@ -14,7 +14,7 @@
         
         IEnumerable<T> GetPostsByPage<T>(IEnumerable<T> posts, int page, int postsPerPage);
 
-        IEnumerable<PostByUserViewModel> GetPostsByUser(string userId);
+        IEnumerable<PostByUserViewModel> GetPostsByUser(string userId, PostsSorting sorting = PostsSorting.NewestFirst);
 
         SinglePostViewModel GetById(int id);
 

@@ -42,11 +42,14 @@
             return posts.Skip((page - 1) * postsPerPage).Take(postsPerPage).ToList();
         }
 
-        public IEnumerable<PostByUserViewModel> GetPostsByUser(string userId)
+        public IEnumerable<PostByUserViewModel> GetPostsByUser(string userId, PostsSorting sorting = PostsSorting.NewestFirst)
         {
-            var posts = this.data.Posts
-                .Where(p => p.CreatorId == userId)
-                .OrderByDescending(p => p.PublishedOn)
+            var postsQuery = this.data.Posts
+                .Where(p => p.CreatorId == userId).AsQueryable();
+            
+            postsQuery = GetSortedPosts(postsQuery, sorting);
+
+            var posts = postsQuery    
                 .Select(p => new PostByUserViewModel()
                 {
                     Car = new CarByUserViewModel()
@@ -160,18 +163,8 @@
             {
                 throw new Exception("Unfortunately, there are no cars in our system that match your search criteria.");
             }
-            
-            postsQuery = sorting switch
-            {
-                PostsSorting.OldestFirst => postsQuery.OrderBy(p => p.Id),
-                PostsSorting.PriceHighestFirst => postsQuery.OrderByDescending(p => p.Car.Price),
-                PostsSorting.PriceLowestFirst => postsQuery.OrderBy(p => p.Car.Price),
-                PostsSorting.HorsepowerHighestFirst => postsQuery.OrderByDescending(p => p.Car.Horsepower),
-                PostsSorting.HorsepowerLowestFirst => postsQuery.OrderBy(p => p.Car.Horsepower),
-                PostsSorting.CarYearNewestFirst => postsQuery.OrderByDescending(p => p.Car.Year),
-                PostsSorting.CarYearOldestFirst => postsQuery.OrderBy(p => p.Car.Year),
-                PostsSorting.NewestFirst or _ => postsQuery.OrderByDescending(p => p.Id)
-            };
+
+            postsQuery = GetSortedPosts(postsQuery, sorting);
 
             var posts = postsQuery
                 .Select(p => new PostInListViewModel()
@@ -271,6 +264,23 @@
             }
 
             return inputDateTime.ToString("d", CultureInfo.InvariantCulture);
+        }
+        
+        private static IQueryable<Post> GetSortedPosts(IQueryable<Post> postsQuery, PostsSorting sorting)
+        {
+            postsQuery = sorting switch
+            {
+                PostsSorting.OldestFirst => postsQuery.OrderBy(p => p.Id),
+                PostsSorting.PriceHighestFirst => postsQuery.OrderByDescending(p => p.Car.Price),
+                PostsSorting.PriceLowestFirst => postsQuery.OrderBy(p => p.Car.Price),
+                PostsSorting.HorsepowerHighestFirst => postsQuery.OrderByDescending(p => p.Car.Horsepower),
+                PostsSorting.HorsepowerLowestFirst => postsQuery.OrderBy(p => p.Car.Horsepower),
+                PostsSorting.CarYearNewestFirst => postsQuery.OrderByDescending(p => p.Car.Year),
+                PostsSorting.CarYearOldestFirst => postsQuery.OrderBy(p => p.Car.Year),
+                PostsSorting.NewestFirst or _ => postsQuery.OrderByDescending(p => p.Id),
+            };
+
+            return postsQuery;
         }
     }
 }

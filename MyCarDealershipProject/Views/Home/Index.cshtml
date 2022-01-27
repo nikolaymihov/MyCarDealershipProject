@@ -18,18 +18,6 @@
     }
     <hr class="my-4">
 </div>
-<div class="row">
-    <div class="col-12 text-center">
-        <button class="btn btn-dark" id="statistics-button">Show site statistics</button>
-    </div>
-</div>
-<div class="bg-dark text-white rounded d-none my-4" id="statistics">
-    <div class="row">
-        <h2 class="col-md-6 text-center" id="total-users"></h2>
-        <h2 class="col-md-6 text-center" id="total-posts"></h2>
-    </div>
-</div>
-<hr class="my-4">
 <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
     <div class="carousel-inner">
         <div class="carousel-item active">
@@ -59,6 +47,19 @@
         <span class="carousel-control-next-icon" aria-hidden="true"></span>
         <span class="sr-only">Next</span>
     </a>
+</div>
+<hr class="my-4">
+<div class="row">
+    <div class="col-12 text-center">
+        <button class="btn btn-dark" id="statistics-button">Show site statistics</button>
+    </div>
+</div>
+<div class="bg-dark text-white rounded d-none my-4" id="statistics">
+    <div class="row">
+        <h2 class="col-md-4 text-center" id="total-users"></h2>
+        <h2 class="col-md-4 text-center" id="total-posts"></h2>
+        <h2 class="col-md-4 text-center" id="total-categories"></h2>
+    </div>
 </div>
 <hr class="my-4">
 <h3>Latest posts:</h3>
@@ -91,8 +92,9 @@
                     $(this.innerHTML = 'Hide site statistics');
 
                     $.get('/api/statistics', (data) => {
-                        $('#total-users').text(data.totalUsers + " Users");
-                        $('#total-posts').text(data.totalPosts + " Posts");
+                        $('#total-users').text(data.totalUsers + " users");
+                        $('#total-posts').text(data.totalPosts + " car posts");
+                        $('#total-categories').text(data.totalCategories + " car categories");
                     });
 
                     $('#statistics').removeClass('d-none');

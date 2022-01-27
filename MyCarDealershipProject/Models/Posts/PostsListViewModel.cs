@@ -1,8 +1,9 @@
 ﻿namespace MyCarDealershipProject.Models.Posts
 {
     using System.Collections.Generic;
+    using Contracts;
 
-    public class PostsListViewModel : PagingViewModel
+    public class PostsListViewModel : PagingViewModel, ISortableModel
     {
         public IEnumerable<PostInListViewModel> Posts { get; init; }
 
