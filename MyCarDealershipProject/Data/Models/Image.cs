@@ -13,6 +13,8 @@
         public string Id { get; set; }
 
         public string Extension { get; set; }
+
+        public bool IsCoverImage { get; set; }
         
         public int CarId { get; set; }
 

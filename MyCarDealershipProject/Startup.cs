@@ -1,10 +1,5 @@
 namespace MyCarDealershipProject
 {
-    using Data;
-    using Data.Models;
-    using Data.Seeding;
-    using Services.Cars;
-    using Services.Posts;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Builder;
@@ -13,6 +8,12 @@ namespace MyCarDealershipProject
     using Microsoft.Extensions.Hosting;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using Data;
+    using Data.Models;
+    using Data.Seeding;
+    using Services.Cars;
+    using Services.Posts;
+    using Services.Images;
     using Services.Statistics;
 
     public class Startup
@@ -60,6 +61,7 @@ namespace MyCarDealershipProject
             
             services.AddTransient<ICarsService, CarsService>();
             services.AddTransient<IPostsService, PostsService>();
+            services.AddTransient<IImagesService, ImagesService>();
             services.AddTransient<IStatisticsService, StatisticsService>();
         }
 

@@ -6,21 +6,25 @@
     using System.Threading.Tasks;
     using System.Collections.Generic;
     using Data;
-    using Data.Models;
+    using Images;
     using Models;
+    using Data.Models;
     using Models.Cars;
     using Models.Posts;
+    using Models.Images;
 
     public class PostsService : IPostsService
     {
         private readonly CarDealershipDbContext data;
+        private readonly IImagesService imagesService;
 
-        public PostsService(CarDealershipDbContext data)
+        public PostsService(CarDealershipDbContext data, IImagesService imagesService)
         {
             this.data = data;
+            this.imagesService = imagesService;
         }
 
-        public async Task<int> CreateAsync(CreatePostInputModel inputPost, Car car, string userId)
+        public async Task<int> CreateAsync(PostFormInputModel inputPost, Car car, string userId)
         {
             var post = new Post
             {
@@ -59,8 +63,7 @@
                         Model = p.Car.Model,
                         Price = p.Car.Price,
                         Year = p.Car.Year,
-                        CoverImage = "/images/cars/" + p.Car.Images.FirstOrDefault().Id + "." +
-                                     p.Car.Images.FirstOrDefault().Extension,
+                        CoverImage = this.imagesService.GetCoverImagePath(p.Car.Images.ToList()),
                     },
                     PublishedOn = GetFormattedDate(p.PublishedOn),
                 }).ToList();
@@ -186,8 +189,7 @@
                         Category = p.Car.Category.Name,
                         LocationCity = p.Car.LocationCity,
                         LocationCountry = p.Car.LocationCountry,
-                        CoverImage = "/images/cars/" + p.Car.Images.FirstOrDefault().Id + "." +
-                                     p.Car.Images.FirstOrDefault().Extension,
+                        CoverImage = this.imagesService.GetCoverImagePath(p.Car.Images.ToList()),
                     },
                     PublishedOn = GetFormattedDate(p.PublishedOn),
                 }).ToList();
@@ -195,10 +197,10 @@
             return posts;
         }
 
-        public SinglePostViewModel GetById(int id)
+        public SinglePostViewModel GetSinglePostViewModelById(int postId)
         {
             var post = this.data.Posts
-                .Where(p => p.CarId == id)
+                .Where(p => p.CarId == postId)
                 .Select(p => new SinglePostViewModel()
                 {
                     Car = new SingleCarViewModel()
@@ -219,7 +221,9 @@
                         ComfortExtras = p.Car.CarExtras.Where(ce => ce.Extra.TypeId == 1).Select(ce => ce.Extra.Name).ToList(),
                         SafetyExtras = p.Car.CarExtras.Where(ce => ce.Extra.TypeId == 2).Select(ce => ce.Extra.Name).ToList(),
                         OtherExtras = p.Car.CarExtras.Where(ce => ce.Extra.TypeId == 3).Select(ce => ce.Extra.Name).ToList(),
-                        Images = p.Car.Images.Select(img => "/images/cars/" + img.Id + "." + img.Extension).ToList(),
+                        Images = p.Car.Images.OrderByDescending(img => img.IsCoverImage)
+                                             .Select(img => this.imagesService.GetDefaultCarImagesPath(img.Id, img.Extension))
+                                             .ToList(),
                     },
                     PublishedOn = GetFormattedDate(p.PublishedOn),
                     SellerName = p.SellerName,
@@ -228,6 +232,58 @@
                 .FirstOrDefault();
 
             return post;
+        }
+
+        public EditPostViewModel GetPostFormInputModelById(int postId)
+        {
+            var post = this.data.Posts
+                .Where(p => p.CarId == postId)
+                .Select(p => new EditPostViewModel()
+                {
+                    Car = new CarFormInputModel()
+                    {
+                        Make = p.Car.Make,
+                        Model = p.Car.Model,
+                        Description = p.Car.Description,
+                        Price = p.Car.Price,
+                        Year = p.Car.Year,
+                        Kilometers = p.Car.Kilometers,
+                        Horsepower = p.Car.Horsepower,
+                        CategoryId = p.Car.CategoryId,
+                        FuelTypeId = p.Car.FuelTypeId,
+                        TransmissionTypeId = p.Car.TransmissionTypeId,
+                        LocationCity = p.Car.LocationCity,
+                        LocationCountry = p.Car.LocationCountry,
+                    },
+                    SelectedExtrasIds = p.Car.CarExtras.Select(ce => ce.ExtraId).ToList(),
+                    SellerName = p.SellerName,
+                    SellerPhoneNumber = p.SellerPhoneNumber,
+                    CreatorId = p.CreatorId,
+                    CurrentImages = p.Car.Images.OrderByDescending(img => img.IsCoverImage)
+                                                .Select(img => new ImageInfoViewModel()
+                                                        {
+                                                            Id = img.Id,
+                                                            Path = this.imagesService.GetDefaultCarImagesPath(img.Id, img.Extension),
+                                                        }).ToList(),
+                    SelectedCoverImageId = p.Car.Images.FirstOrDefault(img => img.IsCoverImage).Id,
+                    CarId = p.CarId,
+                }).FirstOrDefault();
+
+            return post;
+        }
+
+        public IEnumerable<ImageInfoViewModel> GetCurrentDbImagesForAPost(int postId)
+        {
+             var post = this.data.Posts.FirstOrDefault(p => p.CarId == postId);
+             var postImages = post.Car.Images
+                                                         .OrderByDescending(img => img.IsCoverImage)
+                                                         .Select(img => new ImageInfoViewModel()
+                                                         {
+                                                             Id = img.Id, 
+                                                             Path = this.imagesService.GetDefaultCarImagesPath(img.Id, img.Extension),
+                                                         }).ToList();
+
+             return postImages;
         }
 
         public IEnumerable<PostInLatestListViewModel> GetLatest(int count)
@@ -247,13 +303,28 @@
                         Horsepower = p.Car.Horsepower,
                         FuelType = p.Car.FuelType.Name,
                         TransmissionType = p.Car.TransmissionType.Name,
-                        CoverImage = "/images/cars/" + p.Car.Images.FirstOrDefault().Id + "." +
-                                     p.Car.Images.FirstOrDefault().Extension,
+                        CoverImage = this.imagesService.GetCoverImagePath(p.Car.Images.ToList())
                     },
                     PublishedOn = GetFormattedDate(p.PublishedOn),
                 }).ToList();
 
             return posts;
+        }
+
+        public async Task UpdateAsync(int postId, EditPostViewModel editedPost)
+        {
+            var post = this.data.Posts.FirstOrDefault(p => p.Id == postId);
+           
+            if (post == null)
+            {
+                throw new Exception($"Unfortunately, we cannot find such post in our system!");
+            }
+            
+            post.ModifiedOn = DateTime.UtcNow;
+            post.SellerName = editedPost.SellerName;
+            post.SellerPhoneNumber = editedPost.SellerPhoneNumber;
+            
+            await this.data.SaveChangesAsync();
         }
 
         private static string GetFormattedDate(DateTime inputDateTime)

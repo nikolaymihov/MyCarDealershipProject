@@ -11,6 +11,8 @@
 
         public DateTime PublishedOn { get; init; }
 
+        public DateTime? ModifiedOn { get; set; }
+
         [Required]
         public string CreatorId { get; set; }
 

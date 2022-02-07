@@ -6,7 +6,7 @@
     using Infrastructure.ValidationAttributes;
     using static Data.DataConstants;
 
-    public class CreateCarInputModel : BaseCarInputModel
+    public class CarFormInputModel : BaseCarInputModel
     {
         [Required(ErrorMessage = "The car make field is required.")]
         [StringLength(
@@ -69,8 +69,7 @@
             ErrorMessage = "The city name must be between {2} and {1} characters long.")]
         [Display(Name = "Car location - City:")]
         public string LocationCity { get; set; }
-
-        [Required(ErrorMessage = "At least one car image is required.")]
+        
         [Display(Name = "Images:")]
         public IEnumerable<IFormFile> Images { get; set; }
     }

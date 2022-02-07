@@ -1,11 +1,11 @@
 ﻿namespace MyCarDealershipProject.Services.Cars
 {
     using System;
-    using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
     using System.Collections.Generic;
     using Data;
+    using Images;
     using Models;
     using AutoMapper;
     using Data.Models;
@@ -14,17 +14,18 @@
 
     public class CarsService : ICarsService
     {
-        private readonly string[] allowedExtensions = new[] { "jpg", "png", "gif" };
         private readonly CarDealershipDbContext data;
+        private readonly IImagesService imagesService;
         private readonly IConfigurationProvider mapper;
 
-        public CarsService(CarDealershipDbContext data, IMapper mapper)
+        public CarsService(CarDealershipDbContext data, IImagesService imagesService, IMapper mapper)
         {
             this.data = data;
+            this.imagesService = imagesService;
             this.mapper = mapper.ConfigurationProvider;
         }
         
-        public async Task<Car> GetCarFromInputModelAsync(CreateCarInputModel inputCar, List<int> selectedExtrasIds, string userId, string imagePath)
+        public async Task<Car> GetCarFromInputModelAsync(CarFormInputModel inputCar, List<int> selectedExtrasIds, string userId, string imagePath)
         {
             var car = new Car()
             {
@@ -59,42 +60,112 @@
                 }
             }
 
+            if (inputCar.Images == null)
+            {
+                throw new Exception($"At least one car image is required.");
+            }
+
             if (inputCar.Images.Count() > 10)
             {
                 throw new Exception($"The maximum allowed number of photos is 10.");
             }
-
-            // /wwwroot/images/cars/ce8f1a9e-6c4a-44a1-adf3-f7c3d54ff859.jpg
-            Directory.CreateDirectory($"{imagePath}/cars/");
-
+            
             foreach (var image in inputCar.Images)
             {
-                var extension = Path.GetExtension(image.FileName).TrimStart('.');
-
-                if (!this.allowedExtensions.Any(ex => extension.EndsWith(ex)))
-                {
-                    throw new Exception($"Invalid image extension! The allowed extensions are {string.Join(", ", this.allowedExtensions)}.");
-                }
-
-                if (image.Length > (5 * 1024 * 1024))
-                {
-                    throw new Exception($"Invalid file size. The maximum allowed file size is 5Mb.");
-                }
-
-                var dbImage = new Image
-                {
-                    CreatorId = userId,
-                    Extension = extension,
-                };
-
+                var dbImage = await this.imagesService.UploadImageAsync(image, userId, imagePath);
                 car.Images.Add(dbImage);
+            }
 
-                var physicalPath = $"{imagePath}/cars/{dbImage.Id}.{extension}";
-                await using Stream fileStream = new FileStream(physicalPath, FileMode.Create);
-                await image.CopyToAsync(fileStream);
+            return car;
+        }
+
+        public async Task UpdateCarDataFromInputModelAsync(int carId, CarFormInputModel inputCar, List<int> selectedExtrasIds, List<string> deletedImagesIds, string userId, string imagePath, string coverImageId)
+        {
+            var car = this.data.Cars.FirstOrDefault(c => c.Id == carId);
+
+            if (car == null)
+            {
+                throw new Exception($"Unfortunately, such car in our system doesn't exist!");
             }
             
-            return car;
+            car.Make = inputCar.Make;
+            car.Model = inputCar.Model;
+            car.Description = inputCar.Description;
+            car.CategoryId = inputCar.CategoryId;
+            car.FuelTypeId = inputCar.FuelTypeId;
+            car.TransmissionTypeId = inputCar.TransmissionTypeId;
+            car.Year = inputCar.Year;
+            car.Kilometers = inputCar.Kilometers;
+            car.Horsepower = inputCar.Horsepower;
+            car.Price = inputCar.Price;
+            car.LocationCountry = inputCar.LocationCountry;
+            car.LocationCity = inputCar.LocationCity;
+
+            if (selectedExtrasIds.Any())
+            {
+                var currentExtrasIds = this.data.CarExtras.Where(ce => ce.CarId == carId).Select(ce => ce.ExtraId).ToList();
+
+                foreach (var extraId in selectedExtrasIds)
+                {
+                    var extra = this.data.Extras.FirstOrDefault(e => e.Id == extraId);
+
+                    if (extra != null && !currentExtrasIds.Contains(extraId))
+                    {
+                        car.CarExtras.Add(new CarExtra
+                        {
+                            Extra = extra,
+                            Car = car,
+                        });
+                    }
+                }
+            }
+
+            var currentImages = this.data.Images.Where(img => img.CarId == carId).ToList();
+            
+            if (deletedImagesIds.Count() >= currentImages.Count() && inputCar.Images == null)
+            {
+                throw new Exception($"You cannot delete all car images. At least one car image is required for each post.");
+            }
+
+            if (deletedImagesIds.Any())
+            {
+                foreach (var deletedImageId in deletedImagesIds)
+                {
+                    if (currentImages.Any(img => img.Id == deletedImageId))
+                    {
+                        var imageToRemove = this.data.Images.First(img => img.Id == deletedImageId);
+                        this.data.Images.Remove(imageToRemove);
+                    }
+                }
+            }
+
+            var currentCoverImage = currentImages.FirstOrDefault(img => img.IsCoverImage);
+
+            if (currentCoverImage == null || currentCoverImage.Id != coverImageId)
+            {
+                await this.imagesService.SetCoverImagePropertyAsync(coverImageId);
+            }
+
+            if (currentCoverImage != null && currentCoverImage.Id != coverImageId)
+            {
+                await this.imagesService.RemoveCoverImagePropertyAsync(currentCoverImage.Id);
+            }
+
+            if (inputCar.Images != null)
+            {
+                if (inputCar.Images.Count() + currentImages.Count > 10)
+                {
+                    throw new Exception($"The maximum allowed number of car images is 10.");
+                }
+                
+                foreach (var image in inputCar.Images)
+                {
+                    var dbImage = await this.imagesService.UploadImageAsync(image, userId, imagePath);
+                    car.Images.Add(dbImage);
+                }
+            }
+
+            await this.data.SaveChangesAsync();
         }
 
         public IEnumerable<CarCategoryServiceModel> GetAllCategories()

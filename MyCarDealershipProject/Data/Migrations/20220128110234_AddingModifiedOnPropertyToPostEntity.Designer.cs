@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyCarDealershipProject.Data;
 
 namespace MyCarDealershipProject.Migrations
 {
     [DbContext(typeof(CarDealershipDbContext))]
-    partial class CarDealershipDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220128110234_AddingModifiedOnPropertyToPostEntity")]
+    partial class AddingModifiedOnPropertyToPostEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -387,9 +389,6 @@ namespace MyCarDealershipProject.Migrations
 
                     b.Property<string>("Extension")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsCoverImage")
-                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 

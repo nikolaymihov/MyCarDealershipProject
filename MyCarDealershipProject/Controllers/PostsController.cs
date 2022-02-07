@@ -30,8 +30,8 @@
         [Authorize]
         public IActionResult Create()
         {
-            var createPostInputModel = new CreatePostInputModel();
-            var createCarInputModel = new CreateCarInputModel();
+            var createPostInputModel = new PostFormInputModel();
+            var createCarInputModel = new CarFormInputModel();
 
             this.carsService.FillBaseInputCarProperties(createCarInputModel);
 
@@ -42,7 +42,7 @@
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> Create(CreatePostInputModel input)
+        public async Task<IActionResult> Create(PostFormInputModel input)
         {
             var inputCar = input.Car;
             
@@ -124,7 +124,7 @@
 
         public IActionResult Offer(int id)
         {
-            var singlePostData = this.postsService.GetById(id);
+            var singlePostData = this.postsService.GetSinglePostViewModelById(id);
 
             return this.View(singlePostData);
         }
@@ -156,6 +156,63 @@
             }
 
             return this.View(postsByUserViewModel);
+        }
+
+        [Authorize]
+        public IActionResult Edit(int id)
+        {
+            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var post = this.postsService.GetPostFormInputModelById(id);
+
+            if (post.CreatorId != userId)
+            {
+                return Unauthorized();
+            }
+
+            this.carsService.FillBaseInputCarProperties(post.Car);
+
+            return this.View(post);
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> Edit(int id, EditPostViewModel editedPost)
+        {
+            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var editedCar = editedPost.Car;
+
+            if (editedPost.CreatorId != userId)
+            {
+                return Unauthorized();
+            }
+
+            if (!this.ModelState.IsValid)
+            {
+                this.carsService.FillBaseInputCarProperties(editedCar);
+                editedPost.CurrentImages = this.postsService.GetCurrentDbImagesForAPost(id);
+                return this.View(editedPost);
+            }
+
+            var selectedExtrasIds = editedPost.SelectedExtrasIds.ToList();
+            var deletedImagesIds = editedPost.DeletedImagesIds.ToList();
+            var imagePath = $"{this.environment.WebRootPath}/images";
+            
+            try
+            {
+                await this.carsService.UpdateCarDataFromInputModelAsync(editedPost.CarId, editedCar, selectedExtrasIds, deletedImagesIds, userId, imagePath, editedPost.SelectedCoverImageId);
+                await this.postsService.UpdateAsync(id, editedPost);
+            }
+            catch (Exception ex)
+            {
+                this.ModelState.AddModelError("CustomError", ex.Message);
+                this.carsService.FillBaseInputCarProperties(editedCar);
+                editedPost.CurrentImages = this.postsService.GetCurrentDbImagesForAPost(id);
+                return this.View(editedPost);
+            }
+
+            TempData[GlobalConstants.GlobalSuccessMessageKey] = "Your car post was edited successfully!";
+
+            return this.RedirectToAction("Offer", new { Id = id });
         }
     }
 }

@@ -8,7 +8,7 @@
 
     public interface ICarsService
     {
-        Task<Car> GetCarFromInputModelAsync(CreateCarInputModel inputCar, List<int> selectedExtrasIds, string userId, string imagePath);
+        Task<Car> GetCarFromInputModelAsync(CarFormInputModel inputCar, List<int> selectedExtrasIds, string userId, string imagePath);
 
         IEnumerable<CarCategoryServiceModel> GetAllCategories();
 
@@ -19,5 +19,7 @@
         IEnumerable<CarExtrasServiceModel> GetAllCarExtras();
 
         void FillBaseInputCarProperties(BaseCarInputModel inputCar);
+
+        Task UpdateCarDataFromInputModelAsync(int carId, CarFormInputModel inputCar, List<int> selectedExtrasIds, List<string> deletedImagesIds, string userId, string imagePath, string coverImageId);
     }
 }

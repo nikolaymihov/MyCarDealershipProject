@@ -1,21 +1,18 @@
 ﻿namespace MyCarDealershipProject.Models.Posts
 {
-    using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using Cars;
 
     using static Data.DataConstants;
 
-    public class CreatePostInputModel
+    public class PostFormInputModel
     {
         [Required]
-        public CreateCarInputModel Car { get; set; }
+        public CarFormInputModel Car { get; set; }
 
         public IEnumerable<int> SelectedExtrasIds { get; set; } = new HashSet<int>();
-
-        public DateTime PublishedOn { get; init; }
-
+        
         [Required(ErrorMessage = "The seller name field is required.")]
         [StringLength(
             PostSellerNameMaxLength,
