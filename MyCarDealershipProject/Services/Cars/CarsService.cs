@@ -81,7 +81,7 @@
 
         public async Task UpdateCarDataFromInputModelAsync(int carId, CarFormInputModel inputCar, List<int> selectedExtrasIds, List<string> deletedImagesIds, string userId, string imagePath, string coverImageId)
         {
-            var car = this.data.Cars.FirstOrDefault(c => c.Id == carId);
+            var car = this.GetDbCarById(carId);
 
             if (car == null)
             {
@@ -168,6 +168,16 @@
             await this.data.SaveChangesAsync();
         }
 
+        public async Task DeleteCarByIdAsync(int carId)
+        {
+            var car = this.GetDbCarById(carId);
+
+            car.IsDeleted = true;
+            car.DeletedOn = DateTime.UtcNow;
+            
+            await this.data.SaveChangesAsync();
+        }
+
         public IEnumerable<CarCategoryServiceModel> GetAllCategories()
         {
             return this.data
@@ -207,6 +217,11 @@
             inputCar.FuelTypes = this.GetAllFuelTypes();
             inputCar.TransmissionTypes = this.GetAllTransmissionTypes();
             inputCar.CarExtras = this.GetAllCarExtras();
+        }
+
+        private Car GetDbCarById(int carId)
+        {
+            return this.data.Cars.FirstOrDefault(c => c.Id == carId && !c.IsDeleted);
         }
     }
 }

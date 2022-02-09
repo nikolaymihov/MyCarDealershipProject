@@ -5,6 +5,7 @@
     using System.Globalization;
     using System.Threading.Tasks;
     using System.Collections.Generic;
+    using Cars;
     using Data;
     using Images;
     using Models;
@@ -16,11 +17,13 @@
     public class PostsService : IPostsService
     {
         private readonly CarDealershipDbContext data;
+        private readonly ICarsService carsService;
         private readonly IImagesService imagesService;
 
-        public PostsService(CarDealershipDbContext data, IImagesService imagesService)
+        public PostsService(CarDealershipDbContext data,ICarsService carsService , IImagesService imagesService)
         {
             this.data = data;
+            this.carsService = carsService;
             this.imagesService = imagesService;
         }
 
@@ -49,7 +52,7 @@
         public IEnumerable<PostByUserViewModel> GetPostsByUser(string userId, PostsSorting sorting = PostsSorting.NewestFirst)
         {
             var postsQuery = this.data.Posts
-                .Where(p => p.CreatorId == userId).AsQueryable();
+                .Where(p => p.CreatorId == userId && !p.IsDeleted).AsQueryable();
             
             postsQuery = GetSortedPosts(postsQuery, sorting);
 
@@ -73,7 +76,7 @@
 
         public IEnumerable<PostInListViewModel> GetMatchingPosts(SearchPostInputModel searchInputModel, PostsSorting sorting = PostsSorting.NewestFirst)
         {
-            var postsQuery = this.data.Posts.AsQueryable();
+            var postsQuery = this.data.Posts.Where(p => !p.IsDeleted).AsQueryable();
 
             if (searchInputModel.Car != null)
             {
@@ -200,7 +203,7 @@
         public SinglePostViewModel GetSinglePostViewModelById(int postId)
         {
             var post = this.data.Posts
-                .Where(p => p.CarId == postId)
+                .Where(p => p.CarId == postId && !p.IsDeleted)
                 .Select(p => new SinglePostViewModel()
                 {
                     Car = new SingleCarViewModel()
@@ -237,7 +240,7 @@
         public EditPostViewModel GetPostFormInputModelById(int postId)
         {
             var post = this.data.Posts
-                .Where(p => p.CarId == postId)
+                .Where(p => p.CarId == postId && !p.IsDeleted)
                 .Select(p => new EditPostViewModel()
                 {
                     Car = new CarFormInputModel()
@@ -274,7 +277,7 @@
 
         public IEnumerable<ImageInfoViewModel> GetCurrentDbImagesForAPost(int postId)
         {
-             var post = this.data.Posts.FirstOrDefault(p => p.CarId == postId);
+             var post = this.data.Posts.FirstOrDefault(p => p.CarId == postId && !p.IsDeleted);
              var postImages = post.Car.Images
                                                          .OrderByDescending(img => img.IsCoverImage)
                                                          .Select(img => new ImageInfoViewModel()
@@ -289,6 +292,7 @@
         public IEnumerable<PostInLatestListViewModel> GetLatest(int count)
         {
             var posts = this.data.Posts
+                .Where(p => !p.IsDeleted)
                 .OrderByDescending(p => p.PublishedOn)
                 .Take(count)
                 .Select(p => new PostInLatestListViewModel()
@@ -313,8 +317,8 @@
 
         public async Task UpdateAsync(int postId, EditPostViewModel editedPost)
         {
-            var post = this.data.Posts.FirstOrDefault(p => p.Id == postId);
-           
+            var post = this.GetDbPostById(postId);
+
             if (post == null)
             {
                 throw new Exception($"Unfortunately, we cannot find such post in our system!");
@@ -325,6 +329,56 @@
             post.SellerPhoneNumber = editedPost.SellerPhoneNumber;
             
             await this.data.SaveChangesAsync();
+        }
+
+        public PostByUserViewModel GetBasicPostInformationById(int postId)
+        {
+            var post = this.data.Posts
+                .Where(p => p.Id == postId && !p.IsDeleted)
+                .Select(p => new PostByUserViewModel()
+                {
+                    Car = new CarByUserViewModel()
+                    {
+                        Id = p.Car.Id,
+                        Make = p.Car.Make,
+                        Model = p.Car.Model,
+                        Price = p.Car.Price,
+                        Year = p.Car.Year,
+                        CoverImage = this.imagesService.GetCoverImagePath(p.Car.Images.ToList()),
+                    },
+                    PublishedOn = GetFormattedDate(p.PublishedOn),
+                }).FirstOrDefault();
+
+            return post;
+        }
+
+        public string GetPostCreatorId(int postId)
+        {
+            var post = this.GetDbPostById(postId);
+
+            return post?.CreatorId;
+        }
+
+        public async Task DeletePostByIdAsync(int postId)
+        {
+            var post = this.GetDbPostById(postId);
+
+            if (post == null)
+            {
+                throw new Exception($"Unfortunately, we cannot find such post in our system!");
+            }
+
+            await this.carsService.DeleteCarByIdAsync(post.Id);
+
+            post.IsDeleted = true;
+            post.DeletedOn = DateTime.UtcNow;
+            
+            await this.data.SaveChangesAsync();
+        }
+
+        private Post GetDbPostById(int postId)
+        {
+            return this.data.Posts.FirstOrDefault(p => p.Id == postId && !p.IsDeleted);
         }
 
         private static string GetFormattedDate(DateTime inputDateTime)

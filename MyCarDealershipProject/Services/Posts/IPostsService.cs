@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using Models;
     using Data.Models;
+    using Models.Cars;
     using Models.Posts;
     using Models.Images;
 
@@ -26,5 +27,11 @@
         Task UpdateAsync(int postId, EditPostViewModel input);
 
         IEnumerable<ImageInfoViewModel> GetCurrentDbImagesForAPost(int postId);
+
+        PostByUserViewModel GetBasicPostInformationById(int postId);
+
+        string GetPostCreatorId(int postId);
+
+        Task DeletePostByIdAsync(int postId);
     }
 }

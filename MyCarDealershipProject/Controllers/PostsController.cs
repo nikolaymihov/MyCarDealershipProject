@@ -164,6 +164,11 @@
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             var post = this.postsService.GetPostFormInputModelById(id);
 
+            if (post == null)
+            {
+                return NotFound();
+            }
+
             if (post.CreatorId != userId)
             {
                 return Unauthorized();
@@ -213,6 +218,53 @@
             TempData[GlobalConstants.GlobalSuccessMessageKey] = "Your car post was edited successfully!";
 
             return this.RedirectToAction("Offer", new { Id = id });
+        }
+
+        [Authorize]
+        public IActionResult Delete(int id)
+        {
+            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var post = this.postsService.GetBasicPostInformationById(id);
+            
+            if (post == null)
+            {
+                return NotFound();
+            }
+
+            var postCreatorId = this.postsService.GetPostCreatorId(id);
+            
+            if (userId != postCreatorId)
+            {
+                return Unauthorized();
+            }
+
+            return this.View(post);
+        }
+
+        [HttpPost]
+        [Authorize]
+        [ActionName("Delete")]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var postCreatorId = this.postsService.GetPostCreatorId(id);
+
+            if (userId != postCreatorId)
+            {
+                return Unauthorized();
+            }
+
+            try
+            {
+                await this.postsService.DeletePostByIdAsync(id);
+                TempData[GlobalConstants.GlobalSuccessMessageKey] = "Your car post was deleted successfully!";
+            }
+            catch (Exception ex)
+            {
+                this.TempData[GlobalConstants.GlobalErrorMessageKey] = ex.Message;
+            }
+
+            return this.RedirectToAction("Mine");
         }
     }
 }

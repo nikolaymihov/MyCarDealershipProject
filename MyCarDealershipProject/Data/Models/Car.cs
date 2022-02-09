@@ -1,5 +1,6 @@
 ﻿namespace MyCarDealershipProject.Data.Models
 {
+    using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
@@ -35,6 +36,10 @@
         [Required]
         [MaxLength(CarLocationCityMaxLength)]
         public string LocationCity { get; set; }
+
+        public bool IsDeleted { get; set; }
+
+        public DateTime? DeletedOn { get; set; }
 
         public int CategoryId { get; set; }
 

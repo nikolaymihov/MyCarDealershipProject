@@ -21,5 +21,7 @@
         void FillBaseInputCarProperties(BaseCarInputModel inputCar);
 
         Task UpdateCarDataFromInputModelAsync(int carId, CarFormInputModel inputCar, List<int> selectedExtrasIds, List<string> deletedImagesIds, string userId, string imagePath, string coverImageId);
+
+        Task DeleteCarByIdAsync(int carId);
     }
 }
