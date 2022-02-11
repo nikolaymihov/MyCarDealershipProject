@@ -66,7 +66,7 @@
 <div class="row align-content-center">
     @foreach (var post in Model.LatestPosts)
     {
-        <div class="card m-1" style="width: 13rem;">
+        <div class="card m-1" style="width: 16rem;">
             <div class="mb-1 align-self-end">@post.PublishedOn</div>
             <h6 class="card-price mt-3">€@post.Car.Price.ToString("N", CultureInfo.InvariantCulture).Replace(".00", string.Empty)</h6>
             <img src="@post.Car.CoverImage" class="card-img-top" alt="@post.Car.Make @post.Car.Model @post.Car.Year">

@@ -203,7 +203,7 @@
         public SinglePostViewModel GetSinglePostViewModelById(int postId)
         {
             var post = this.data.Posts
-                .Where(p => p.CarId == postId && !p.IsDeleted)
+                .Where(p => p.Id == postId && !p.IsDeleted)
                 .Select(p => new SinglePostViewModel()
                 {
                     Car = new SingleCarViewModel()
@@ -240,7 +240,7 @@
         public EditPostViewModel GetPostFormInputModelById(int postId)
         {
             var post = this.data.Posts
-                .Where(p => p.CarId == postId && !p.IsDeleted)
+                .Where(p => p.Id == postId && !p.IsDeleted)
                 .Select(p => new EditPostViewModel()
                 {
                     Car = new CarFormInputModel()
@@ -277,7 +277,7 @@
 
         public IEnumerable<ImageInfoViewModel> GetCurrentDbImagesForAPost(int postId)
         {
-             var post = this.data.Posts.FirstOrDefault(p => p.CarId == postId && !p.IsDeleted);
+             var post = this.data.Posts.FirstOrDefault(p => p.Id == postId && !p.IsDeleted);
              var postImages = post.Car.Images
                                                          .OrderByDescending(img => img.IsCoverImage)
                                                          .Select(img => new ImageInfoViewModel()

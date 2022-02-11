@@ -20,7 +20,7 @@
         {
             var latestPosts = new LatestPostsViewModel()
             {
-                LatestPosts = this.postsService.GetLatest(6),
+                LatestPosts = this.postsService.GetLatest(5),
             };
 
             return this.View(latestPosts);
