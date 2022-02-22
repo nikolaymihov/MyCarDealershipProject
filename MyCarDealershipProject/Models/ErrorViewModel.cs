@@ -4,6 +4,8 @@ namespace MyCarDealershipProject.Models
     {
         public string RequestId { get; set; }
 
-        public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
+        public string StatusCode { get; set; }
+
+        public bool ShowRequestId => !string.IsNullOrEmpty(this.RequestId);
     }
 }

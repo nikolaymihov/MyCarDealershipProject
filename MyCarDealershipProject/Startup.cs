@@ -15,6 +15,7 @@ namespace MyCarDealershipProject
     using Services.Posts;
     using Services.Images;
     using Services.Statistics;
+    using Infrastructure;
 
     public class Startup
     {
@@ -74,16 +75,17 @@ namespace MyCarDealershipProject
                 new CarDealershipDbContextSeeder().SeedAsync(dbContext).GetAwaiter().GetResult();
             }
 
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-                app.UseMigrationsEndPoint();
-            }
-            else
-            {
-                app.UseExceptionHandler("/Home/Error");
+            //if (env.IsDevelopment())
+            //{
+            //    app.UseDeveloperExceptionPage();
+            //    app.UseMigrationsEndPoint();
+            //}
+            //else
+            //{
+                app.UseStatusCodePagesWithRedirects(GlobalConstants.StatusCodePath);
+                app.UseExceptionHandler(GlobalConstants.ExceptionHandlerPath);
                 app.UseHsts();
-            }
+            //}
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
