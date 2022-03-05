@@ -1,0 +1,134 @@
+﻿@model MyCarDealership.Web.ViewModels.Posts.SearchPostInputModel
+
+@{
+    this.ViewData["Title"] = "Cars search";
+    var extraTypes = new Dictionary<int, string>();
+}
+
+<form method="get" asp-action="All" class="col-md-6 offset-md-3">
+    <h2 class="heading-margin text-center"><i>@this.ViewData["Title"]</i></h2>
+    <div class="row mb-4">
+        <div class="col">
+            <label asp-for="@Model.Car.TextSearchTerm" class="form-label"></label>
+            <input asp-for="@Model.Car.TextSearchTerm" class="form-control" placeholder="Mercedes, Mercedes S-Class, Golf 5 GTI, etc...">
+        </div>
+    </div>
+    <div class="row mb-4">
+        <div class="row">
+            <label asp-for="@Model.Car.FromYear" class="form-label">Year of first registration:</label>
+        </div>
+        <div class="col-md-4 mt-1">
+            <input asp-for="@Model.Car.FromYear" class="form-control" placeholder="From year">
+            <span asp-validation-for="@Model.Car.FromYear" class="text-danger"></span>
+        </div>
+        <div class="col-md-4 mt-1">
+            <input asp-for="@Model.Car.ToYear" class="form-control" placeholder="To year">
+            <span asp-validation-for="@Model.Car.ToYear" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="row mb-4">
+        <div class="row">
+            <label asp-for="@Model.Car.MinHorsepower" class="form-label">Horsepower (Hp):</label>
+        </div>
+        <div class="col-md-4 mt-1">
+            <input asp-for="@Model.Car.MinHorsepower" class="form-control" placeholder="Min (Hp)">
+            <span asp-validation-for="@Model.Car.MinHorsepower" class="text-danger"></span>
+        </div>
+        <div class="col-md-4 mt-1">
+            <input asp-for="@Model.Car.MaxHorsepower" class="form-control" placeholder="Max (Hp)">
+            <span asp-validation-for="@Model.Car.MaxHorsepower" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="row mb-4">
+        <div class="col-md-4 mt-1">
+            <label asp-for="@Model.Car.MinPrice" class="form-label"></label>
+            <input asp-for="@Model.Car.MinPrice" class="form-control" placeholder="€">
+            <span asp-validation-for="@Model.Car.MinPrice" class="text-danger"></span>
+        </div>
+        <div class="col-md-4 mt-1">
+            <label asp-for="@Model.Car.MaxPrice" class="form-label"></label>
+            <input asp-for="@Model.Car.MaxPrice" class="form-control" placeholder="€">
+            <span asp-validation-for="@Model.Car.MaxPrice" class="text-danger"></span>
+        </div>
+    </div>
+    <hr class="my-4"/>
+    <h5 class="my-3 text-center">Car category:</h5>
+    <div class="row">
+        <div class="col">
+            @foreach (var category in Model.Car.Categories)
+            {
+                <div class="form-check form-check-inline m-2">
+                    <input id="category_@category.Id"
+                           class="form-check-input"
+                           type="checkbox"
+                           name="SelectedCategoriesIds"
+                           value="@category.Id"
+                           @(Model.SelectedCategoriesIds.Contains(category.Id) ? "checked" : "")>
+                    <label class="form-check-label" for="category_@category.Id">@category.Name</label>
+                </div>
+            }
+        </div>
+    </div>
+    <hr class="my-4"/>
+    <h5 class="mb-3 text-center">Car fuel type:</h5>
+    <div class="row">
+        <div class="col">
+            @foreach (var fuelType in Model.Car.FuelTypes)
+            {
+                <div class="form-check form-check-inline m-2">
+                    <input id="fuelType_@fuelType.Id"
+                           class="form-check-input"
+                           type="checkbox"
+                           name="SelectedFuelTypesIds"
+                           value="@fuelType.Id"
+                           @(Model.SelectedFuelTypesIds.Contains(fuelType.Id) ? "checked" : "")>
+                    <label class="form-check-label" for="fuelType_@fuelType.Id">@fuelType.Name</label>
+                </div>
+            }
+        </div>
+    </div>
+    <hr class="my-4"/>
+    <h5 class="mb-3 text-center">Car transmission type:</h5>
+    <div class="row">
+        <div class="col">
+            @foreach (var transmissionType in Model.Car.TransmissionTypes)
+            {
+                <div class="form-check form-check-inline m-2">
+                    <input id="transmissionType_@transmissionType.Id"
+                           class="form-check-input"
+                           type="checkbox"
+                           name="SelectedTransmissionTypesIds"
+                           value="@transmissionType.Id"
+                           @(Model.SelectedTransmissionTypesIds.Contains(transmissionType.Id) ? "checked" : "")>
+                    <label class="form-check-label" for="transmissionType_@transmissionType.Id">@transmissionType.Name</label>
+                </div>
+            }
+        </div>
+    </div>
+    <hr class="my-4"/>
+    <h5 class="mb-1 text-center">Car extras:</h5>
+    <div class="row">
+        <div class="col">
+            @foreach (var carExtra in Model.Car.CarExtras)
+            {
+                @if (!extraTypes.ContainsKey(carExtra.TypeId))
+                {
+                    extraTypes[carExtra.TypeId] = carExtra.TypeName;
+                    <div class="mb-2 mt-3"><h6>@carExtra.TypeName</h6></div>
+                }
+
+                <div class="form-check-inline mb-2">
+                    <input id="extra_@carExtra.Id"
+                           class="form-check-input"
+                           type="checkbox"
+                           name="SelectedExtrasIds"
+                           value="@carExtra.Id"
+                           @(Model.SelectedExtrasIds.Contains(carExtra.Id) ? "checked" : "")>
+                    <label class="form-check-label" for="extra_@carExtra.Id">@carExtra.Name</label>
+                </div>
+            }
+        </div>
+    </div>
+    <hr/>
+    <div align="center"><input type="submit" class="btn btn-dark col-4" value="Search"/></div>
+</form>

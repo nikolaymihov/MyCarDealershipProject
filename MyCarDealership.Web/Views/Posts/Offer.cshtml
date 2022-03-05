@@ -1,0 +1,134 @@
+﻿@model MyCarDealership.Web.ViewModels.Posts.SinglePostViewModel
+
+@{
+    this.ViewData["Title"] = $"{Model.Car.Make} {Model.Car.Model}";
+    var counter = 0;
+}
+
+<div class="col-10 offset-1">
+    <div class="row heading-margin: 1">
+        <div class="container">
+            <div class="d-flex justify-content-start text-muted" style="float: left">
+                <h6>Published on: @Model.PublishedOn</h6>
+            </div>
+            <div class="d-flex justify-content-end post-price" style="float: right">
+                <text class="fs-3 text-black">€@Model.Car.Price.ToString("N", CultureInfo.InvariantCulture).Replace(".00", string.Empty)</text>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-2 mb-2">
+        <h1 class="display-4 mb-3 text-center text-black">@this.ViewData["Title"]</h1>
+    </div>
+    <div class="row text-black mb-2">
+        <h5 class="text-black">@Model.Car.Year, @Model.Car.Category, @Model.Car.FuelType, @(Model.Car.Kilometers)km, @Model.Car.TransmissionType, @(Model.Car.Horsepower)Hp</h5>
+        <hr />
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <h4 class="mb-3 text-center text-black">Description</h4>
+            @Model.Car.Description
+            <hr class="my-3" />
+            <h4 class="mb-3 text-center text-black">Car extras</h4>
+            <h5 class="mt-3 text-black"><i>Comfort:</i></h5>
+            @foreach (var extra in Model.Car.ComfortExtras)
+            {
+                <text>@extra</text>
+
+                if (counter < Model.Car.ComfortExtras.Count - 1)
+                {
+                    <text>, </text>
+                    counter++;
+                }
+                else
+                {
+                    counter = 0;
+                }
+            }
+            <h5 class="mt-3 text-black"><i>Safety:</i></h5>
+            @foreach (var extra in Model.Car.SafetyExtras)
+            {
+                <text>@extra</text>
+
+                if (counter < Model.Car.SafetyExtras.Count - 1)
+                {
+                    <text>, </text>
+                    counter++;
+                }
+                else
+                {
+                    counter = 0;
+                }
+            }
+            <h5 class="mt-3 text-black"><i>Other:</i></h5>
+            @foreach (var extra in Model.Car.OtherExtras)
+            {
+                <text>@extra</text>
+
+                if (counter < Model.Car.OtherExtras.Count - 1)
+                {
+                    <text>, </text>
+                    counter++;
+                }
+                else
+                {
+                    counter = 0;
+                }
+            }
+            <hr />
+            <div class="row mt-3 mb-3">
+                <div class="col">
+                    <div class="card" style="width: 17rem;">
+                        <div class="card-header text-center text-black">
+                            Seller information:
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item text-black fas fa-user-alt">&nbsp;&nbsp;@Model.SellerName</li>
+                            <li class="list-group-item text-black fas fa-phone-alt">&nbsp;&nbsp;@Model.SellerPhoneNumber</li>
+                            <li class="list-group-item text-black fas fa-map-marker-alt">&nbsp;&nbsp;@Model.Car.LocationCity, @Model.Car.LocationCountry</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-7 offset-md-1">
+            <div class="owl-carousel owl-theme">
+                @foreach (var image in Model.Car.Images)
+                {
+                    <img src="@image" class="img-fluid rounded float-end" alt="@Model.Car.Make @Model.Car.Model @Model.Car.Year">
+                }
+            </div>
+            <div class="row">
+                @for (int i = 0; i < Model.Car.Images.Count; i++)
+                {
+                    var image = Model.Car.Images[i];
+
+                    <img src="@image" class="gallery-item rounded m-1" onclick="loadCarouselItem(@i)" alt="@Model.Car.Make @Model.Car.Model @Model.Car.Year">
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script src="~/js/owl.carousel.min.js" asp-append-version="true"></script>
+    
+    <script>
+        $(document).ready(function () {
+            $(".owl-carousel").owlCarousel({
+                loop: true,
+                nav: true,
+                navText: ["<i class='fas fa-chevron-left'></i>", "<i class='fas fa-chevron-right'></i>"],
+                responsive: {
+                    0: {
+                        items: 1
+                    }
+                }
+            });
+        });
+
+        function loadCarouselItem(position) {
+            $(".owl-carousel").trigger('to.owl.carousel', position);
+        };
+    </script>
+}

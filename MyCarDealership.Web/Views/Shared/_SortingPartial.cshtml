@@ -1,0 +1,17 @@
+﻿@model MyCarDealership.Web.ViewModels.Posts.Contracts.ISortableModel
+
+<div class="row">
+    <div class="col-md-3">
+        <label asp-for="Sorting"><strong>Sort by:</strong></label>
+        <select asp-for="Sorting" class="form-select" id="sortingDropDown">
+            <option value="0" selected>Post created (newest first)</option>
+            <option value="1">Post created (oldest first)</option>
+            <option value="2">Price (highest first)</option>
+            <option value="3">Price (lowest first)</option>
+            <option value="4">Horsepower (most powerful first)</option>
+            <option value="5">Horsepower (least powerful first)</option>
+            <option value="6">Car year (newest first)</option>
+            <option value="7">Car year (oldest first)</option>
+        </select>
+    </div>
+</div>

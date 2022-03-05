@@ -1,0 +1,30 @@
+﻿@model MyCarDealership.Web.ViewModels.ErrorViewModel
+
+@{
+    ViewData["Title"] = "Error";
+}
+
+@if (Model.ShowRequestId)
+{
+    <p class="my-3">
+        <strong>Request ID:</strong> <code>@Model.RequestId</code>
+    </p>
+}
+
+<div class="text-center text-danger my-5">
+    @if (Model.StatusCode == "401")
+    {
+        <h1 class="my-5">Error @Model.StatusCode :(</h1>
+        <h2 class="my-3">Unfortunately, you are NOT authorized to see this page.</h2>
+    }
+    else if (Model.StatusCode == "404")
+    {
+        <h1 class="my-5">Error @Model.StatusCode :(</h1>
+        <h2 class="my-3">We are sorry, but the page you requested cannot be found.</h2>
+    }
+    else
+    {
+        <h1 class="my-5">Ooops, Error :(</h1>
+        <h2 class="my-3">Unfortunately, an error occurred while processing your request.</h2>
+    }
+</div>

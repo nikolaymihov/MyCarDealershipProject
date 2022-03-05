@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <UserSecretsId>aspnet-MyCarDealershipProject-28FC1372-11FE-44D9-9A28-987D2F90AC42</UserSecretsId>
+    <CopyRefAssembliesToPublishDirectory>false</CopyRefAssembliesToPublishDirectory>
+  </PropertyGroup>
+
+  <ItemGroup>
+	 <PackageReference Include="AutoMapper" Version="10.1.1" />
+	 <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
+	 <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="5.0.14" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.14" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="5.0.6" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="5.0.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.14" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.14">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MyCarDealership.AutoMapper\MyCarDealership.MapperConfig.csproj" />
+    <ProjectReference Include="..\MyCarDealership.Data.Models\MyCarDealership.Data.Models.csproj" />
+    <ProjectReference Include="..\MyCarDealership.Services\MyCarDealership.Services.csproj" />
+    <ProjectReference Include="..\MyCarDealership.Web.Constants\MyCarDealership.Web.Constants.csproj" />
+    <ProjectReference Include="..\MyCarDealership.Web.ViewModels\MyCarDealership.Web.ViewModels.csproj" />
+  </ItemGroup>
+
+</Project>

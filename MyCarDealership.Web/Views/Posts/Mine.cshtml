@@ -1,0 +1,58 @@
+﻿@model MyCarDealership.Web.ViewModels.Posts.PostsByUserViewModel
+
+@{
+    this.ViewData["Title"] = "My posts";
+}
+
+<h1 class="text-center">@this.ViewData["Title"]@(Model.PagesCount > 1 ? $", page {Model.PageNumber}" : string.Empty)</h1>
+@if (!Model.Posts.Any())
+{
+    <hr class="my-4">
+    <div class="text-center">
+        <p class="lead">Unfortunately, there are no car posts added by you in the system so why don't you just add one?</p>
+        <p class="lead">
+            <a asp-controller="Posts" asp-action="Create" class="btn btn-dark" role="button">Add a car post</a>
+        </p>
+    </div>
+}
+else
+{
+    <partial name="_SortingPartial" model="@Model" />
+    <hr />
+    <div class="row">
+        @foreach (var post in Model.Posts)
+        {
+            <div class="card m-3" style="width: 18rem;">
+                <div class="mb-1 align-self-end">@post.PublishedOn</div>
+                <h6 class="card-price mt-3">€@post.Car.Price.ToString("N", CultureInfo.InvariantCulture).Replace(".00", string.Empty)</h6>
+                <img src="@post.Car.CoverImage" class="card-img-top" alt="@post.Car.Make @post.Car.Model @post.Car.Year">
+                <div class="card-body d-flex flex-column">
+                    <a class="text-decoration-none" asp-action="Offer" asp-route-id="@post.Car.Id"><h5 class="card-title text-black text-center">@post.Car.Year @post.Car.Make @post.Car.Model</h5></a>
+                    <hr class="mt-1 mb-2" />
+                    <div class="row mt-auto">
+                        <div class="col-4"><a asp-action="Offer" asp-route-id="@post.Car.Id" class="btn btn-dark">View</a></div>
+                        <div class="col-4"><a asp-action="Edit" asp-route-id="@post.Car.Id" class="btn btn-primary">Edit</a></div>
+                        <div class="col-4"><a asp-action="Delete" asp-route-id="@post.Car.Id" class="btn btn-danger">Delete</a></div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+    <hr />
+    <partial name="_PagingPartial" model="@Model" />
+}
+
+@section Scripts
+{
+    <script>
+        $(document).ready(function () {
+            $("#sortingDropDown").change(function () {
+                const sortingValue = $(this).val();
+                const url = new URL(window.location.href);
+
+                url.searchParams.set("sorting", sortingValue);
+                window.location.href = url;
+            });
+        });
+    </script>
+}

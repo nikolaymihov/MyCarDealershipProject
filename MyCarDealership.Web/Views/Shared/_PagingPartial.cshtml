@@ -1,0 +1,48 @@
+﻿@model MyCarDealership.Web.ViewModels.PagingViewModel
+
+@{
+    var pageNumberAsString = Model.PageNumber.ToString();
+    var urlPathWithoutAPageNumber = this.Context.Request.Path.ToString().Replace(pageNumberAsString, "");
+
+    if (!urlPathWithoutAPageNumber.EndsWith('/'))
+    {
+        urlPathWithoutAPageNumber = urlPathWithoutAPageNumber + '/';
+    }
+}
+
+<nav aria-label="...">
+    <ul class="pagination justify-content-center">
+        <li class="page-item @if (!Model.HasPreviousPage) { <text>disabled</text> }">
+            <a class="page-link" href=@($"{urlPathWithoutAPageNumber}{Model.FirstPage}{this.Context.Request.QueryString}")>First</a>
+        </li>
+        <li class="page-item @if (!Model.HasPreviousPage) { <text>disabled</text> }">
+            <a class="page-link" href=@($"{urlPathWithoutAPageNumber}{Model.PreviousPageNumber}{this.Context.Request.QueryString}")>Previous</a>
+        </li>
+        @for (int i = Model.PageNumber - 4; i < Model.PageNumber; i++)
+        {
+            if (i > 0)
+            {
+                <li class="page-item"><a class="page-link" href=@($"{urlPathWithoutAPageNumber}{i}{this.Context.Request.QueryString}")>@i</a></li>
+            }
+        }
+        <li class="page-item active" aria-current="page">
+            <span class="page-link">
+                @Model.PageNumber
+                <span class="sr-only">(current)</span>
+            </span>
+        </li>
+        @for (int i = Model.PageNumber + 1; i <= Model.PageNumber + 4; i++)
+        {
+            if (i <= Model.PagesCount)
+            {
+                <li class="page-item"><a class="page-link" href=@($"{urlPathWithoutAPageNumber}{i}{this.Context.Request.QueryString}")>@i</a></li>
+            }
+        }
+        <li class="page-item @if (!Model.HasNextPage) { <text>disabled</text> }">
+            <a class="page-link" href=@($"{urlPathWithoutAPageNumber}{Model.NextPageNumber}{this.Context.Request.QueryString}")>Next</a>
+        </li>
+        <li class="page-item @if (!Model.HasNextPage) { <text>disabled</text> }">
+            <a class="page-link"  href=@($"{urlPathWithoutAPageNumber}{Model.LastPage}{this.Context.Request.QueryString}")>Last</a>
+        </li>
+    </ul>
+</nav>

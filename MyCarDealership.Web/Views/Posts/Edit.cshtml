@@ -1,0 +1,187 @@
+﻿@model MyCarDealership.Web.ViewModels.Posts.EditPostViewModel
+
+@{
+    this.ViewData["Title"] = "Post editing";
+    var extraTypes = new Dictionary<int, string>();
+}
+
+<form method="post" class="col-md-6 offset-md-3" enctype="multipart/form-data">
+    <h2 class="heading-margin text-center"><i>Edit your car post</i></h2>
+    <div class="row mb-3">
+        <div class="col-md-6 mb-3">
+            <label asp-for="@Model.Car.Make" class="form-label"></label>
+            <input asp-for="@Model.Car.Make" class="form-control" placeholder="Mercedes, BMW, Honda, etc...">
+            <span asp-validation-for="@Model.Car.Make" class="text-danger"></span>
+        </div>
+        <div class="col-md-6 mb-3">
+            <label asp-for="@Model.Car.Model" class="form-label"></label>
+            <input asp-for="@Model.Car.Model" class="form-control" placeholder="S-Class, 640D, Accord, etc...">
+            <span asp-validation-for="@Model.Car.Model" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="mb-3">
+        <label asp-for="@Model.Car.Description" class="form-label"></label>
+        <textarea asp-for="@Model.Car.Description" class="form-control" rows="6" placeholder="This is the perfect car..."></textarea>
+        <span asp-validation-for="@Model.Car.Description" class="text-danger"></span>
+    </div>
+    <div class="row mb-3">
+        <div class="col-md-4 mb-3 mt-3">
+            <label asp-for="@Model.Car.CategoryId" class="form-label"></label>
+            <select asp-for="@Model.Car.CategoryId" class="form-select">
+                <option disabled selected>Choose category</option>
+                @foreach (var category in Model.Car.Categories)
+                {
+                    <option value="@category.Id">@category.Name</option>
+                }
+            </select>
+            <span asp-validation-for="@Model.Car.CategoryId" class="small text-danger"></span>
+        </div>
+        <div class="col-md-4 mb-3 mt-3">
+            <label asp-for="@Model.Car.FuelTypeId" class="form-label"></label>
+            <select asp-for="@Model.Car.FuelTypeId" class="form-select">
+                <option disabled selected>Choose fuel type</option>
+                @foreach (var fuelType in Model.Car.FuelTypes)
+                {
+                    <option value="@fuelType.Id">@fuelType.Name</option>
+                }
+            </select>
+            <span asp-validation-for="@Model.Car.FuelTypeId" class="small text-danger"></span>
+        </div>
+        <div class="col-md-4 mb-3 mt-3">
+            <label asp-for="@Model.Car.TransmissionTypeId" class="form-label"></label>
+            <select asp-for="@Model.Car.TransmissionTypeId" class="form-select">
+                <option disabled selected>Choose transmission type</option>
+                @foreach (var transmissionType in Model.Car.TransmissionTypes)
+                {
+                    <option value="@transmissionType.Id">@transmissionType.Name</option>
+                }
+            </select>
+            <span asp-validation-for="@Model.Car.TransmissionTypeId" class="small text-danger"></span>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col-md-4 mb-3 mt-3">
+            <label asp-for="@Model.Car.Year" class="form-label"></label>
+            <input asp-for="@Model.Car.Year" class="form-control">
+            <span asp-validation-for="@Model.Car.Year" class="text-danger"></span>
+        </div>
+        <div class="col-md-4 mb-3 mt-3">
+            <label asp-for="@Model.Car.Kilometers" class="form-label"></label>
+            <input asp-for="@Model.Car.Kilometers" class="form-control">
+            <span asp-validation-for="@Model.Car.Kilometers" class="text-danger"></span>
+        </div>
+        <div class="col-md-4 mb-3 mt-3">
+            <label asp-for="@Model.Car.Horsepower" class="form-label"></label>
+            <input asp-for="@Model.Car.Horsepower" class="form-control">
+            <span asp-validation-for="@Model.Car.Horsepower" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col-md-4 mb-3">
+            <label asp-for="@Model.Car.Price" class="form-label"></label>
+            <input asp-for="@Model.Car.Price" class="form-control">
+            <span asp-validation-for="@Model.Car.Price" class="text-danger"></span>
+        </div>
+        <div class="col-md-4 mb-3">
+            <label asp-for="@Model.Car.LocationCountry" class="form-label"></label>
+            <input asp-for="@Model.Car.LocationCountry" class="form-control">
+            <span asp-validation-for="@Model.Car.LocationCountry" class="text-danger"></span>
+        </div>
+        <div class="col-md-4 mb-3">
+            <label asp-for="@Model.Car.LocationCity" class="form-label"></label>
+            <input asp-for="@Model.Car.LocationCity" class="form-control">
+            <span asp-validation-for="@Model.Car.LocationCity" class="text-danger"></span>
+        </div>
+    </div>
+    <hr />
+    <h5 class="mb-3 text-center">Car images:</h5>
+    <div class="row mb-3">
+        @foreach (var image in @Model.CurrentImages)
+        {
+            <div class="col-md-4 my-3">
+                <img src="@image.Path" class="img-fluid rounded" alt="@Model.Car.Make @Model.Car.Model @Model.Car.Year">
+                <input id="cover_@image.Id"
+                       class="form-check-input border-dark"
+                       type="checkbox"
+                       name="SelectedCoverImageId"
+                       value="@image.Id"
+                       @(Model.SelectedCoverImageId == image.Id ? "checked" : "")>
+                <label class="form-check-label text-dark" for="cover_@image.Id">Cover photo</label>
+                <input id="deleted_@image.Id"
+                       class="form-check-input border-dark bg-danger"
+                       type="checkbox"
+                       name="DeletedImagesIds"
+                       value="@image.Id"
+                       @(Model.DeletedImagesIds.Contains(image.Id) ? "checked" : "")>
+                <label class="form-check-label text-danger" for="deleted_@image.Id">Delete</label>
+            </div>
+         }
+    </div>
+    <div class="row mb-3">
+        <div class="col-md-8 mb-3">
+            <label asp-for="@Model.Car.Images" class="form-label">Upload more images:</label>
+            <input asp-for="@Model.Car.Images" class="form-control" />
+            <span asp-validation-for="@Model.Car.Images" class="text-danger"></span>
+            <span class="text-danger">@Html.ValidationMessage("CustomError")</span>
+        </div>
+    </div>
+    <hr />
+    <h5 class="mb-1 text-center">Car extras:</h5>
+    <div class="row">
+        <div class="col">
+            @foreach (var carExtra in Model.Car.CarExtras)
+            {
+                @if (!extraTypes.ContainsKey(carExtra.TypeId))
+                {
+                    extraTypes[carExtra.TypeId] = carExtra.TypeName;
+                    <div class="mb-2 mt-3"><h6>@carExtra.TypeName</h6></div>
+                }
+
+                <div class="form-check-inline mb-2">
+                    <input id="extra_@carExtra.Id"
+                           class="form-check-input"
+                           type="checkbox"
+                           name="SelectedExtrasIds"
+                           value="@carExtra.Id"
+                           @(Model.SelectedExtrasIds.Contains(carExtra.Id) ? "checked" : "")>
+                    <label class="form-check-label" for="extra_@carExtra.Id">@carExtra.Name</label>
+                </div>
+            }
+        </div>
+    </div>
+    <hr />
+    <h5 class="mb-3 text-center">Contact information:</h5>
+    <div class="row mb-3">
+        <div class="col-md-6 mb-3">
+            <label asp-for="@Model.SellerName" class="form-label"></label>
+            <input asp-for="@Model.SellerName" class="form-control">
+            <span asp-validation-for="@Model.SellerName" class="text-danger"></span>
+        </div>
+        <div class="col-md-6 mb-3">
+            <label asp-for="@Model.SellerPhoneNumber" class="form-label"></label>
+            <input asp-for="@Model.SellerPhoneNumber" class="form-control">
+            <span asp-validation-for="@Model.SellerPhoneNumber" class="text-danger"></span>
+        </div>
+    </div>
+    <hr />
+    <input type="hidden" asp-for="@Model.CreatorId" />
+    <input type="hidden" asp-for="@Model.CarId" />
+    <div align="center"><input type="submit" class="btn btn-dark col-4" value="Save changes" /></div>
+</form>
+
+
+@section Scripts
+{
+    <script>
+        $(document).ready(function () {
+            $('input[id^=cover_][type="checkbox"]').change(function () {
+                $('input[id^=cover_][type="checkbox"]').not(this).prop('checked', false);
+                $(this).siblings('input[id^=deleted_][type="checkbox"]').prop('checked', false);
+            });
+
+            $('input[id^=deleted_][type="checkbox"]').change(function () {
+                $(this).siblings('input[id^=cover_][type="checkbox"]').prop('checked', false);
+            });
+        });
+    </script>
+}
