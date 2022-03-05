@@ -9,8 +9,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MyCarDealership.Common\MyCarDealership.CustomAttributes.csproj" />
-    <ProjectReference Include="..\MyCarDealership.Data.Common\MyCarDealership.Data.Common.csproj" />
+    <ProjectReference Include="..\..\Common\MyCarDealership.Common\MyCarDealership.CustomAttributes.csproj" />
+    <ProjectReference Include="..\..\Data\MyCarDealership.Data.Common\MyCarDealership.Data.Common.csproj" />
   </ItemGroup>
 
 </Project>

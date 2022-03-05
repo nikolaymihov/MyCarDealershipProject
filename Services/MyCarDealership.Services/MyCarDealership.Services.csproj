@@ -11,8 +11,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MyCarDealership.Data.Models\MyCarDealership.Data.Models.csproj" />
-    <ProjectReference Include="..\MyCarDealership.Data\MyCarDealership.Data.csproj" />
+    <ProjectReference Include="..\..\Data\MyCarDealership.Data.Models\MyCarDealership.Data.Models.csproj" />
+    <ProjectReference Include="..\..\Data\MyCarDealership.Data\MyCarDealership.Data.csproj" />
   </ItemGroup>
 
 </Project>
