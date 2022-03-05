@@ -4,23 +4,22 @@
     using System.Collections.Generic;
     using Models;
     using Data.Models;
-    using MyCarDealershipProject.Models.Cars;
 
     public interface ICarsService
     {
-        Task<Car> GetCarFromInputModelAsync(CarFormInputModel inputCar, List<int> selectedExtrasIds, string userId, string imagePath);
+        Task<Car> GetCarFromInputModelAsync(CarFormInputModelDTO inputCar, List<int> selectedExtrasIds, string userId, string imagePath);
 
-        IEnumerable<CarCategoryServiceModel> GetAllCategories();
+        IEnumerable<BaseCarSpecificationServiceModel> GetAllCategories();
 
-        IEnumerable<CarFuelTypeServiceModel> GetAllFuelTypes();
+        IEnumerable<BaseCarSpecificationServiceModel> GetAllFuelTypes();
 
-        IEnumerable<CarTransmissionTypeServiceModel> GetAllTransmissionTypes();
+        IEnumerable<BaseCarSpecificationServiceModel> GetAllTransmissionTypes();
 
         IEnumerable<CarExtrasServiceModel> GetAllCarExtras();
 
-        void FillBaseInputCarProperties(BaseCarInputModel inputCar);
+        void FillInputCarBaseProperties(BaseCarInputModelDTO inputCar);
 
-        Task UpdateCarDataFromInputModelAsync(int carId, CarFormInputModel inputCar, List<int> selectedExtrasIds, List<string> deletedImagesIds, string userId, string imagePath, string coverImageId);
+        Task UpdateCarDataFromInputModelAsync(int carId, CarFormInputModelDTO inputCar, List<int> selectedExtrasIds, List<string> deletedImagesIds, string userId, string imagePath, string coverImageId);
 
         Task DeleteCarByIdAsync(int carId);
     }

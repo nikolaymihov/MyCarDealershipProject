@@ -7,7 +7,7 @@
 <div>
     <h1 class="display-4 text-center">Welcome to the best car marketplace!</h1>
     @if (!Model.LatestPosts.Any())
-    {
+     {
         <hr class="my-4">
         <div class="text-center">
             <p class="lead">Unfortunately, there are no car posts in the system currently available so why don't you just add one?</p>
@@ -15,7 +15,7 @@
                 <a asp-controller="Posts" asp-action="Create" class="btn btn-dark" role="button">Add a car post</a>
             </p>
         </div>
-    }
+     }
     <hr class="my-4">
 </div>
 <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">

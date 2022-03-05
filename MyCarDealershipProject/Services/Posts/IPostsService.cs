@@ -4,31 +4,29 @@
     using System.Collections.Generic;
     using Models;
     using Data.Models;
-    using Models.Cars;
-    using Models.Posts;
-    using Models.Images;
+    using Images.Models;
 
     public interface IPostsService
     {
-        Task<int> CreateAsync(PostFormInputModel inputPost, Car car, string userId);
+        Task<int> CreateAsync(PostFormInputModelDTO inputPost, Car car, string userId);
 
-        IEnumerable<PostInListViewModel> GetMatchingPosts(SearchPostInputModel searchInputModel, PostsSorting sorting = PostsSorting.NewestFirst);
+        IEnumerable<PostInListDTO> GetMatchingPosts(SearchPostDTO searchInputModel, int sortingNumber);
         
         IEnumerable<T> GetPostsByPage<T>(IEnumerable<T> posts, int page, int postsPerPage);
 
-        IEnumerable<PostByUserViewModel> GetPostsByUser(string userId, PostsSorting sorting = PostsSorting.NewestFirst);
+        IEnumerable<PostByUserDTO> GetPostsByUser(string userId, int sortingNumber);
 
-        SinglePostViewModel GetSinglePostViewModelById(int postId);
+        SinglePostDTO GetSinglePostViewModelById(int postId);
 
-        EditPostViewModel GetPostFormInputModelById(int postId);
+        EditPostDTO GetPostFormInputModelById(int postId);
 
-        IEnumerable<PostInLatestListViewModel> GetLatest(int count);
+        IEnumerable<PostInLatestListDTO> GetLatest(int count);
 
-        Task UpdateAsync(int postId, EditPostViewModel input);
+        Task UpdateAsync(int postId, EditPostDTO input);
 
-        IEnumerable<ImageInfoViewModel> GetCurrentDbImagesForAPost(int postId);
+        IEnumerable<ImageInfoDTO> GetCurrentDbImagesForAPost(int postId);
 
-        PostByUserViewModel GetBasicPostInformationById(int postId);
+        PostByUserDTO GetBasicPostInformationById(int postId);
 
         string GetPostCreatorId(int postId);
 

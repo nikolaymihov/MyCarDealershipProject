@@ -10,22 +10,21 @@
     using AutoMapper;
     using Data.Models;
     using AutoMapper.QueryableExtensions;
-    using MyCarDealershipProject.Models.Cars;
 
     public class CarsService : ICarsService
     {
         private readonly CarDealershipDbContext data;
         private readonly IImagesService imagesService;
-        private readonly IConfigurationProvider mapper;
+        private readonly IConfigurationProvider mapperConfiguration;
 
         public CarsService(CarDealershipDbContext data, IImagesService imagesService, IMapper mapper)
         {
             this.data = data;
             this.imagesService = imagesService;
-            this.mapper = mapper.ConfigurationProvider;
+            this.mapperConfiguration = mapper.ConfigurationProvider;
         }
         
-        public async Task<Car> GetCarFromInputModelAsync(CarFormInputModel inputCar, List<int> selectedExtrasIds, string userId, string imagePath)
+        public async Task<Car> GetCarFromInputModelAsync(CarFormInputModelDTO inputCar, List<int> selectedExtrasIds, string userId, string imagePath)
         {
             var car = new Car()
             {
@@ -60,7 +59,7 @@
                 }
             }
 
-            if (inputCar.Images == null)
+            if (!inputCar.Images.Any())
             {
                 throw new Exception($"At least one car image is required.");
             }
@@ -79,7 +78,7 @@
             return car;
         }
 
-        public async Task UpdateCarDataFromInputModelAsync(int carId, CarFormInputModel inputCar, List<int> selectedExtrasIds, List<string> deletedImagesIds, string userId, string imagePath, string coverImageId)
+        public async Task UpdateCarDataFromInputModelAsync(int carId, CarFormInputModelDTO inputCar, List<int> selectedExtrasIds, List<string> deletedImagesIds, string userId, string imagePath, string coverImageId)
         {
             var car = this.GetDbCarById(carId);
 
@@ -118,11 +117,23 @@
                         });
                     }
                 }
+
+                if (selectedExtrasIds.Count() < currentExtrasIds.Count)
+                {
+                    var deletedExtrasIds = currentExtrasIds.Where(extraId => !selectedExtrasIds.Contains(extraId)).ToList();
+
+                    foreach (var deletedExtraId in deletedExtrasIds)
+                    {
+                       var deletedCarExtra = this.data.CarExtras.First(ce => ce.CarId == carId && ce.ExtraId == deletedExtraId);
+
+                       this.data.CarExtras.Remove(deletedCarExtra);
+                    }
+                }
             }
 
             var currentImages = this.data.Images.Where(img => img.CarId == carId).ToList();
             
-            if (deletedImagesIds.Count() >= currentImages.Count() && inputCar.Images == null)
+            if (deletedImagesIds.Count >= currentImages.Count && !inputCar.Images.Any())
             {
                 throw new Exception($"You cannot delete all car images. At least one car image is required for each post.");
             }
@@ -178,27 +189,27 @@
             await this.data.SaveChangesAsync();
         }
 
-        public IEnumerable<CarCategoryServiceModel> GetAllCategories()
+        public IEnumerable<BaseCarSpecificationServiceModel> GetAllCategories()
         {
             return this.data
                 .Categories
-                .ProjectTo<CarCategoryServiceModel>(this.mapper)
+                .ProjectTo<BaseCarSpecificationServiceModel>(this.mapperConfiguration)
                 .ToList();
         }
 
-        public IEnumerable<CarFuelTypeServiceModel> GetAllFuelTypes()
+        public IEnumerable<BaseCarSpecificationServiceModel> GetAllFuelTypes()
         {
             return this.data
                 .FuelTypes
-                .ProjectTo<CarFuelTypeServiceModel>(this.mapper)
+                .ProjectTo<BaseCarSpecificationServiceModel>(this.mapperConfiguration)
                 .ToList();
         }
 
-        public IEnumerable<CarTransmissionTypeServiceModel> GetAllTransmissionTypes()
+        public IEnumerable<BaseCarSpecificationServiceModel> GetAllTransmissionTypes()
         {
             return this.data
                 .TransmissionTypes
-                .ProjectTo<CarTransmissionTypeServiceModel>(this.mapper)
+                .ProjectTo<BaseCarSpecificationServiceModel>(this.mapperConfiguration)
                 .ToList();
         }
 
@@ -207,11 +218,11 @@
             return this.data
                 .Extras        
                 .OrderBy(e => e.TypeId)
-                .ProjectTo<CarExtrasServiceModel>(this.mapper)
+                .ProjectTo<CarExtrasServiceModel>(this.mapperConfiguration)
                 .ToList();
         }
 
-        public void FillBaseInputCarProperties(BaseCarInputModel inputCar)
+        public void FillInputCarBaseProperties(BaseCarInputModelDTO inputCar)
         {
             inputCar.Categories = this.GetAllCategories();
             inputCar.FuelTypes = this.GetAllFuelTypes();

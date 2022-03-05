@@ -6,13 +6,12 @@
     using System.Threading.Tasks;
     using System.Collections.Generic;
     using Cars;
+    using Cars.Models;
     using Data;
-    using Images;
-    using Models;
     using Data.Models;
-    using Models.Cars;
-    using Models.Posts;
-    using Models.Images;
+    using Models;
+    using Images;
+    using Images.Models;
 
     public class PostsService : IPostsService
     {
@@ -27,7 +26,7 @@
             this.imagesService = imagesService;
         }
 
-        public async Task<int> CreateAsync(PostFormInputModel inputPost, Car car, string userId)
+        public async Task<int> CreateAsync(PostFormInputModelDTO inputPost, Car car, string userId)
         {
             var post = new Post
             {
@@ -49,17 +48,17 @@
             return posts.Skip((page - 1) * postsPerPage).Take(postsPerPage).ToList();
         }
 
-        public IEnumerable<PostByUserViewModel> GetPostsByUser(string userId, PostsSorting sorting = PostsSorting.NewestFirst)
+        public IEnumerable<PostByUserDTO> GetPostsByUser(string userId, int sortingNumber)
         {
             var postsQuery = this.data.Posts
                 .Where(p => p.CreatorId == userId && !p.IsDeleted).AsQueryable();
             
-            postsQuery = GetSortedPosts(postsQuery, sorting);
+            postsQuery = GetSortedPosts(postsQuery, sortingNumber);
 
             var posts = postsQuery    
-                .Select(p => new PostByUserViewModel()
+                .Select(p => new PostByUserDTO()
                 {
-                    Car = new CarByUserViewModel()
+                    Car = new CarByUserDTO()
                     {
                         Id = p.Car.Id,
                         Make = p.Car.Make,
@@ -74,7 +73,7 @@
             return posts;
         }
 
-        public IEnumerable<PostInListViewModel> GetMatchingPosts(SearchPostInputModel searchInputModel, PostsSorting sorting = PostsSorting.NewestFirst)
+        public IEnumerable<PostInListDTO> GetMatchingPosts(SearchPostDTO searchInputModel, int sortingNumber)
         {
             var postsQuery = this.data.Posts.Where(p => !p.IsDeleted).AsQueryable();
 
@@ -170,12 +169,12 @@
                 throw new Exception("Unfortunately, there are no cars in our system that match your search criteria.");
             }
 
-            postsQuery = GetSortedPosts(postsQuery, sorting);
+            postsQuery = GetSortedPosts(postsQuery, sortingNumber);
 
             var posts = postsQuery
-                .Select(p => new PostInListViewModel()
+                .Select(p => new PostInListDTO()
                 {
-                    Car = new CarInListViewModel()
+                    Car = new CarInListDTO()
                     {
                         Id = p.Car.Id,
                         Make = p.Car.Make,
@@ -200,13 +199,13 @@
             return posts;
         }
 
-        public SinglePostViewModel GetSinglePostViewModelById(int postId)
+        public SinglePostDTO GetSinglePostViewModelById(int postId)
         {
             var post = this.data.Posts
                 .Where(p => p.Id == postId && !p.IsDeleted)
-                .Select(p => new SinglePostViewModel()
+                .Select(p => new SinglePostDTO()
                 {
-                    Car = new SingleCarViewModel()
+                    Car = new SingleCarDTO()
                     {
                         Id = p.Car.Id,
                         Make = p.Car.Make,
@@ -237,13 +236,13 @@
             return post;
         }
 
-        public EditPostViewModel GetPostFormInputModelById(int postId)
+        public EditPostDTO GetPostFormInputModelById(int postId)
         {
             var post = this.data.Posts
                 .Where(p => p.Id == postId && !p.IsDeleted)
-                .Select(p => new EditPostViewModel()
+                .Select(p => new EditPostDTO()
                 {
-                    Car = new CarFormInputModel()
+                    Car = new CarFormInputModelDTO()
                     {
                         Make = p.Car.Make,
                         Model = p.Car.Model,
@@ -263,7 +262,7 @@
                     SellerPhoneNumber = p.SellerPhoneNumber,
                     CreatorId = p.CreatorId,
                     CurrentImages = p.Car.Images.OrderByDescending(img => img.IsCoverImage)
-                                                .Select(img => new ImageInfoViewModel()
+                                                .Select(img => new ImageInfoDTO()
                                                         {
                                                             Id = img.Id,
                                                             Path = this.imagesService.GetDefaultCarImagesPath(img.Id, img.Extension),
@@ -275,12 +274,14 @@
             return post;
         }
 
-        public IEnumerable<ImageInfoViewModel> GetCurrentDbImagesForAPost(int postId)
+        public IEnumerable<ImageInfoDTO> GetCurrentDbImagesForAPost(int postId)
         {
              var post = this.data.Posts.FirstOrDefault(p => p.Id == postId && !p.IsDeleted);
-             var postImages = post.Car.Images
+             var car = this.data.Cars.FirstOrDefault(c => c.Id == post.CarId && !c.IsDeleted);
+             var postImages = this.data.Images
+                                                         .Where(img => img.CarId == car.Id)
                                                          .OrderByDescending(img => img.IsCoverImage)
-                                                         .Select(img => new ImageInfoViewModel()
+                                                         .Select(img => new ImageInfoDTO()
                                                          {
                                                              Id = img.Id, 
                                                              Path = this.imagesService.GetDefaultCarImagesPath(img.Id, img.Extension),
@@ -289,15 +290,15 @@
              return postImages;
         }
 
-        public IEnumerable<PostInLatestListViewModel> GetLatest(int count)
+        public IEnumerable<PostInLatestListDTO> GetLatest(int count)
         {
             var posts = this.data.Posts
                 .Where(p => !p.IsDeleted)
                 .OrderByDescending(p => p.PublishedOn)
                 .Take(count)
-                .Select(p => new PostInLatestListViewModel()
+                .Select(p => new PostInLatestListDTO()
                 {
-                    Car = new LatestPostsCarViewModel()
+                    Car = new LatestPostsCarDTO()
                     {
                         Id = p.Car.Id,
                         Make = p.Car.Make,
@@ -315,7 +316,7 @@
             return posts;
         }
 
-        public async Task UpdateAsync(int postId, EditPostViewModel editedPost)
+        public async Task UpdateAsync(int postId, EditPostDTO editedPost)
         {
             var post = this.GetDbPostById(postId);
 
@@ -331,13 +332,13 @@
             await this.data.SaveChangesAsync();
         }
 
-        public PostByUserViewModel GetBasicPostInformationById(int postId)
+        public PostByUserDTO GetBasicPostInformationById(int postId)
         {
             var post = this.data.Posts
                 .Where(p => p.Id == postId && !p.IsDeleted)
-                .Select(p => new PostByUserViewModel()
+                .Select(p => new PostByUserDTO()
                 {
-                    Car = new CarByUserViewModel()
+                    Car = new CarByUserDTO()
                     {
                         Id = p.Car.Id,
                         Make = p.Car.Make,
@@ -391,18 +392,18 @@
             return inputDateTime.ToString("d", CultureInfo.InvariantCulture);
         }
         
-        private static IQueryable<Post> GetSortedPosts(IQueryable<Post> postsQuery, PostsSorting sorting)
+        private static IQueryable<Post> GetSortedPosts(IQueryable<Post> postsQuery, int sortingNumber)
         {
-            postsQuery = sorting switch
+            postsQuery = sortingNumber switch
             {
-                PostsSorting.OldestFirst => postsQuery.OrderBy(p => p.Id),
-                PostsSorting.PriceHighestFirst => postsQuery.OrderByDescending(p => p.Car.Price),
-                PostsSorting.PriceLowestFirst => postsQuery.OrderBy(p => p.Car.Price),
-                PostsSorting.HorsepowerHighestFirst => postsQuery.OrderByDescending(p => p.Car.Horsepower),
-                PostsSorting.HorsepowerLowestFirst => postsQuery.OrderBy(p => p.Car.Horsepower),
-                PostsSorting.CarYearNewestFirst => postsQuery.OrderByDescending(p => p.Car.Year),
-                PostsSorting.CarYearOldestFirst => postsQuery.OrderBy(p => p.Car.Year),
-                PostsSorting.NewestFirst or _ => postsQuery.OrderByDescending(p => p.Id),
+                1 => postsQuery.OrderBy(p => p.Id),
+                2 => postsQuery.OrderByDescending(p => p.Car.Price),
+                3 => postsQuery.OrderBy(p => p.Car.Price),
+                4 => postsQuery.OrderByDescending(p => p.Car.Horsepower),
+                5 => postsQuery.OrderBy(p => p.Car.Horsepower),
+                6 => postsQuery.OrderByDescending(p => p.Car.Year),
+                7 => postsQuery.OrderBy(p => p.Car.Year),
+                _ => postsQuery.OrderByDescending(p => p.Id),
             };
 
             return postsQuery;

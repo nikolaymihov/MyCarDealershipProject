@@ -2,8 +2,8 @@
 {
     public class CarExtrasServiceModel : BaseCarSpecificationServiceModel
     {
-        public int TypeId { get; set; }
+       public int TypeId { get; set; }
 
-        public string TypeName { get; set; }
+       public string TypeName { get; set; }
     }
 }
