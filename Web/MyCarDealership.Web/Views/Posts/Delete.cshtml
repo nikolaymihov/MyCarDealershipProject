@@ -33,8 +33,16 @@
 <div class="row text-center my-3">
     <form class="my-3" asp-action="Delete">
         <input type="hidden" asp-for="@Model.Car.Id" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Mine" class="btn btn-dark" role="button">Cancel</a>
+        <input type="submit" value="Delete" class="btn btn-danger" />
+        @if (this.User.IsInRole("Administrator"))
+        {
+            <a asp-area="Admin" asp-controller="Posts" asp-action="All" class="btn btn-dark" role="button">Cancel</a>
+        }
+        else
+        {
+            <a asp-action="Mine" class="btn btn-dark" role="button">Cancel</a>
+        }
+
     </form>
     <hr class="my-3" />
 </div>

@@ -39,6 +39,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{EDA83A5B-6D7
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{61A56F80-C077-4F1E-95E7-A8E727314BA2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyCarDealership.GlobalConstants", "MyCarDealership.GlobalConstants\MyCarDealership.GlobalConstants.csproj", "{DA9A5D2E-BA31-4EEA-B9BC-1EB6B73BBF3C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -81,6 +83,10 @@ Global
 		{77CD9F55-EA25-4D4E-84B9-7470608ECFC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{77CD9F55-EA25-4D4E-84B9-7470608ECFC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{77CD9F55-EA25-4D4E-84B9-7470608ECFC7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DA9A5D2E-BA31-4EEA-B9BC-1EB6B73BBF3C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA9A5D2E-BA31-4EEA-B9BC-1EB6B73BBF3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA9A5D2E-BA31-4EEA-B9BC-1EB6B73BBF3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA9A5D2E-BA31-4EEA-B9BC-1EB6B73BBF3C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -95,6 +101,7 @@ Global
 		{AFD85149-E1F9-40C9-9D90-374F8288BA3E} = {AF9E7DA8-6651-4A3C-87EC-45E8CD6E670C}
 		{AEAB3FC8-E4CC-415C-9E3E-6BE728EC8B8D} = {61A56F80-C077-4F1E-95E7-A8E727314BA2}
 		{77CD9F55-EA25-4D4E-84B9-7470608ECFC7} = {EDA83A5B-6D72-47FE-B4A1-264EB554F4C1}
+		{DA9A5D2E-BA31-4EEA-B9BC-1EB6B73BBF3C} = {FBD706EC-7C81-4AFB-BBDA-8F8BA252164B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F58AD33E-2526-4C0D-A440-DEAAE473763D}

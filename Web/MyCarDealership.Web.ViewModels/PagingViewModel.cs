@@ -2,7 +2,7 @@
 {
     using System;
 
-    public class PagingViewModel
+    public abstract class PagingViewModel
     {
         public int PageNumber { get; set; }
 

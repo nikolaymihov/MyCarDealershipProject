@@ -11,7 +11,11 @@
         Task<int> CreateAsync(PostFormInputModelDTO inputPost, Car car, string userId);
 
         IEnumerable<PostInListDTO> GetMatchingPosts(SearchPostDTO searchInputModel, int sortingNumber);
-        
+
+        IEnumerable<BasePostInListDTO> GetAllPostsBaseInfo(int page, int postsPerPage);
+
+        int GetAllPostsCount();
+
         IEnumerable<T> GetPostsByPage<T>(IEnumerable<T> posts, int page, int postsPerPage);
 
         IEnumerable<PostByUserDTO> GetPostsByUser(string userId, int sortingNumber);

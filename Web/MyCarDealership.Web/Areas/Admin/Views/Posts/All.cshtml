@@ -1,0 +1,40 @@
+﻿@model PostsListAdminAreaViewModel
+
+@{
+    this.ViewData["Title"] = "Posts Administration";
+}
+
+<h2 class="heading-margin text-center">@this.ViewData["Title"]@(Model.PagesCount > 1 ? $", page {Model.PageNumber}" : string.Empty)</h2>
+<div class="col-md-10 offset-md-1">
+    <table class="table table-responsive">
+        <thead>
+        <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Make</th>
+            <th scope="col">Model</th>
+            <th scope="col">Year</th>
+            <th scope="col">Price</th>
+            <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var post in Model.Posts)
+        {
+            <tr>
+                <td>@post.Car.Id</td>
+                <td>@post.Car.Make</td>
+                <td>@post.Car.Model</td>
+                <td>@post.Car.Year</td>
+                <td>@post.Car.Price</td>
+                <td>
+                    <a asp-area="" asp-controller="Posts" asp-action="Delete" asp-route-id="@post.Car.Id" class="btn btn-danger col-md-3 float-end mx-2">Delete</a>
+                    <a asp-area="" asp-controller="Posts" asp-action="Edit" asp-route-id="@post.Car.Id" class="btn btn-dark col-md-3 float-end mx-2">Edit</a>
+                    <a asp-area="" asp-controller="Posts" asp-action="Offer" asp-route-id="@post.Car.Id" class="btn btn-secondary col-md-3 float-end mx-2">View</a>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>
+<hr />
+<partial name="_PagingPartial" model="@Model" />

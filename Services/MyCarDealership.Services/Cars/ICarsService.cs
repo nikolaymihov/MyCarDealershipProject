@@ -1,7 +1,7 @@
 ﻿namespace MyCarDealership.Services.Cars
 {
-    using System.Collections.Generic;
     using System.Threading.Tasks;
+    using System.Collections.Generic;
     using Models;
     using Data.Models;
 

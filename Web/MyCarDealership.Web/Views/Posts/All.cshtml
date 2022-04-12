@@ -4,7 +4,7 @@
     this.ViewData["Title"] = "All posts";
 }
 
-<h1 class="text-center">@this.ViewData["Title"]@(Model.PagesCount > 1 ? $", page {Model.PageNumber}" : string.Empty)</h1>
+<h2 class="heading-margin text-center">@this.ViewData["Title"]@(Model.PagesCount > 1 ? $", page {Model.PageNumber}" : string.Empty)</h2>
 <partial name="_SortingPartial" model="@Model" />
 <hr />
 <div class="row">

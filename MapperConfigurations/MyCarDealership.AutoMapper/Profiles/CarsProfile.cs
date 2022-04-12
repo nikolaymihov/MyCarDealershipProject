@@ -21,6 +21,8 @@
 
             this.CreateMap<CarExtrasServiceModel, CarExtrasViewModel>().ReverseMap();
 
+            this.CreateMap<BaseCarDTO, BaseCarViewModel>().ReverseMap();
+
             this.CreateMap<CarFormInputModelDTO, CarFormInputModel>().ReverseMap();
 
             this.CreateMap<SearchCarInputModelDTO, SearchCarInputModel>().ReverseMap();

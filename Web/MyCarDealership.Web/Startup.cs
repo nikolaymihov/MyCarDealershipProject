@@ -5,6 +5,7 @@ namespace MyCarDealership.Web
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Hosting;
     using Microsoft.Extensions.Configuration;
@@ -39,6 +40,7 @@ namespace MyCarDealership.Web
                 {
                     options.Password.RequireNonAlphanumeric = false;
                 })
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<CarDealershipDbContext>();
 
             services.Configure<CookiePolicyOptions>(
@@ -74,7 +76,7 @@ namespace MyCarDealership.Web
             {
                 var dbContext = serviceScope.ServiceProvider.GetRequiredService<CarDealershipDbContext>();
                 dbContext.Database.Migrate();
-                new CarDealershipDbContextSeeder().SeedAsync(dbContext).GetAwaiter().GetResult();
+                new CarDealershipDbContextSeeder().SeedAsync(dbContext, serviceScope.ServiceProvider).GetAwaiter().GetResult();
             }
 
             if (env.IsDevelopment())
@@ -100,6 +102,10 @@ namespace MyCarDealership.Web
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapControllerRoute(
+                    name: "Areas",
+                    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+
                 endpoints.MapDefaultControllerRoute();
                 endpoints.MapRazorPages();
             });

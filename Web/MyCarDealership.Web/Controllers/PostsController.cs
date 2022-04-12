@@ -19,6 +19,8 @@
     using Services.Posts.Models;
     using Services.Images.Models;
 
+    using static GlobalConstants.GlobalConstants;
+
     public class PostsController : Controller
     {
         private const int PostsPerPage = 12;
@@ -86,7 +88,7 @@
                 return this.View(input);
             }
 
-            TempData[WebConstants.SuccessMessageKey] = "Your car post was added successfully!";
+            TempData[WebConstants.SuccessMessageKey] = "The car post was added successfully!";
 
             return this.RedirectToAction("Offer", new { Id = postId });
         }
@@ -207,7 +209,7 @@
                 return this.NotFound();
             }
 
-            if (editPostDTO.CreatorId != userId)
+            if ((editPostDTO.CreatorId != userId) && !this.User.IsInRole(AdministratorRoleName))
             {
                 return this.Unauthorized();
             }
@@ -225,7 +227,7 @@
         {
             var userId = this.GetCurrentUserId();
 
-            if (editedPost.CreatorId != userId)
+            if ((editedPost.CreatorId != userId) && !this.User.IsInRole(AdministratorRoleName))
             {
                 return this.Unauthorized();
             }
@@ -264,7 +266,7 @@
                 return this.View(editedPost);
             }
 
-            TempData[WebConstants.SuccessMessageKey] = "Your car post was edited successfully!";
+            TempData[WebConstants.SuccessMessageKey] = "The car post was edited successfully!";
 
             return this.RedirectToAction("Offer", new { Id = id });
         }
@@ -282,7 +284,7 @@
 
             var postCreatorId = this.postsService.GetPostCreatorId(id);
 
-            if (userId != postCreatorId)
+            if ((userId != postCreatorId) && !this.User.IsInRole(AdministratorRoleName))
             {
                 return this.Unauthorized();
             }
@@ -299,8 +301,9 @@
         {
             var userId = this.GetCurrentUserId();
             var postCreatorId = this.postsService.GetPostCreatorId(id);
+            var isAdmin = this.User.IsInRole(AdministratorRoleName);
 
-            if (userId != postCreatorId)
+            if ((userId != postCreatorId) && !isAdmin)
             {
                 return this.Unauthorized();
             }
@@ -308,11 +311,16 @@
             try
             {
                 await this.postsService.DeletePostByIdAsync(id);
-                TempData[WebConstants.SuccessMessageKey] = "Your car post was deleted successfully!";
+                TempData[WebConstants.SuccessMessageKey] = "The car post was deleted successfully!";
             }
             catch (Exception ex)
             {
                 TempData[WebConstants.ErrorMessageKey] = ex.Message;
+            }
+
+            if (isAdmin)
+            {
+                return this.RedirectToAction("All", "Posts", new { area = "Admin" });
             }
 
             return this.RedirectToAction("Mine");

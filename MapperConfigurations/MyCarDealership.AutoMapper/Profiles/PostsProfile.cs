@@ -23,6 +23,10 @@
             this.CreateMap<PostInLatestListDTO, PostInLatestListViewModel>().ReverseMap();
 
             this.CreateMap<EditPostDTO, EditPostViewModel>().ReverseMap();
+
+            this.CreateMap<BasePostInListDTO, PostInAdminAreaViewModel>().ReverseMap();
+
+            this.CreateMap<BasePostsListDTO, PostsListAdminAreaViewModel>().ReverseMap();
         }
     }
 }

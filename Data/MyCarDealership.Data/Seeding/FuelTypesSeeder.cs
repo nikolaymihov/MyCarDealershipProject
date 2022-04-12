@@ -1,5 +1,6 @@
 ﻿namespace MyCarDealership.Data.Seeding
 {
+    using System;
     using System.Linq;
     using System.Threading.Tasks;
     using System.Collections.Generic;
@@ -7,7 +8,7 @@
 
     public class FuelTypesSeeder : ISeeder
     {
-        public async Task SeedAsync(CarDealershipDbContext dbContext)
+        public async Task SeedAsync(CarDealershipDbContext dbContext, IServiceProvider serviceProvider)
         {
             if (dbContext.FuelTypes.Any())
             {

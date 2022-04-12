@@ -166,7 +166,7 @@
 
             if (!postsQuery.Any())
             {
-                throw new Exception("Unfortunately, there are no cars in our system that match your search criteria.");
+                throw new Exception("Unfortunately, there are no cars in our system that match this search criteria.");
             }
 
             postsQuery = GetSortedPosts(postsQuery, sortingNumber);
@@ -192,6 +192,33 @@
                         LocationCity = p.Car.LocationCity,
                         LocationCountry = p.Car.LocationCountry,
                         CoverImage = this.imagesService.GetCoverImagePath(p.Car.Images.ToList()),
+                    },
+                    PublishedOn = GetFormattedDate(p.PublishedOn),
+                }).ToList();
+
+            return posts;
+        }
+
+        public int GetAllPostsCount()
+        {
+            return this.data.Posts.Count();
+        }
+
+        public IEnumerable<BasePostInListDTO> GetAllPostsBaseInfo(int page, int postsPerPage)
+        {
+            var posts = this.data.Posts
+                .Where(p => !p.IsDeleted)
+                .OrderByDescending(p => p.PublishedOn)
+                .Skip((page - 1) * postsPerPage).Take(postsPerPage)
+                .Select(p => new BasePostInListDTO()
+                {
+                    Car = new BaseCarDTO()
+                    {
+                        Id = p.Car.Id,
+                        Make = p.Car.Make,
+                        Model = p.Car.Model,
+                        Year = p.Car.Year,
+                        Price = p.Car.Price,
                     },
                     PublishedOn = GetFormattedDate(p.PublishedOn),
                 }).ToList();
