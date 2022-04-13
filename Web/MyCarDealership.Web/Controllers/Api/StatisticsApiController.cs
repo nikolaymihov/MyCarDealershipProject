@@ -8,17 +8,17 @@
     [ApiController]
     public class StatisticsController : ControllerBase
     {
-        private readonly IStatisticsService statistics;
+        private readonly IStatisticsService statisticsService;
 
         public StatisticsController(IStatisticsService statistics)
         {
-            this.statistics = statistics;
+            this.statisticsService = statistics;
         }
 
         [HttpGet]
         public StatisticsServiceModel GetStatistics()
         {
-            return this.statistics.Total();
+            return this.statisticsService.Total();
         }
     }
 }

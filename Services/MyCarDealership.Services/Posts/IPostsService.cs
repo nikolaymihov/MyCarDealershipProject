@@ -20,17 +20,19 @@
 
         IEnumerable<PostByUserDTO> GetPostsByUser(string userId, int sortingNumber);
 
-        SinglePostDTO GetSinglePostViewModelById(int postId);
+        SinglePostDTO GetSinglePostViewModelById(int postId, bool publicOnly = true);
 
-        EditPostDTO GetPostFormInputModelById(int postId);
+        EditPostDTO GetPostFormInputModelById(int postId, bool publicOnly = true);
 
         IEnumerable<PostInLatestListDTO> GetLatest(int count);
 
         Task UpdateAsync(int postId, EditPostDTO input);
 
+        Task ChangeVisibilityAsync(int postId);
+
         IEnumerable<ImageInfoDTO> GetCurrentDbImagesForAPost(int postId);
 
-        PostByUserDTO GetBasicPostInformationById(int postId);
+        PostByUserDTO GetBasicPostInformationById(int postId, bool publicOnly = true);
 
         string GetPostCreatorId(int postId);
 

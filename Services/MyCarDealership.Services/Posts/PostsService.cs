@@ -34,7 +34,8 @@
                 CreatorId = userId,
                 PublishedOn = DateTime.UtcNow,
                 SellerName = inputPost.SellerName,
-                SellerPhoneNumber = inputPost.SellerPhoneNumber
+                SellerPhoneNumber = inputPost.SellerPhoneNumber,
+                IsPublic = false,
             };
 
             await this.data.Posts.AddAsync(post);
@@ -75,8 +76,8 @@
 
         public IEnumerable<PostInListDTO> GetMatchingPosts(SearchPostDTO searchInputModel, int sortingNumber)
         {
-            var postsQuery = this.data.Posts.Where(p => !p.IsDeleted).AsQueryable();
-
+            var postsQuery = this.data.Posts.Where(p => !p.IsDeleted && p.IsPublic).AsQueryable();
+            
             if (searchInputModel.Car != null)
             {
                 var searchedCarDetails = searchInputModel.Car;
@@ -208,7 +209,8 @@
         {
             var posts = this.data.Posts
                 .Where(p => !p.IsDeleted)
-                .OrderByDescending(p => p.PublishedOn)
+                .OrderBy(p => p.IsPublic)
+                .ThenByDescending(p => p.PublishedOn)
                 .Skip((page - 1) * postsPerPage).Take(postsPerPage)
                 .Select(p => new BasePostInListDTO()
                 {
@@ -221,15 +223,16 @@
                         Price = p.Car.Price,
                     },
                     PublishedOn = GetFormattedDate(p.PublishedOn),
+                    IsPublic = p.IsPublic
                 }).ToList();
 
             return posts;
         }
 
-        public SinglePostDTO GetSinglePostViewModelById(int postId)
+        public SinglePostDTO GetSinglePostViewModelById(int postId, bool publicOnly = true)
         {
             var post = this.data.Posts
-                .Where(p => p.Id == postId && !p.IsDeleted)
+                .Where(p => p.Id == postId && !p.IsDeleted && (!publicOnly || p.IsPublic))
                 .Select(p => new SinglePostDTO()
                 {
                     Car = new SingleCarDTO()
@@ -263,10 +266,10 @@
             return post;
         }
 
-        public EditPostDTO GetPostFormInputModelById(int postId)
+        public EditPostDTO GetPostFormInputModelById(int postId, bool publicOnly = true)
         {
             var post = this.data.Posts
-                .Where(p => p.Id == postId && !p.IsDeleted)
+                .Where(p => p.Id == postId && !p.IsDeleted && (!publicOnly || p.IsPublic))
                 .Select(p => new EditPostDTO()
                 {
                     Car = new CarFormInputModelDTO()
@@ -303,7 +306,7 @@
 
         public IEnumerable<ImageInfoDTO> GetCurrentDbImagesForAPost(int postId)
         {
-             var post = this.data.Posts.FirstOrDefault(p => p.Id == postId && !p.IsDeleted);
+             var post = this.data.Posts.FirstOrDefault(p => p.Id == postId && !p.IsDeleted && p.IsPublic);
              var car = this.data.Cars.FirstOrDefault(c => c.Id == post.CarId && !c.IsDeleted);
              var postImages = this.data.Images
                                                          .Where(img => img.CarId == car.Id)
@@ -320,7 +323,7 @@
         public IEnumerable<PostInLatestListDTO> GetLatest(int count)
         {
             var posts = this.data.Posts
-                .Where(p => !p.IsDeleted)
+                .Where(p => !p.IsDeleted && p.IsPublic)
                 .OrderByDescending(p => p.PublishedOn)
                 .Take(count)
                 .Select(p => new PostInLatestListDTO()
@@ -355,14 +358,24 @@
             post.ModifiedOn = DateTime.UtcNow;
             post.SellerName = editedPost.SellerName;
             post.SellerPhoneNumber = editedPost.SellerPhoneNumber;
+            post.IsPublic = false;
             
             await this.data.SaveChangesAsync();
         }
 
-        public PostByUserDTO GetBasicPostInformationById(int postId)
+        public async Task ChangeVisibilityAsync(int postId)
+        {
+            var post = this.GetDbPostById(postId, false);
+
+            post.IsPublic = !post.IsPublic;
+
+            await this.data.SaveChangesAsync();
+        }
+
+        public PostByUserDTO GetBasicPostInformationById(int postId, bool publicOnly = true)
         {
             var post = this.data.Posts
-                .Where(p => p.Id == postId && !p.IsDeleted)
+                .Where(p => p.Id == postId && !p.IsDeleted && (!publicOnly || p.IsPublic))
                 .Select(p => new PostByUserDTO()
                 {
                     Car = new CarByUserDTO()
@@ -400,13 +413,14 @@
 
             post.IsDeleted = true;
             post.DeletedOn = DateTime.UtcNow;
+            post.IsPublic = false;
             
             await this.data.SaveChangesAsync();
         }
 
-        private Post GetDbPostById(int postId)
+        private Post GetDbPostById(int postId, bool publicOnly = true)
         {
-            return this.data.Posts.FirstOrDefault(p => p.Id == postId && !p.IsDeleted);
+            return this.data.Posts.FirstOrDefault(p => p.Id == postId && !p.IsDeleted && (!publicOnly || p.IsPublic));
         }
 
         private static string GetFormattedDate(DateTime inputDateTime)

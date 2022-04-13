@@ -1,5 +1,6 @@
 ﻿namespace MyCarDealership.Web.Areas.Admin.Controllers
 {
+    using System.Threading.Tasks;
     using System.Collections.Generic;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Authorization;
@@ -51,6 +52,13 @@
             }
 
             return this.View(postsListViewModel);
+        }
+        
+        public async Task<IActionResult> ChangeVisibility(int id)
+        {
+            await this.postsService.ChangeVisibilityAsync(id);
+
+            return RedirectToAction("All");
         }
     }
 }

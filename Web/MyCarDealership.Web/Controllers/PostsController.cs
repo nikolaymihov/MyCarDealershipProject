@@ -88,7 +88,7 @@
                 return this.View(input);
             }
 
-            TempData[WebConstants.SuccessMessageKey] = "The car post was added successfully!";
+            TempData[WebConstants.SuccessMessageKey] = "The car post was added successfully and is awaiting for approval!";
 
             return this.RedirectToAction("Offer", new { Id = postId });
         }
@@ -157,7 +157,8 @@
 
         public IActionResult Offer(int id)
         {
-            var singlePostDataDTO = this.postsService.GetSinglePostViewModelById(id);
+            var publicOnly = !this.User.IsInRole(AdministratorRoleName);
+            var singlePostDataDTO = this.postsService.GetSinglePostViewModelById(id, publicOnly);
 
             if (singlePostDataDTO == null)
             {
@@ -202,14 +203,16 @@
         public IActionResult Edit(int id)
         {
             var userId = this.GetCurrentUserId();
-            var editPostDTO = this.postsService.GetPostFormInputModelById(id);
+            var isAdmin =  this.User.IsInRole(AdministratorRoleName);
+            var publicOnly = !isAdmin;
+            var editPostDTO = this.postsService.GetPostFormInputModelById(id, publicOnly);
 
             if (editPostDTO == null)
             {
                 return this.NotFound();
             }
 
-            if ((editPostDTO.CreatorId != userId) && !this.User.IsInRole(AdministratorRoleName))
+            if ((editPostDTO.CreatorId != userId) && !isAdmin)
             {
                 return this.Unauthorized();
             }
@@ -266,7 +269,7 @@
                 return this.View(editedPost);
             }
 
-            TempData[WebConstants.SuccessMessageKey] = "The car post was edited successfully!";
+            TempData[WebConstants.SuccessMessageKey] = $"The car post was edited successfully{(this.User.IsInRole(AdministratorRoleName) ? string.Empty : " and is awaiting for approval")}!";
 
             return this.RedirectToAction("Offer", new { Id = id });
         }
@@ -275,7 +278,9 @@
         public IActionResult Delete(int id)
         {
             var userId = this.GetCurrentUserId();
-            var postDTO = this.postsService.GetBasicPostInformationById(id);
+            var isAdmin = this.User.IsInRole(AdministratorRoleName);
+            var publicOnly = !isAdmin;
+            var postDTO = this.postsService.GetBasicPostInformationById(id, publicOnly);
 
             if (postDTO == null)
             {
@@ -284,7 +289,7 @@
 
             var postCreatorId = this.postsService.GetPostCreatorId(id);
 
-            if ((userId != postCreatorId) && !this.User.IsInRole(AdministratorRoleName))
+            if ((userId != postCreatorId) && !isAdmin)
             {
                 return this.Unauthorized();
             }

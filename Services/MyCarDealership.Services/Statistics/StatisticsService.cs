@@ -16,7 +16,7 @@
         public StatisticsServiceModel Total()
         {
             var totalUsers = this.data.Users.Count();
-            var totalPosts = this.data.Posts.Count(p => !p.IsDeleted);
+            var totalPosts = this.data.Posts.Count(p => !p.IsDeleted && p.IsPublic);
             var totalCategories = this.data.Categories.Count();
 
             return new StatisticsServiceModel
