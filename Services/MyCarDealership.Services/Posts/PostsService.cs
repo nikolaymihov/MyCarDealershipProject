@@ -266,10 +266,10 @@
             return post;
         }
 
-        public EditPostDTO GetPostFormInputModelById(int postId, bool publicOnly = true)
+        public EditPostDTO GetPostFormInputModelById(int postId)
         {
             var post = this.data.Posts
-                .Where(p => p.Id == postId && !p.IsDeleted && (!publicOnly || p.IsPublic))
+                .Where(p => p.Id == postId && !p.IsDeleted)
                 .Select(p => new EditPostDTO()
                 {
                     Car = new CarFormInputModelDTO()
@@ -306,7 +306,7 @@
 
         public IEnumerable<ImageInfoDTO> GetCurrentDbImagesForAPost(int postId)
         {
-             var post = this.data.Posts.FirstOrDefault(p => p.Id == postId && !p.IsDeleted && p.IsPublic);
+             var post = this.data.Posts.FirstOrDefault(p => p.Id == postId && !p.IsDeleted);
              var car = this.data.Cars.FirstOrDefault(c => c.Id == post.CarId && !c.IsDeleted);
              var postImages = this.data.Images
                                                          .Where(img => img.CarId == car.Id)
@@ -365,17 +365,17 @@
 
         public async Task ChangeVisibilityAsync(int postId)
         {
-            var post = this.GetDbPostById(postId, false);
+            var post = this.GetDbPostById(postId);
 
             post.IsPublic = !post.IsPublic;
 
             await this.data.SaveChangesAsync();
         }
 
-        public PostByUserDTO GetBasicPostInformationById(int postId, bool publicOnly = true)
+        public PostByUserDTO GetBasicPostInformationById(int postId)
         {
             var post = this.data.Posts
-                .Where(p => p.Id == postId && !p.IsDeleted && (!publicOnly || p.IsPublic))
+                .Where(p => p.Id == postId && !p.IsDeleted)
                 .Select(p => new PostByUserDTO()
                 {
                     Car = new CarByUserDTO()
@@ -418,9 +418,9 @@
             await this.data.SaveChangesAsync();
         }
 
-        private Post GetDbPostById(int postId, bool publicOnly = true)
+        private Post GetDbPostById(int postId)
         {
-            return this.data.Posts.FirstOrDefault(p => p.Id == postId && !p.IsDeleted && (!publicOnly || p.IsPublic));
+            return this.data.Posts.FirstOrDefault(p => p.Id == postId && !p.IsDeleted);
         }
 
         private static string GetFormattedDate(DateTime inputDateTime)

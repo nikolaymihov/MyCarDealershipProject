@@ -157,7 +157,17 @@
 
         public IActionResult Offer(int id)
         {
-            var publicOnly = !this.User.IsInRole(AdministratorRoleName);
+            var isAdmin = this.User.IsInRole(AdministratorRoleName);
+            var publicOnly = !isAdmin;
+
+            if (this.User.Identity.IsAuthenticated)
+            {
+                var userId = this.GetCurrentUserId();
+                var postCreatorId = this.postsService.GetPostCreatorId(id);
+
+                publicOnly = userId != postCreatorId;
+            }
+            
             var singlePostDataDTO = this.postsService.GetSinglePostViewModelById(id, publicOnly);
 
             if (singlePostDataDTO == null)
@@ -203,16 +213,14 @@
         public IActionResult Edit(int id)
         {
             var userId = this.GetCurrentUserId();
-            var isAdmin =  this.User.IsInRole(AdministratorRoleName);
-            var publicOnly = !isAdmin;
-            var editPostDTO = this.postsService.GetPostFormInputModelById(id, publicOnly);
+            var editPostDTO = this.postsService.GetPostFormInputModelById(id);
 
             if (editPostDTO == null)
             {
                 return this.NotFound();
             }
 
-            if ((editPostDTO.CreatorId != userId) && !isAdmin)
+            if ((editPostDTO.CreatorId != userId) && !this.User.IsInRole(AdministratorRoleName))
             {
                 return this.Unauthorized();
             }
@@ -278,9 +286,7 @@
         public IActionResult Delete(int id)
         {
             var userId = this.GetCurrentUserId();
-            var isAdmin = this.User.IsInRole(AdministratorRoleName);
-            var publicOnly = !isAdmin;
-            var postDTO = this.postsService.GetBasicPostInformationById(id, publicOnly);
+            var postDTO = this.postsService.GetBasicPostInformationById(id);
 
             if (postDTO == null)
             {
@@ -289,7 +295,7 @@
 
             var postCreatorId = this.postsService.GetPostCreatorId(id);
 
-            if ((userId != postCreatorId) && !isAdmin)
+            if ((userId != postCreatorId) && !this.User.IsInRole(AdministratorRoleName))
             {
                 return this.Unauthorized();
             }

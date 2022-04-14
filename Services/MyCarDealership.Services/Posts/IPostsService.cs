@@ -22,7 +22,7 @@
 
         SinglePostDTO GetSinglePostViewModelById(int postId, bool publicOnly = true);
 
-        EditPostDTO GetPostFormInputModelById(int postId, bool publicOnly = true);
+        EditPostDTO GetPostFormInputModelById(int postId);
 
         IEnumerable<PostInLatestListDTO> GetLatest(int count);
 
@@ -32,7 +32,7 @@
 
         IEnumerable<ImageInfoDTO> GetCurrentDbImagesForAPost(int postId);
 
-        PostByUserDTO GetBasicPostInformationById(int postId, bool publicOnly = true);
+        PostByUserDTO GetBasicPostInformationById(int postId);
 
         string GetPostCreatorId(int postId);
 
