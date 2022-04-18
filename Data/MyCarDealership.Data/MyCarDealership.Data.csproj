@@ -18,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\MyCarDealership.GlobalConstants\MyCarDealership.GlobalConstants.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\MyCarDealership.GlobalConstants\MyCarDealership.GlobalConstants.csproj" />
     <ProjectReference Include="..\MyCarDealership.Data.Models\MyCarDealership.Data.Models.csproj" />
   </ItemGroup>
 

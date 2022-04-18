@@ -1,4 +1,4 @@
-﻿namespace MyCarDealership.MapperConfig.Profiles
+﻿namespace MyCarDealership.MapperConfigurations.Profiles
 {
     using AutoMapper;
     using Services.Images.Models;

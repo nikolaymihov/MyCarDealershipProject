@@ -160,7 +160,7 @@
             var isAdmin = this.User.IsInRole(AdministratorRoleName);
             var publicOnly = !isAdmin;
 
-            if (this.User.Identity.IsAuthenticated)
+            if (this.User.Identity.IsAuthenticated && !isAdmin)
             {
                 var userId = this.GetCurrentUserId();
                 var postCreatorId = this.postsService.GetPostCreatorId(id);

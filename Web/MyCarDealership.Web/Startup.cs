@@ -18,7 +18,7 @@ namespace MyCarDealership.Web
     using Services.Images;
     using Services.Posts;
     using Services.Statistics;
-    using MapperConfig.Profiles;
+    using MapperConfigurations.Profiles;
 
     public class Startup
     {

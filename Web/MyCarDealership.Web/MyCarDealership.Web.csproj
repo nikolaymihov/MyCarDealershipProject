@@ -22,7 +22,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Data\MyCarDealership.Data.Models\MyCarDealership.Data.Models.csproj" />
-    <ProjectReference Include="..\..\MapperConfigurations\MyCarDealership.AutoMapper\MyCarDealership.MapperConfig.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\MyCarDealership.GlobalConstants\MyCarDealership.GlobalConstants.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\MyCarDealership.MapperConfigurations\MyCarDealership.MapperConfigurations.csproj" />
     <ProjectReference Include="..\..\Services\MyCarDealership.Services\MyCarDealership.Services.csproj" />
     <ProjectReference Include="..\MyCarDealership.Web.Constants\MyCarDealership.Web.Constants.csproj" />
     <ProjectReference Include="..\MyCarDealership.Web.ViewModels\MyCarDealership.Web.ViewModels.csproj" />

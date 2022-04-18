@@ -1,4 +1,4 @@
-﻿namespace MyCarDealership.Common.ValidationAttributes
+﻿namespace MyCarDealership.CustomAttributes.ValidationAttributes
 {
     using System;
     using System.ComponentModel.DataAnnotations;

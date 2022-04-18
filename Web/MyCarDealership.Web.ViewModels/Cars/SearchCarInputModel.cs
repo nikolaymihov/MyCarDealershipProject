@@ -1,7 +1,7 @@
 ﻿namespace MyCarDealership.Web.ViewModels.Cars
 {
     using System.ComponentModel.DataAnnotations;
-    using Common.ValidationAttributes;
+    using CustomAttributes.ValidationAttributes;
 
     using static Data.Common.DataConstants;
 
