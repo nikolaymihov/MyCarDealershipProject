@@ -2,14 +2,14 @@
 {
     using System;
     using System.Linq;
-    using System.Threading.Tasks;
     using System.Security.Claims;
+    using System.Threading.Tasks;
     using System.Collections.Generic;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Authorization;
-    using AutoMapper;
     using Constants;
+    using AutoMapper;
     using Services.Cars;
     using Services.Posts;
     using ViewModels.Cars;
@@ -60,6 +60,7 @@
         [Authorize]
         public async Task<IActionResult> Create(PostFormInputModel input)
         {
+            var isAdmin = this.User.IsInRole(AdministratorRoleName);
             var inputCarDTO = this.mapper.Map<CarFormInputModelDTO>(input.Car);
 
             if (!this.ModelState.IsValid)
@@ -78,7 +79,7 @@
             try
             {
                 var car = await this.carsService.GetCarFromInputModelAsync(inputCarDTO, selectedExtrasIds, userId, imagePath);
-                postId = await this.postsService.CreateAsync(inputPostDTO, car, userId);
+                postId = await this.postsService.CreateAsync(inputPostDTO, car, userId, isAdmin);
             }
             catch (Exception ex)
             {
@@ -88,7 +89,7 @@
                 return this.View(input);
             }
 
-            TempData[WebConstants.SuccessMessageKey] = "The car post was added successfully and is awaiting for approval!";
+            TempData[WebConstants.SuccessMessageKey] = $"The car post was added successfully{(isAdmin ? string.Empty : " and is awaiting for approval")}!";
 
             return this.RedirectToAction("Offer", new { Id = postId });
         }
@@ -237,6 +238,7 @@
         public async Task<IActionResult> Edit(int id, EditPostViewModel editedPost)
         {
             var userId = this.GetCurrentUserId();
+            var isAdmin = this.User.IsInRole(AdministratorRoleName);
 
             if ((editedPost.CreatorId != userId) && !this.User.IsInRole(AdministratorRoleName))
             {
@@ -264,7 +266,7 @@
             try
             {
                 await this.carsService.UpdateCarDataFromInputModelAsync(editedPostDTO.CarId, editedPostDTO.Car, selectedExtrasIds, deletedImagesIds, userId, imagePath, editedPost.SelectedCoverImageId);
-                await this.postsService.UpdateAsync(id, editedPostDTO);
+                await this.postsService.UpdateAsync(id, editedPostDTO, isAdmin);
             }
             catch (Exception ex)
             {
@@ -277,7 +279,7 @@
                 return this.View(editedPost);
             }
 
-            TempData[WebConstants.SuccessMessageKey] = $"The car post was edited successfully{(this.User.IsInRole(AdministratorRoleName) ? string.Empty : " and is awaiting for approval")}!";
+            TempData[WebConstants.SuccessMessageKey] = $"The car post was edited successfully{(isAdmin ? string.Empty : " and is awaiting for approval")}!";
 
             return this.RedirectToAction("Offer", new { Id = id });
         }

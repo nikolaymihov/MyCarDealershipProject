@@ -8,7 +8,7 @@
 
     public interface IPostsService
     {
-        Task<int> CreateAsync(PostFormInputModelDTO inputPost, Car car, string userId);
+        Task<int> CreateAsync(PostFormInputModelDTO inputPost, Car car, string userId, bool isPublic);
 
         IEnumerable<PostInListDTO> GetMatchingPosts(SearchPostDTO searchInputModel, int sortingNumber);
 
@@ -26,7 +26,7 @@
 
         IEnumerable<PostInLatestListDTO> GetLatest(int count);
 
-        Task UpdateAsync(int postId, EditPostDTO input);
+        Task UpdateAsync(int postId, EditPostDTO input, bool isPublic);
 
         Task ChangeVisibilityAsync(int postId);
 

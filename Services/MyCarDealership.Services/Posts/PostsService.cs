@@ -1,10 +1,10 @@
 ﻿namespace MyCarDealership.Services.Posts
 {
     using System;
-    using System.Collections.Generic;
-    using System.Globalization;
     using System.Linq;
+    using System.Globalization;
     using System.Threading.Tasks;
+    using System.Collections.Generic;
     using Cars;
     using Cars.Models;
     using Data;
@@ -19,14 +19,14 @@
         private readonly ICarsService carsService;
         private readonly IImagesService imagesService;
 
-        public PostsService(CarDealershipDbContext data,ICarsService carsService , IImagesService imagesService)
+        public PostsService(CarDealershipDbContext data, ICarsService carsService, IImagesService imagesService)
         {
             this.data = data;
             this.carsService = carsService;
             this.imagesService = imagesService;
         }
 
-        public async Task<int> CreateAsync(PostFormInputModelDTO inputPost, Car car, string userId)
+        public async Task<int> CreateAsync(PostFormInputModelDTO inputPost, Car car, string userId, bool isPublic)
         {
             var post = new Post
             {
@@ -35,7 +35,7 @@
                 PublishedOn = DateTime.UtcNow,
                 SellerName = inputPost.SellerName,
                 SellerPhoneNumber = inputPost.SellerPhoneNumber,
-                IsPublic = false,
+                IsPublic = isPublic,
             };
 
             await this.data.Posts.AddAsync(post);
@@ -309,13 +309,13 @@
              var post = this.data.Posts.FirstOrDefault(p => p.Id == postId && !p.IsDeleted);
              var car = this.data.Cars.FirstOrDefault(c => c.Id == post.CarId && !c.IsDeleted);
              var postImages = this.data.Images
-                                                         .Where(img => img.CarId == car.Id)
-                                                         .OrderByDescending(img => img.IsCoverImage)
-                                                         .Select(img => new ImageInfoDTO()
-                                                         {
-                                                             Id = img.Id, 
-                                                             Path = this.imagesService.GetDefaultCarImagesPath(img.Id, img.Extension),
-                                                         }).ToList();
+                                        .Where(img => img.CarId == car.Id)
+                                        .OrderByDescending(img => img.IsCoverImage)
+                                        .Select(img => new ImageInfoDTO()
+                                        {
+                                            Id = img.Id, 
+                                            Path = this.imagesService.GetDefaultCarImagesPath(img.Id, img.Extension),
+                                        }).ToList();
 
              return postImages;
         }
@@ -346,7 +346,7 @@
             return posts;
         }
 
-        public async Task UpdateAsync(int postId, EditPostDTO editedPost)
+        public async Task UpdateAsync(int postId, EditPostDTO editedPost, bool isPublic)
         {
             var post = this.GetDbPostById(postId);
 
@@ -358,7 +358,7 @@
             post.ModifiedOn = DateTime.UtcNow;
             post.SellerName = editedPost.SellerName;
             post.SellerPhoneNumber = editedPost.SellerPhoneNumber;
-            post.IsPublic = false;
+            post.IsPublic = isPublic;
             
             await this.data.SaveChangesAsync();
         }
