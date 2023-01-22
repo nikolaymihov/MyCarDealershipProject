@@ -1,6 +1,6 @@
 ### The best place to sell your old car and get a new one! ###
 
-![projectLogo](https://user-images.githubusercontent.com/63113578/213924961-35018d34-2bba-4c36-9ddd-0c2c7315a2e9.png)
+![projectLogo](https://user-images.githubusercontent.com/63113578/213933827-54cd90a6-e9a7-4638-b94d-43af089e8ce2.png)
 
 ## :pencil2: Overview ##
 A car dealership web application built on ASP.NET Core 5.0 MVC.
