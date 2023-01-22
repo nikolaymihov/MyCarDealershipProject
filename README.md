@@ -3,7 +3,7 @@
 ![projectLogo](https://user-images.githubusercontent.com/63113578/213924961-35018d34-2bba-4c36-9ddd-0c2c7315a2e9.png)
 
 ## :pencil2: Overview ##
-A car dealership web application built on ASP.NET Core 5.0.
+A car dealership web application built on ASP.NET Core 5.0 MVC.
 <br/>The main purpose of the app is to help its users sell, find and/or buy new and used cars.
 
 ## :question: How It Works ##
