@@ -12,15 +12,14 @@ A car dealership web application built on ASP.NET Core 5.0 MVC.
   * search for public car posts by various features
 * Logged users can:
   * create car posts
-  * edit <ins>their</ins> car posts
-  * delete <ins>their</ins> car posts
+  * edit their car posts
+  * delete their car posts
 * Admins can:
   * review newly created car posts and decide whether to approve them (make them public) or delete them
   * edit car posts
   * delete car posts
   
 ## :hammer: Built With ##
-* Visual Studio Enterprise 2019
 * ASP.NET Core 5.0
 * Entity Framework (EF) Core 5.0
 * Microsoft SQL Server
@@ -28,6 +27,10 @@ A car dealership web application built on ASP.NET Core 5.0 MVC.
 * jQuery
 * Bootstrap
 * Font Awesome
+* AutoMapper
+* Moq
+* xUnit
+* MyTested.AspNetCore.Mvc
 * ASP.NET Identity System
 * MVC Areas
 * Razor views and partial views
@@ -38,10 +41,8 @@ A car dealership web application built on ASP.NET Core 5.0 MVC.
 * Data Seeding
 * Custom Validation Attributes
 * Sorting and Paging
-* AutoMapper
-* Moq
-* xUnit
-* MyTested.AspNetCore.Mvc
+
+## :camera: Screenshots ##
 
 ## :copyright: License ##
 This project is licensed under the [MIT License](https://github.com/nikolaymihov/MyCarDealershipProject/blob/main/LICENSE "MIT License").
