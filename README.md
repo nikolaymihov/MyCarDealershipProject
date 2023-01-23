@@ -43,6 +43,26 @@ A car dealership web application built on ASP.NET Core 5.0 MVC.
 * Sorting and Paging
 
 ## :camera: Screenshots ##
+### **Home page:** ###
+![HomePage](https://user-images.githubusercontent.com/63113578/214080469-c0cf723b-54b3-450b-a23c-c12b34560688.jpg "home page sc")
+___
+### **All posts:** ###
+![allPosts2](https://user-images.githubusercontent.com/63113578/214082372-0e2cefdf-688a-4873-af51-f89636ed2630.jpg "all posts sc2")
+___
+### **Post details:** ###
+![postDetails](https://user-images.githubusercontent.com/63113578/214084408-b1edf186-dc75-49eb-a905-907cde05f8b7.jpg "post details sc")
+___
+### **Post details:** ###
+![postDetails2](https://user-images.githubusercontent.com/63113578/214085008-9c2bc833-dc81-4d52-971f-91f3fbe19166.jpg "post details sc2")
+___
+### **My posts:** ###
+![minePosts](https://user-images.githubusercontent.com/63113578/214085576-dbb78e9d-5201-425d-980b-e4194d41a0ca.jpg "mine posts sc")
+___
+### **Delete post:** ###
+![deleteConfirmation](https://user-images.githubusercontent.com/63113578/214085804-7367a066-7b4d-408d-b42f-5cc4d69f00d3.jpg "delete post sc")
+___
+### **Administration panel:** ###
+![AdministrationArea](https://user-images.githubusercontent.com/63113578/214086114-66b1f52f-76eb-4248-959d-a85e7a090c6b.jpg "administration area sc")
 
 ## :copyright: License ##
 This project is licensed under the [MIT License](https://github.com/nikolaymihov/MyCarDealershipProject/blob/main/LICENSE "MIT License").
